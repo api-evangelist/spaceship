@@ -1,0 +1,1127 @@
+openapi: 3.0.0
+info:
+  title: Spaceship.com Async Operations DNS records API
+  contact:
+    email: support@spaceship.com
+    url: https://www.spaceship.com/about/contact-us/
+  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  version: 1.0.0
+  x-logo:
+    url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
+servers:
+- url: https://spaceship.dev/api
+  description: The main server for the Spaceship External API
+  variables: {}
+security:
+- apiKey: []
+  apiSecret: []
+tags:
+- name: DNS records
+paths:
+  /v1/dns/records/{domain}:
+    put:
+      operationId: saveRecords
+      summary: Save resource records
+      description: "Add custom DNS resource records or update TTL.\nRecords are matched using case-insensitive comparison, except for TXT records.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:write\">dnsrecords:write</a>\n\n### Rate Limits \n\n * The limit for saving resource record details is 300 requests per user, per domain, within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose resource records are being updated.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - DNS records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Records.RecordsUpdateModel'
+            examples:
+              AAAA:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    address: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+                    name: '@'
+                    ttl: 3600
+              ALIAS:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    aliasName: '@'
+                    name: '@'
+                    ttl: 3600
+              A:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    address: 127.0.0.1
+                    name: '@'
+                    ttl: 3600
+              CAA:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    flag: 0
+                    tag: issue
+                    value: string
+                    name: '@'
+                    ttl: 3600
+              CNAME:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    cname: '@'
+                    name: '@'
+                    ttl: 3600
+              HTTPS:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    port: _8443
+                    scheme: _https
+                    svcPriority: 1
+                    targetName: _443._https.www.example.com
+                    svcParams: ''
+                    name: '@'
+                    ttl: 3600
+              MX:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    exchange: '@'
+                    preference: 65535
+                    name: '@'
+                    ttl: 3600
+              NS:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    nameserver: '@'
+                    name: '@'
+                    ttl: 3600
+              PTR:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    pointer: '@'
+                    name: '@'
+                    ttl: 3600
+              SRV:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    service: string
+                    protocol: string
+                    priority: 65535
+                    weight: 65535
+                    port: 1
+                    target: '@'
+                    name: '@'
+                    ttl: 3600
+              SVCB:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    port: _443
+                    scheme: _tcp
+                    svcPriority: 1
+                    targetName: _443._https.www.example.com
+                    svcParams: ''
+                    name: '@'
+                    ttl: 3600
+              TLSA:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    port: _443
+                    protocol: _tcp
+                    usage: 2
+                    selector: 1
+                    matching: 1
+                    associationData: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+                    name: '@'
+                    ttl: 3600
+              TXT:
+                value:
+                  force: true
+                  items:
+                  - type: A
+                    value: v=spf1 a mx -all
+                    name: '@'
+                    ttl: 3600
+      x-scopes:
+      - dnsrecords:write
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/dns/records/spaceship.com';\nconst options = {\n  method: 'PUT',\n  headers: {\n    'X-API-Key': 'REPLACE_KEY_VALUE',\n    'X-API-Secret': 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  },\n  body: JSON.stringify({force: true, items: [{type: 'A', name: '@', ttl: 3600}]})\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('PUT', 'https://spaceship.dev/api/v1/dns/records/spaceship.com', [\n  'body' => '{\"force\":true,\"items\":[{\"type\":\"A\",\"name\":\"@\",\"ttl\":3600}]}',\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n    'content-type' => 'application/json',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/dns/records/spaceship.com\"\n\npayload = {\n    \"force\": True,\n    \"items\": [\n        {\n            \"type\": \"A\",\n            \"name\": \"@\",\n            \"ttl\": 3600\n        }\n    ]\n}\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\",\n    \"content-type\": \"application/json\"\n}\n\nresponse = requests.put(url, json=payload, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request PUT \\\n     --url https://spaceship.dev/api/v1/dns/records/spaceship.com \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '\n{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}\n'"
+    delete:
+      operationId: deleteRecords
+      summary: Delete resource records
+      description: "Delete custom DNS resource records.\nRecords matched using case-insensitive comparison, except for TXT records, which are case-sensitive.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:write\">dnsrecords:write</a>\n\n### Rate Limits \n\n * The limit for deleting resource record details is 300 requests per user, per domain, within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose resource records are being deleted.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '204':
+          description: There is no content to send for this request, but the headers may be useful.
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - DNS records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceRecordsListDeleteItem'
+            examples:
+              AAAA:
+                value:
+                - type: A
+                  address: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+                  name: '@'
+              ALIAS:
+                value:
+                - type: A
+                  aliasName: '@'
+                  name: '@'
+              A:
+                value:
+                - type: A
+                  address: 127.0.0.1
+                  name: '@'
+              CAA:
+                value:
+                - type: A
+                  flag: 0
+                  tag: issue
+                  value: string
+                  name: '@'
+              CNAME:
+                value:
+                - type: A
+                  cname: '@'
+                  name: '@'
+              HTTPS:
+                value:
+                - type: A
+                  port: _8443
+                  scheme: _https
+                  svcPriority: 1
+                  targetName: _443._https.www.example.com
+                  svcParams: ''
+                  name: '@'
+              MX:
+                value:
+                - type: A
+                  exchange: '@'
+                  preference: 65535
+                  name: '@'
+              NS:
+                value:
+                - type: A
+                  nameserver: '@'
+                  name: '@'
+              PTR:
+                value:
+                - type: A
+                  pointer: '@'
+                  name: '@'
+              SRV:
+                value:
+                - type: A
+                  service: string
+                  protocol: string
+                  priority: 65535
+                  weight: 65535
+                  port: 1
+                  target: '@'
+                  name: '@'
+              SVCB:
+                value:
+                - type: A
+                  port: _443
+                  scheme: _tcp
+                  svcPriority: 1
+                  targetName: _443._https.www.example.com
+                  svcParams: ''
+                  name: '@'
+              TLSA:
+                value:
+                - type: A
+                  port: _443
+                  protocol: _tcp
+                  usage: 2
+                  selector: 1
+                  matching: 1
+                  associationData: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+                  name: '@'
+              TXT:
+                value:
+                - type: A
+                  value: v=spf1 a mx -all
+                  name: '@'
+        description: Records
+      x-scopes:
+      - dnsrecords:write
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/dns/records/spaceship.com';\nconst options = {\n  method: 'DELETE',\n  headers: {\n    'X-API-Key': 'REPLACE_KEY_VALUE',\n    'X-API-Secret': 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  },\n  body: JSON.stringify([{type: 'A', name: '@'}])\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('DELETE', 'https://spaceship.dev/api/v1/dns/records/spaceship.com', [\n  'body' => '[{\"type\":\"A\",\"name\":\"@\"}]',\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n    'content-type' => 'application/json',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/dns/records/spaceship.com\"\n\npayload = [\n    {\n        \"type\": \"A\",\n        \"name\": \"@\"\n    }\n]\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\",\n    \"content-type\": \"application/json\"\n}\n\nresponse = requests.delete(url, json=payload, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request DELETE \\\n     --url https://spaceship.dev/api/v1/dns/records/spaceship.com \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '\n[\n  {\n    \"type\": \"A\",\n    \"name\": \"@\"\n  }\n]\n'"
+    get:
+      operationId: getResourceRecordsList
+      summary: Get domain resource records list
+      description: "Retrieves a paginated list of resource records, allowing the use of query parameters to customize the response.\nThis operation is essential for efficiently managing large collections of resource records, enabling smooth navigation and retrieval without overloading the system with unnecessary data.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:read\">dnsrecords:read</a>\n\n### Rate Limits \n\n * The limit for getting the domain resource records list is 300 requests per user, within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose resource records are being fetched.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      - name: take
+        in: query
+        required: true
+        description: Number of response items per page
+        schema:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 500
+        explode: false
+      - name: skip
+        in: query
+        required: true
+        description: Number of response items to skip
+        schema:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 2147483647
+        explode: false
+      - name: orderBy
+        in: query
+        required: false
+        description: Specifies fields and order to sort the response items
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - type
+            - -type
+            - name
+            - -name
+          maxItems: 1
+        explode: false
+      responses:
+        '200':
+          description: Resource records list.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResourceRecord'
+                    maxItems: 100
+                  total:
+                    type: integer
+                    format: int32
+                    example: 100
+                    minimum: 0
+                    maximum: 2147483647
+                required:
+                - items
+                - total
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - DNS records
+      x-scopes:
+      - dnsrecords:read
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/dns/records/spaceship.com?take=SOME_INTEGER_VALUE&skip=SOME_INTEGER_VALUE&orderBy=SOME_ARRAY_VALUE';\nconst options = {\n  method: 'GET',\n  headers: {'X-API-Key': 'REPLACE_KEY_VALUE', 'X-API-Secret': 'REPLACE_KEY_VALUE'}\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('GET', 'https://spaceship.dev/api/v1/dns/records/spaceship.com?take=SOME_INTEGER_VALUE&skip=SOME_INTEGER_VALUE&orderBy=SOME_ARRAY_VALUE', [\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/dns/records/spaceship.com?take=SOME_INTEGER_VALUE&skip=SOME_INTEGER_VALUE&orderBy=SOME_ARRAY_VALUE\"\n\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\"\n}\n\nresponse = requests.get(url, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request GET \\\n     --url 'https://spaceship.dev/api/v1/dns/records/spaceship.com?take=SOME_INTEGER_VALUE&skip=SOME_INTEGER_VALUE&orderBy=SOME_ARRAY_VALUE' \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
+components:
+  schemas:
+    ResourceRecord:
+      type: object
+      required:
+      - type
+      - name
+      - group
+      properties:
+        type:
+          type: string
+          example: A
+          minLength: 1
+          maxLength: 5
+          pattern: \w+
+        name:
+          allOf:
+          - $ref: '#/components/schemas/hostNameValue'
+          example: '@'
+          description: Name of resource record excluding domain name part. '@' can be used as an apex domain
+        ttl:
+          type: integer
+          format: int32
+          example: 3600
+          minimum: 60
+          maximum: 3600
+          description: 'Specifies the amount of time in seconds that a DNS record should be cached by a resolver
+
+            or a caching server before it expires and needs to be refreshed from the authoritative DNS servers'
+        group:
+          $ref: '#/components/schemas/ResourceRecordsGroup'
+      discriminator:
+        propertyName: type
+        mapping:
+          AAAA: '#/components/schemas/AaaaResourceRecord'
+          ALIAS: '#/components/schemas/AliasResourceRecord'
+          A: '#/components/schemas/AResourceRecord'
+          CAA: '#/components/schemas/CaaResourceRecord'
+          CNAME: '#/components/schemas/CNameResourceRecord'
+          HTTPS: '#/components/schemas/HttpsResourceRecord'
+          MX: '#/components/schemas/MxResourceRecord'
+          NS: '#/components/schemas/NsResourceRecord'
+          PTR: '#/components/schemas/PtrResourceRecord'
+          SRV: '#/components/schemas/SrvResourceRecord'
+          SVCB: '#/components/schemas/SvcbResourceRecord'
+          TLSA: '#/components/schemas/TlsaResourceRecord'
+          TXT: '#/components/schemas/TxtResourceRecord'
+      description: DNS resource record details
+    hostNameValue:
+      type: string
+      example: '@'
+      minLength: 1
+      maxLength: 253
+      pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
+    ResourceRecordsListCreateOrUpdateItem:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceRecordCreateOrUpdateItem'
+      minItems: 1
+      maxItems: 500
+    ResourceRecordsListDeleteItem:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceRecordDeleteItem'
+      minItems: 1
+      maxItems: 500
+    ResourceRecordDeleteItem:
+      type: object
+      required:
+      - type
+      - name
+      properties:
+        type:
+          type: string
+          example: A
+          minLength: 1
+          maxLength: 5
+          pattern: \w+
+        name:
+          allOf:
+          - $ref: '#/components/schemas/hostNameValue'
+          example: '@'
+          description: Name of resource record excluding domain name part. '@' can be used as an apex domain
+      discriminator:
+        propertyName: type
+        mapping:
+          AAAA: '#/components/schemas/AaaaResourceRecordDeleteItem'
+          ALIAS: '#/components/schemas/AliasResourceRecordDeleteItem'
+          A: '#/components/schemas/AResourceRecordDeleteItem'
+          CAA: '#/components/schemas/CaaResourceRecordDeleteItem'
+          CNAME: '#/components/schemas/CNameResourceRecordDeleteItem'
+          HTTPS: '#/components/schemas/HttpsResourceRecordDeleteItem'
+          MX: '#/components/schemas/MxResourceRecordDeleteItem'
+          NS: '#/components/schemas/NsResourceRecordDeleteItem'
+          PTR: '#/components/schemas/PtrResourceRecordDeleteItem'
+          SRV: '#/components/schemas/SrvResourceRecordDeleteItem'
+          SVCB: '#/components/schemas/SvcbResourceRecordDeleteItem'
+          TLSA: '#/components/schemas/TlsaResourceRecordDeleteItem'
+          TXT: '#/components/schemas/TxtResourceRecordDeleteItem'
+      description: DNS resource record details
+    ResourceRecordCreateOrUpdateItem:
+      type: object
+      required:
+      - type
+      - name
+      properties:
+        type:
+          type: string
+          example: A
+          minLength: 1
+          maxLength: 5
+          pattern: \w+
+        name:
+          allOf:
+          - $ref: '#/components/schemas/hostNameValue'
+          example: '@'
+          description: Name of resource record excluding domain name part. '@' can be used as an apex domain
+        ttl:
+          type: integer
+          format: int32
+          example: 3600
+          minimum: 60
+          maximum: 3600
+          description: 'Specifies the amount of time in seconds that a DNS record should be cached by a resolver
+
+            or a caching server before it expires and needs to be refreshed from the authoritative DNS servers'
+      discriminator:
+        propertyName: type
+        mapping:
+          AAAA: '#/components/schemas/AaaaResourceRecordCreateOrUpdateItem'
+          ALIAS: '#/components/schemas/AliasResourceRecordCreateOrUpdateItem'
+          A: '#/components/schemas/AResourceRecordCreateOrUpdateItem'
+          CAA: '#/components/schemas/CaaResourceRecordCreateOrUpdateItem'
+          CNAME: '#/components/schemas/CNameResourceRecordCreateOrUpdateItem'
+          HTTPS: '#/components/schemas/HttpsResourceRecordCreateOrUpdateItem'
+          MX: '#/components/schemas/MxResourceRecordCreateOrUpdateItem'
+          NS: '#/components/schemas/NsResourceRecordCreateOrUpdateItem'
+          PTR: '#/components/schemas/PtrResourceRecordCreateOrUpdateItem'
+          SRV: '#/components/schemas/SrvResourceRecordCreateOrUpdateItem'
+          SVCB: '#/components/schemas/SvcbResourceRecordCreateOrUpdateItem'
+          TLSA: '#/components/schemas/TlsaResourceRecordCreateOrUpdateItem'
+          TXT: '#/components/schemas/TxtResourceRecordCreateOrUpdateItem'
+      description: DNS resource record details
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ValidationError:
+      type: object
+      required:
+      - detail
+      - data
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    Records.RecordsUpdateModel:
+      type: object
+      required:
+      - items
+      properties:
+        force:
+          type: boolean
+          description: Turn-off conflicts resolution checker and force zone update
+        items:
+          $ref: '#/components/schemas/ResourceRecordsListCreateOrUpdateItem'
+          description: Records
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ResourceRecordsGroup:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          - product
+          - personalNs
+          example: custom
+          description: '* custom: record belongs to custom resource records group
+
+            * product: record was added as a part of products connection
+
+            * personalNs: record is associated with the corresponding personal nameserver'
+      description: Details of the group record belongs to
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authenticating requests, with a set of scopes (permissions) defined by the user at the time of creation.
+    apiSecret:
+      type: apiKey
+      in: header
+      name: X-API-Secret
+      description: API secret for authenticating requests must be set together with the API key.
+x-scopes:
+  domains:read: Read domain information and check configuration
+  domains:write: Manage domains and domain settings
+  domains:transfer: Transfer domains in and out
+  domains:billing: Manage domains billing operations
+  contacts:write: Save contact details
+  contacts:read: Read contact details
+  dnsrecords:write: Write DNS resource records
+  dnsrecords:read: Read DNS resource records
+  asyncoperations:read: Read async operations details
+  sellerhub:read: Read SellerHub Domains
+  sellerhub:write: Write SellerHub Domains
+x-tagGroups:
+- name: Domains
+  tags:
+  - Domain Management
+  - Domain Availability
+  - Domain Settings
+  - Personal Nameservers
+  - Domain Transfer
+- name: Contacts
+  tags:
+  - Contacts
+  - Contacts attributes
+- name: DNS
+  tags:
+  - DNS records
+- name: SellerHub
+  tags:
+  - SellerHub
+- name: Async Operations
+  tags:
+  - Async Operations

@@ -1,0 +1,1048 @@
+openapi: 3.0.0
+info:
+  title: Spaceship.com Async Operations Domain Transfer API
+  contact:
+    email: support@spaceship.com
+    url: https://www.spaceship.com/about/contact-us/
+  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  version: 1.0.0
+  x-logo:
+    url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
+servers:
+- url: https://spaceship.dev/api
+  description: The main server for the Spaceship External API
+  variables: {}
+security:
+- apiKey: []
+  apiSecret: []
+tags:
+- name: Domain Transfer
+paths:
+  /v1/domains/{domain}/transfer:
+    post:
+      operationId: transferRequest
+      summary: Requests domain transfer
+      description: "Requests domain transfer.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to transfer domains is 30 requests per user, within 30 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain name for transfer.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '202':
+          description: Async operation was created as a result of request processing.
+          headers:
+            spaceship-async-operationid:
+              required: true
+              description: Unique async operation identifier. Use this reference to [Obtain async operation details](#tag/Async-Operations/operation/getAsyncOperationDetails).
+              schema:
+                type: string
+                pattern: ^[a-zA-Z0-9]+$
+                maxLength: 36
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - Domain Transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainTransferRequest'
+      x-scopes:
+      - domains:billing
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer';\nconst options = {\n  method: 'POST',\n  headers: {\n    'X-API-Key': 'REPLACE_KEY_VALUE',\n    'X-API-Secret': 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  },\n  body: JSON.stringify({\n    autoRenew: false,\n    privacyProtection: {level: 'high', userConsent: true},\n    contacts: {\n      registrant: '1ZdMXpapqp9sle5dl8BlppTJXAzf5',\n      admin: '1ZdMXpapqp9sle5dl8BlppTJXAzf6',\n      tech: '1ZdMXpapqp9sle5dl8BlppTJXAzf5',\n      billing: '1ZdMXpapqp9sle5dl8BlppTJXAzf5',\n      attributes: ['1ZdMXpapqp9sle5dl8BlppTJXAzf8']\n    },\n    authCode: 'abc@#$123%^&def'\n  })\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('POST', 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer', [\n  'body' => '{\"autoRenew\":false,\"privacyProtection\":{\"level\":\"high\",\"userConsent\":true},\"contacts\":{\"registrant\":\"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\"admin\":\"1ZdMXpapqp9sle5dl8BlppTJXAzf6\",\"tech\":\"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\"billing\":\"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\"attributes\":[\"1ZdMXpapqp9sle5dl8BlppTJXAzf8\"]},\"authCode\":\"abc@#$123%^&def\"}',\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n    'content-type' => 'application/json',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/domains/spaceship.com/transfer\"\n\npayload = {\n    \"autoRenew\": False,\n    \"privacyProtection\": {\n        \"level\": \"high\",\n        \"userConsent\": True\n    },\n    \"contacts\": {\n        \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n        \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf6\",\n        \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n        \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n        \"attributes\": [\"1ZdMXpapqp9sle5dl8BlppTJXAzf8\"]\n    },\n    \"authCode\": \"abc@#$123%^&def\"\n}\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\",\n    \"content-type\": \"application/json\"\n}\n\nresponse = requests.post(url, json=payload, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request POST \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '\n{\n  \"autoRenew\": false,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n    \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf6\",\n    \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n    \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n    \"attributes\": [\n      \"1ZdMXpapqp9sle5dl8BlppTJXAzf8\"\n    ]\n  },\n  \"authCode\": \"abc@#$123%^&def\"\n}\n'"
+    get:
+      operationId: getTransferInfo
+      summary: Get the details of the domain transfer
+      description: "Get the details of the ongoing domain transfer.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for requesting transfer info is 5 requests per domain, within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose transfer details are to be returned.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '200':
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domains.DomainTransferDetailsResponse'
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - Domain Transfer
+      x-scopes:
+      - domains:transfer
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer';\nconst options = {\n  method: 'GET',\n  headers: {'X-API-Key': 'REPLACE_KEY_VALUE', 'X-API-Secret': 'REPLACE_KEY_VALUE'}\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('GET', 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer', [\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/domains/spaceship.com/transfer\"\n\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\"\n}\n\nresponse = requests.get(url, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
+  /v1/domains/{domain}/transfer/auth-code:
+    get:
+      operationId: getAuthCode
+      summary: Get domain auth code
+      description: "Get the domain's auth code, also known as EPP code, authorization code, transfer code or Auth-Info Code.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for obtaining auth codes is 5 requests per domain, within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose auth code is to be returned.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '200':
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domains.DomainAuthCodeResponse'
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - Domain Transfer
+      x-scopes:
+      - domains:transfer
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer/auth-code';\nconst options = {\n  method: 'GET',\n  headers: {'X-API-Key': 'REPLACE_KEY_VALUE', 'X-API-Secret': 'REPLACE_KEY_VALUE'}\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('GET', 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer/auth-code', [\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/domains/spaceship.com/transfer/auth-code\"\n\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\"\n}\n\nresponse = requests.get(url, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer/auth-code \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
+  /v1/domains/{domain}/transfer/lock:
+    put:
+      operationId: updateTransferLock
+      summary: Update domain transfer lock
+      description: "Allows the modification of a domain transfer lock.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for updating the transfer lock for a domain is 5 requests per domain within 300 seconds."
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        description: The domain whose transfer lock is being updated.
+        schema:
+          type: string
+          example: spaceship.com
+          minLength: 4
+          maxLength: 255
+          format: domain
+          description: Domain name in UTF-8 or ASCII format (U-label or A-label)
+      responses:
+        '200':
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Domains.DomainTransferLock'
+        '400':
+          description: The request is invalid.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
+        '401':
+          description: The user's request was not authorized properly.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: The user's request not allowed to perform this action with the current scopes.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: The requested object was not found.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundError'
+        '422':
+          description: The entity is unprocessable.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '429':
+          description: The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+            X-RateLimit-Limit:
+              required: true
+              description: Request limit per the allotted time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            X-RateLimit-Remaining:
+              required: true
+              description: The number of requests left for the time window
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+                maximum: 2147483647
+            X-RateLimit-Reset:
+              required: true
+              description: The UTC date/time when the current rate limit window resets
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+            Retry-After:
+              required: true
+              description: The number of seconds inndicating how long the client ought to wait before making a follow-up request
+              schema:
+                type: integer
+                format: int32
+                minimum: 1
+                maximum: 2147483647
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+        '500':
+          description: The infrastructure encountered an error.
+          headers:
+            spaceship-error-code:
+              required: true
+              schema:
+                $ref: '#/components/schemas/errorCode'
+            spaceship-operation-id:
+              required: true
+              schema:
+                $ref: '#/components/schemas/operationId'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+      tags:
+      - Domain Transfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Domains.DomainTransferLock'
+        description: Provides the new trnasfer lock for the domain.
+      x-scopes:
+      - domains:transfer
+      x-codeSamples:
+      - lang: javascript
+        source: "const url = 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock';\nconst options = {\n  method: 'PUT',\n  headers: {\n    'X-API-Key': 'REPLACE_KEY_VALUE',\n    'X-API-Secret': 'REPLACE_KEY_VALUE',\n    'content-type': 'application/json'\n  },\n  body: JSON.stringify({isLocked: true})\n};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error(err));"
+      - lang: php
+        source: "<?php\nrequire_once('vendor/autoload.php');\n\n$client = new \\GuzzleHttp\\Client();\n\n$response = $client->request('PUT', 'https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock', [\n  'body' => '{\"isLocked\":true}',\n  'headers' => [\n    'X-API-Key' => 'REPLACE_KEY_VALUE',\n    'X-API-Secret' => 'REPLACE_KEY_VALUE',\n    'content-type' => 'application/json',\n  ],\n]);\n\necho $response->getBody();"
+      - lang: python
+        source: "import requests\n\nurl = \"https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock\"\n\npayload = { \"isLocked\": True }\nheaders = {\n    \"X-API-Key\": \"REPLACE_KEY_VALUE\",\n    \"X-API-Secret\": \"REPLACE_KEY_VALUE\",\n    \"content-type\": \"application/json\"\n}\n\nresponse = requests.put(url, json=payload, headers=headers)\n\nprint(response.text)"
+      - lang: shell
+        source: "curl --request PUT \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '{\"isLocked\":true}'"
+components:
+  schemas:
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    DomainTransferRequest:
+      type: object
+      required:
+      - autoRenew
+      - privacyProtection
+      - contacts
+      properties:
+        autoRenew:
+          type: boolean
+          example: false
+          description: Specifies whether automatic renewal will be enabled for the domain after the transfer is completed. After that, if autoRenew is set to true, the domain will be automatically renewed using the account’s default payment method upon each expiration
+        privacyProtection:
+          $ref: '#/components/schemas/DomainPrivacyOptions'
+        contacts:
+          allOf:
+          - $ref: '#/components/schemas/DomainContacts'
+          example:
+            registrant: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            admin: 1ZdMXpapqp9sle5dl8BlppTJXAzf6
+            tech: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            attributes:
+            - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
+          description: Domain contacts are specified using contact IDs. These contact IDs can be obtained from the “Get domain info” endpoint (/domains) for an existing domain, or by creating new contacts through the “Save contact details” endpoint (/contacts). Each contact ID corresponds to a specific contact person and includes their details (such as name, address, and email). These contacts will be associated with the domain after transfer.
+        authCode:
+          allOf:
+          - $ref: '#/components/schemas/authCode'
+          description: Authorization code (EPP code) required for domain transfers. This code is mandatory for most TLDs but may be optional for certain ccTLDs, for example, the .uk.
+    DomainTransferStatus:
+      type: string
+      enum:
+      - pending
+      - completed
+      - cancelled
+      description: 'Status of the domain name transfer. Possible values are:
+
+        * `pending` - transfer is ongoing
+
+        * `completed` - transfer was completed
+
+        * `cancelled` - transfer request was cancelled by loosing party'
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    DomainContacts:
+      type: object
+      required:
+      - registrant
+      properties:
+        registrant:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the registrant contact person
+        admin:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the admin contact person
+        tech:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the technical contact person
+        billing:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the billing contact person
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactId'
+          example:
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
+          maxItems: 5
+          description: List of extended attribute contact point IDs
+      description: Domain Contacts presented as ID references
+    isoDate:
+      type: string
+      example: '2100-01-01T00:00:00.000Z'
+      maxLength: 27
+      format: date-time
+      description: ISO-8601 DateTime
+    authCode:
+      type: string
+      example: abc@#$123%^&def
+      minLength: 1
+      maxLength: 50
+      pattern: ^.+$
+      description: Authorization code for the domain
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    Domains.DomainAuthCodeResponse:
+      type: object
+      required:
+      - authCode
+      - expires
+      properties:
+        authCode:
+          $ref: '#/components/schemas/authCode'
+        expires:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: The expiration date for the auth code
+          readOnly: true
+      description: Represents wrapper object for auth code response
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ValidationError:
+      type: object
+      required:
+      - detail
+      - data
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    contactId:
+      type: string
+      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+      minLength: 27
+      maxLength: 32
+      pattern: '[a-zA-Z0-9]+'
+      description: Contact ID
+    DomainPrivacyLevel:
+      type: string
+      enum:
+      - public
+      - high
+    Domains.DomainTransferLock:
+      type: object
+      required:
+      - isLocked
+      properties:
+        isLocked:
+          type: boolean
+          example: true
+          description: Describes transfer lock for the domain
+      description: Represents wrapper object for transfer lock
+    DomainPrivacyOptions:
+      type: object
+      required:
+      - level
+      - userConsent
+      properties:
+        level:
+          allOf:
+          - $ref: '#/components/schemas/DomainPrivacyLevel'
+          example: high
+          description: 'Indicates the level of privacy protection. Set this property to "high" to enable privacy protection and hide your personal details, or to "public" to display your real contact information.
+
+            When choosing the "public" level, the "userConsent" property must be set to true to confirm your explicit consent for making your contact information publicly available.
+
+
+            Note: not all TLDs support "high" privacy protection level'
+        userConsent:
+          type: boolean
+          example: true
+          description: Indicates whether the user consents to the Public privacy settings
+      description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
+    Domains.DomainTransferDetailsResponse:
+      type: object
+      required:
+      - startedAt
+      - direction
+      - status
+      properties:
+        startedAt:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Date when transfer was initiated
+        finishedAt:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Date when transfer was finished
+        direction:
+          type: string
+          enum:
+          - in
+          description: 'Transfer direction: incoming'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DomainTransferStatus'
+          readOnly: true
+      description: Details of the domain name transfer
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authenticating requests, with a set of scopes (permissions) defined by the user at the time of creation.
+    apiSecret:
+      type: apiKey
+      in: header
+      name: X-API-Secret
+      description: API secret for authenticating requests must be set together with the API key.
+x-scopes:
+  domains:read: Read domain information and check configuration
+  domains:write: Manage domains and domain settings
+  domains:transfer: Transfer domains in and out
+  domains:billing: Manage domains billing operations
+  contacts:write: Save contact details
+  contacts:read: Read contact details
+  dnsrecords:write: Write DNS resource records
+  dnsrecords:read: Read DNS resource records
+  asyncoperations:read: Read async operations details
+  sellerhub:read: Read SellerHub Domains
+  sellerhub:write: Write SellerHub Domains
+x-tagGroups:
+- name: Domains
+  tags:
+  - Domain Management
+  - Domain Availability
+  - Domain Settings
+  - Personal Nameservers
+  - Domain Transfer
+- name: Contacts
+  tags:
+  - Contacts
+  - Contacts attributes
+- name: DNS
+  tags:
+  - DNS records
+- name: SellerHub
+  tags:
+  - SellerHub
+- name: Async Operations
+  tags:
+  - Async Operations
