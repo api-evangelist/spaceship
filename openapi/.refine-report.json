@@ -1,0 +1,32 @@
+{
+  "provider": "spaceship",
+  "sources": [
+    "spaceship-async-operations-api-openapi.yml",
+    "spaceship-contacts-api-openapi.yml",
+    "spaceship-contacts-attributes-api-openapi.yml",
+    "spaceship-dns-records-api-openapi.yml",
+    "spaceship-domain-availability-api-openapi.yml",
+    "spaceship-domain-management-api-openapi.yml",
+    "spaceship-domain-settings-api-openapi.yml",
+    "spaceship-domain-transfer-api-openapi.yml",
+    "spaceship-personal-nameservers-api-openapi.yml",
+    "spaceship-sellerhub-api-openapi.yml"
+  ],
+  "outputs": [
+    "spaceship-async-operations-api-openapi.yml",
+    "spaceship-contacts-api-openapi.yml",
+    "spaceship-contacts-attributes-api-openapi.yml",
+    "spaceship-dns-records-api-openapi.yml",
+    "spaceship-domain-availability-api-openapi.yml",
+    "spaceship-domain-management-api-openapi.yml",
+    "spaceship-domain-settings-api-openapi.yml",
+    "spaceship-domain-transfer-api-openapi.yml",
+    "spaceship-personal-nameservers-api-openapi.yml",
+    "spaceship-sellerhub-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

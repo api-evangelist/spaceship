@@ -1,0 +1,105 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/spaceship-openapi-original.json
+docs: https://docs.spaceship.dev/
+format: rfc9457
+note: 'All 4xx/5xx responses are returned as application/problem+json. The error envelope carries a human-readable
+  `detail` string; 422 ValidationError also returns a `data[]` array of {field, details}. Business/application/infrastructure
+  error classes are indicated by a dot-separated `errorCode` (pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$).'
+envelope:
+  fields:
+    detail: A general human-readable message about the exception (required).
+    data: 422 only — array of {field, details} validation errors.
+    errorCode: 'Dot-separated machine code: <class>.<subtype>, class in {business, application, infrastructure}.'
+problems:
+- status: 400
+  title: Bad Request
+  meaning: The request is invalid or malformed.
+  remediation: Fix the request payload/parameters and retry.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 401
+  title: Unauthorized
+  meaning: API key/secret missing or invalid.
+  remediation: Send valid X-API-Key and X-API-Secret headers.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 403
+  title: Forbidden
+  meaning: Authenticated key lacks the required scope/permission for this action.
+  remediation: Grant the required scope to the API key in API Manager.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 404
+  title: Not Found
+  meaning: The requested object was not found.
+  remediation: Verify the resource identifier (domain, contact, operation id).
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 409
+  title: Conflict
+  meaning: The request contains a conflicting payload / state.
+  remediation: Resolve the conflicting state (e.g. existing record) and retry.
+  content_type: application/problem+json
+  example_operations:
+  - createSafePayTransaction
+- status: 422
+  title: Unprocessable Entity
+  meaning: Validation failed; see data[] for per-field details.
+  remediation: Correct the invalid fields listed in data[] and retry.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 429
+  title: Too Many Requests
+  meaning: The API rate limit has been exceeded.
+  remediation: Back off and retry after the rate-limit window; reduce request rate.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo
+- status: 500
+  title: Internal Server Error
+  meaning: The infrastructure encountered an unexpected error.
+  remediation: Retry with backoff; contact support if it persists.
+  content_type: application/problem+json
+  example_operations:
+  - checkDomainsAvailability
+  - checkSingleDomainAvailability
+  - createCheckoutLink
+  - createSafePayTransaction
+  - createSellerHubDomain
+  - deleteDomainPersonalNameserverHostInfo

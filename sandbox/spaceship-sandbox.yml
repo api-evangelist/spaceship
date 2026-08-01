@@ -1,0 +1,7 @@
+generated: '2026-07-21'
+method: none
+source: https://docs.spaceship.dev/
+note: No public sandbox / test-mode environment or magic test values are documented. The API operates
+  against live domain registrations; test keys/modes are not published. No test values captured (no fabrication).
+test_mode: null
+test_values: []

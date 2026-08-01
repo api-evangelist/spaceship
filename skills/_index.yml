@@ -1,0 +1,25 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/spaceship-openapi-original.json
+note: >-
+  Packaged Agent Skills for the Spaceship API. Every step is grounded in a real
+  operationId from the harvested OpenAPI. Auth is the paired X-API-Key /
+  X-API-Secret headers; long-running writes return 202 + spaceship-async-operationid
+  and must be polled via getAsyncOperationDetails.
+skills:
+  - file: spaceship-register-domain.md
+    name: Register a domain
+    api: openapi/spaceship-openapi-original.json
+    operations: [checkSingleDomainAvailability, saveDetails, domainCreate, getAsyncOperationDetails]
+  - file: spaceship-manage-dns.md
+    name: Manage DNS records for a domain
+    api: openapi/spaceship-openapi-original.json
+    operations: [getResourceRecordsList, saveRecords, deleteRecords]
+  - file: spaceship-transfer-domain.md
+    name: Transfer a domain in
+    api: openapi/spaceship-openapi-original.json
+    operations: [transferRequest, getTransferInfo, updateTransferLock, getAsyncOperationDetails]
+  - file: spaceship-sell-domain.md
+    name: List and sell a domain on SellerHub
+    api: openapi/spaceship-openapi-original.json
+    operations: [createSellerHubDomain, getSellerHubDomain, createCheckoutLink, getSafePayTransaction]

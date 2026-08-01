@@ -1,0 +1,89 @@
+generated: '2026-07-21'
+method: derived
+source: Derived from schema $ref links and id-reference fields in openapi/spaceship-openapi-original.json,
+  plus the Spaceship API object reference at https://docs.spaceship.dev/.
+docs: https://docs.spaceship.dev/
+notation: relationships use has_one / has_many / belongs_to with the foreign-key field; direction is from
+  the entity that owns the reference. The domain name string is the primary key across most resources.
+entities:
+- name: Domain
+  key: name (FQDN)
+  domain: domains
+  description: A registered domain name and its registration lifecycle (register/renew/restore/transfer/delete).
+- name: Contact
+  key: contact id (e.g. 1ZdMXp...)
+  domain: contacts
+  description: A registrant/admin/tech/billing contact used for domain registration (WHOIS).
+- name: ContactAttributes
+  key: contact id
+  domain: contacts
+  description: Extended TLD-specific contact attributes attached to a contact.
+- name: DnsRecord
+  key: domain + record
+  domain: dns
+  description: A DNS resource record (A/AAAA/CNAME/MX/TXT/etc.) within a domain zone.
+- name: Nameserver
+  key: domain
+  domain: domains
+  description: The authoritative nameserver set assigned to a domain.
+- name: PersonalNameserver
+  key: domain + host
+  domain: domains
+  description: A registered host / glue record (personal nameserver) under a domain.
+- name: AsyncOperation
+  key: operationId
+  domain: async
+  description: A long-running operation record (pending/success/failed) returned by 202 responses.
+- name: SellerHubDomain
+  key: domain
+  domain: sellerhub
+  description: A domain listed for sale in SellerHub (marketplace).
+- name: SafePayTransaction
+  key: transactionId (uuid)
+  domain: sellerhub
+  description: An escrow/SafePay transaction for a domain sale.
+- name: CheckoutLink
+  key: id
+  domain: sellerhub
+  description: A shareable checkout link for a SellerHub domain sale.
+- name: VerificationRecord
+  key: id
+  domain: sellerhub
+  description: A verification record proving seller ownership.
+relationships:
+- from: Domain
+  to: DnsRecord
+  kind: has_many
+  via: domain
+- from: Domain
+  to: Nameserver
+  kind: has_one
+  via: domain
+- from: Domain
+  to: PersonalNameserver
+  kind: has_many
+  via: domain
+- from: Domain
+  to: Contact
+  kind: has_many
+  via: contacts (registrant/admin/tech/billing)
+- from: Contact
+  to: ContactAttributes
+  kind: has_one
+  via: contact
+- from: AsyncOperation
+  to: Domain
+  kind: belongs_to
+  via: operation target
+- from: SellerHubDomain
+  to: SafePayTransaction
+  kind: has_many
+  via: domain
+- from: SellerHubDomain
+  to: CheckoutLink
+  kind: has_many
+  via: domain
+- from: SellerHubDomain
+  to: VerificationRecord
+  kind: has_many
+  via: domain

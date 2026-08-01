@@ -1,0 +1,31 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/spaceship-openapi-original.json
+standards:
+- id: oauth2
+  conforms: false
+  evidence: API uses paired apiKey headers (X-API-Key + X-API-Secret) with scopes, not OAuth2.
+- id: apikey-auth
+  conforms: true
+  evidence: 'securitySchemes: apiKey (X-API-Key) + apiSecret (X-API-Secret), header.'
+- id: rfc9457-problem-details
+  conforms: true
+  evidence: All 4xx/5xx responses use application/problem+json.
+- id: rfc8594-sunset-deprecation
+  conforms: false
+  evidence: No Sunset/Deprecation header usage documented.
+- id: openapi-3.0
+  conforms: true
+  evidence: OpenAPI 3.0.0 document published (docs.spaceship.dev ReDoc).
+- id: json-api
+  conforms: false
+  evidence: Plain JSON resource responses, not JSON:API media type.
+- id: cursor-pagination
+  conforms: true
+  evidence: List endpoints accept take/skip/cursor/orderBy query params.
+- id: async-operations-202
+  conforms: true
+  evidence: Long-running ops return 202 + spaceship-async-operationid header; poll /v1/async-operations/{id}.
+- id: icann-rdap
+  conforms: false
+  evidence: Registrar API is proprietary REST, not RDAP.

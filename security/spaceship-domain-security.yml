@@ -1,0 +1,26 @@
+generated: '2026-07-21'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: spaceshipapp.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 19 19:16:47 2026 GMT
+  hsts: false
+- host: spaceship.dev
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  7 21:11:24 2026 GMT
+  hsts: null
+domains:
+- domain: spaceshipapp.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none
+- domain: spaceship.dev
+  dnssec: true
+  caa: []
+  spf: false
+  dmarc: false

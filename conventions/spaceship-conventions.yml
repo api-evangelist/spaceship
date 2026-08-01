@@ -1,0 +1,47 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.spaceship.dev/
+description: 'Cross-cutting request/response semantics for the Spaceship API that OpenAPI does not fully
+  express: authentication, async operations, pagination, ordering, error envelope, and rate-limit signaling.'
+base_url: https://spaceship.dev/api
+api_style: REST over HTTPS, JSON request/response.
+authentication:
+  scheme: Paired API key headers
+  headers:
+  - X-API-Key
+  - X-API-Secret
+  detail: authentication/spaceship-authentication.yml
+  docs: https://www.spaceship.com/application/api-manager/
+  note: Both headers required together; keys carry scopes set at creation.
+idempotency:
+  supported: false
+  note: No Idempotency-Key header is documented. Write safety for long-running actions is handled via
+    the async-operation model (202 + spaceship-async-operationid) rather than client idempotency keys.
+async_operations:
+  supported: true
+  mechanism: Long-running writes return 202 Accepted with a spaceship-async-operationid response header.
+  poll_endpoint: GET /v1/async-operations/{operationId}
+  states:
+  - pending
+  - success
+  - failed
+  detail: lifecycle/spaceship-lifecycle.yml
+pagination:
+  style: offset + optional cursor
+  request_params:
+    take: Page size (number of items to return).
+    skip: Number of items to skip (offset).
+    cursor: Opaque cursor for cursor-based paging where supported.
+    orderBy: Sort field/direction.
+  note: List endpoints (e.g. GET /v1/domains) accept take/skip/orderBy; some accept cursor.
+error_envelope:
+  content_type: application/problem+json (RFC 9457)
+  fields:
+  - detail
+  - data (422 only)
+  - errorCode
+  detail: errors/spaceship-problem-types.yml
+rate_limiting:
+  signaled: true
+  mechanism: 429 Too Many Requests (RateLimitError) on limit exceeded.
+  note: Exact numeric limits/headers not published in the OpenAPI.

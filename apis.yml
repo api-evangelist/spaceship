@@ -1,8 +1,27 @@
 aid: spaceship
 name: Spaceship
-description: Spaceship is a company surfaced as a portfolio company of 500-global and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Spaceship is a domain registrar and domain marketplace offering domain registration, DNS
+  management, WHOIS privacy protection, and a SellerHub resale marketplace with SafePay escrow. Its
+  public REST API (https://spaceship.dev/api, v1) exposes 40 operations across domain management,
+  availability, settings, transfers, personal nameservers, contacts, DNS records, SellerHub, and
+  asynchronous operations. Authentication uses a paired API key and secret (X-API-Key / X-API-Secret)
+  with per-key scopes; long-running actions use an async-operation polling model (202 + a
+  spaceship-async-operationid header polled at /v1/async-operations/{operationId}).
 url: https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -11,15 +30,210 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
-apis: []
+- Domains
+- Domain Registrar
+- DNS
+- Domain Marketplace
+- Nameservers
+- WHOIS
+- Developer Tools
+- API
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: spaceship:spaceship-async-operations-api
+  name: Spaceship Async Operations API
+  description: The Async Operations API from Spaceship — 1 operation(s) for async operations.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Async Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-async-operations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-contacts-api
+  name: Spaceship Contacts API
+  description: The Contacts API from Spaceship — 2 operation(s) for contacts.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-contacts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-contacts-attributes-api
+  name: Spaceship Contacts attributes API
+  description: The Contacts attributes API from Spaceship — 2 operation(s) for contacts attributes.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Contacts attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-contacts-attributes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-dns-records-api
+  name: Spaceship DNS records API
+  description: The DNS records API from Spaceship — 1 operation(s) for dns records.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - DNS records
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-dns-records-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-domain-availability-api
+  name: Spaceship Domain Availability API
+  description: The Domain Availability API from Spaceship — 2 operation(s) for domain availability.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Domain Availability
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-domain-availability-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-domain-management-api
+  name: Spaceship Domain Management API
+  description: The Domain Management API from Spaceship — 4 operation(s) for domain management.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Domain Management
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-domain-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-domain-settings-api
+  name: Spaceship Domain Settings API
+  description: The Domain Settings API from Spaceship — 5 operation(s) for domain settings.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Domain Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-domain-settings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-domain-transfer-api
+  name: Spaceship Domain Transfer API
+  description: The Domain Transfer API from Spaceship — 3 operation(s) for domain transfer.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Domain Transfer
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-domain-transfer-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-personal-nameservers-api
+  name: Spaceship Personal Nameservers API
+  description: The Personal Nameservers API from Spaceship — 2 operation(s) for personal nameservers.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - Personal Nameservers
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-personal-nameservers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
+- aid: spaceship:spaceship-sellerhub-api
+  name: Spaceship SellerHub API
+  description: The SellerHub API from Spaceship — 7 operation(s) for sellerhub.
+  humanURL: https://docs.spaceship.dev/
+  baseURL: https://spaceship.dev/api
+  tags:
+  - SellerHub
+  properties:
+  - type: OpenAPI
+    url: openapi/spaceship-sellerhub-api-openapi.yml
+  - type: Documentation
+    url: https://docs.spaceship.dev/
+  - type: APIReference
+    url: https://docs.spaceship.dev/
 common:
 - type: Website
-  url: https://spaceshipapp.com
+  url: https://www.spaceship.com/
+- type: DeveloperPortal
+  url: https://www.spaceship.com/application/api-manager/
+- type: Documentation
+  url: https://docs.spaceship.dev/
+- type: APIReference
+  url: https://docs.spaceship.dev/
+- type: GettingStarted
+  url: https://docs.spaceship.dev/
+- type: Support
+  url: https://www.spaceship.com/about/contact-us/
+- type: GitHubOrganization
+  url: https://github.com/spaceshipapp
+- type: Authentication
+  url: authentication/spaceship-authentication.yml
+- type: OAuthScopes
+  url: scopes/spaceship-scopes.yml
+- type: Conventions
+  url: conventions/spaceship-conventions.yml
+- type: ErrorCatalog
+  url: errors/spaceship-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/spaceship-lifecycle.yml
+- type: DataModel
+  url: data-model/spaceship-data-model.yml
+- type: Conformance
+  url: conformance/spaceship-conformance.yml
+- type: MCPServer
+  url: mcp/spaceship-mcp.yml
+- type: LLMsTxt
+  url: llms/spaceship-llms.txt
+- type: Overlay
+  url: overlays/spaceship-openapi-overlay.yaml
+- type: WellKnown
+  url: well-known/spaceship-well-known.yml
+- type: Packages
+  url: packages/spaceship-packages.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/spaceship-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/spaceship-agentic-access.yml
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 18
+  pass: local-v1

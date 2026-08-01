@@ -1,0 +1,20 @@
+generated: '2026-07-21'
+method: searched
+source: Searched npm registry, PyPI, and the docs for first-party client libraries.
+note: No official Spaceship-published SDK/client library was found on npm or PyPI. Third-party community
+  projects exist (MCP servers wrapping the API) but are not first-party. Recording the honest search result;
+  no official packages.
+packages: []
+community:
+- language: javascript
+  registry: npm
+  name: spaceship-mcp
+  url: https://www.npmjs.com/package/spaceship-mcp
+  official: false
+  kind: mcp-server
+- language: javascript
+  registry: npm
+  name: spaceship-mcp-server
+  url: https://www.npmjs.com/package/spaceship-mcp-server
+  official: false
+  kind: mcp-server

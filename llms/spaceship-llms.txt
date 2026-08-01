@@ -1,0 +1,29 @@
+# Spaceship API
+
+> Spaceship is a domain registrar and marketplace. Its public REST API (base https://spaceship.dev/api, v1) lets you check availability, register, renew, restore and transfer domains, manage DNS records and nameservers, maintain WHOIS contacts, and run a domain resale business through SellerHub (listings, SafePay escrow, checkout links). Authentication is a paired API key + secret (X-API-Key / X-API-Secret) with per-key scopes. Long-running actions return 202 with a spaceship-async-operationid header to poll.
+
+## APIs
+- [Spaceship API reference (ReDoc)](https://docs.spaceship.dev/): Full OpenAPI 3.0 reference for all 40 operations across 10 product areas.
+- [API Manager](https://www.spaceship.com/application/api-manager/): Create API keys/secrets and assign scopes.
+
+## Specs
+- [OpenAPI (harvested)](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/openapi/spaceship-openapi-original.json)
+
+## Product areas
+- Domain Management: register, renew, restore, delete, list, info.
+- Domain Availability: single and bulk availability checks.
+- Domain Settings: autorenew, contacts, nameservers, privacy preferences.
+- Domain Transfer: transfer in, transfer info, auth code, transfer lock.
+- Personal Nameservers: register/update/delete glue host records.
+- Contacts / Contact attributes: WHOIS contacts and TLD-specific attributes.
+- DNS records: read, save, delete resource records for a zone.
+- SellerHub: list domains for sale, SafePay escrow transactions, checkout links, verification records.
+- Async Operations: poll long-running operation status (pending/success/failed).
+
+## Conventions & governance (API Evangelist enrichment)
+- [Authentication](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/authentication/spaceship-authentication.yml)
+- [Scopes / permissions](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/scopes/spaceship-scopes.yml)
+- [Conventions (async, pagination, errors)](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/conventions/spaceship-conventions.yml)
+- [Error catalog (RFC 9457)](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/errors/spaceship-problem-types.yml)
+- [Data model](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/data-model/spaceship-data-model.yml)
+- [Agent Skills](https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/skills/_index.yml)

@@ -1,0 +1,141 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/spaceship-openapi-original.json
+note: No official Spaceship-hosted MCP server was found. Community MCP servers exist on npm (spaceship-mcp,
+  spaceship-mcp-server) but are third-party. The tools below are candidates derived one-per-operation
+  from the OpenAPI; not an official manifest.
+community_servers:
+- name: spaceship-mcp
+  registry: npm
+  url: https://www.npmjs.com/package/spaceship-mcp
+  official: false
+- name: spaceship-mcp-server
+  registry: npm
+  url: https://www.npmjs.com/package/spaceship-mcp-server
+  official: false
+server:
+  name: spaceship
+  transport: http
+  url: null
+tools:
+- name: getAsyncOperationDetails
+  description: Obtain async operation details
+  source_operation: openapi/spaceship-openapi-original.json#getAsyncOperationDetails
+- name: saveDetails
+  description: Save contact details
+  source_operation: openapi/spaceship-openapi-original.json#saveDetails
+- name: saveContactAttributes
+  description: Save contact attributes
+  source_operation: openapi/spaceship-openapi-original.json#saveContactAttributes
+- name: readAttributeDetails
+  description: Read attribute details
+  source_operation: openapi/spaceship-openapi-original.json#readAttributeDetails
+- name: readDetails
+  description: Read contact details
+  source_operation: openapi/spaceship-openapi-original.json#readDetails
+- name: saveRecords
+  description: Save resource records
+  source_operation: openapi/spaceship-openapi-original.json#saveRecords
+- name: deleteRecords
+  description: Delete resource records
+  source_operation: openapi/spaceship-openapi-original.json#deleteRecords
+- name: getResourceRecordsList
+  description: Get domain resource records list
+  source_operation: openapi/spaceship-openapi-original.json#getResourceRecordsList
+- name: getDomainList
+  description: Get domain list
+  source_operation: openapi/spaceship-openapi-original.json#getDomainList
+- name: checkDomainsAvailability
+  description: Check domains availability
+  source_operation: openapi/spaceship-openapi-original.json#checkDomainsAvailability
+- name: getDomainInfo
+  description: Get domain info
+  source_operation: openapi/spaceship-openapi-original.json#getDomainInfo
+- name: domainDelete
+  description: Delete the domain
+  source_operation: openapi/spaceship-openapi-original.json#domainDelete
+- name: domainCreate
+  description: Register the domain
+  source_operation: openapi/spaceship-openapi-original.json#domainCreate
+- name: updateAutorenewal
+  description: Update the domain autorenewal state
+  source_operation: openapi/spaceship-openapi-original.json#updateAutorenewal
+- name: checkSingleDomainAvailability
+  description: Check single domain availability
+  source_operation: openapi/spaceship-openapi-original.json#checkSingleDomainAvailability
+- name: setDomainContacts
+  description: Update domain contacts
+  source_operation: openapi/spaceship-openapi-original.json#setDomainContacts
+- name: setDomainNameservers
+  description: Update domain nameservers
+  source_operation: openapi/spaceship-openapi-original.json#setDomainNameservers
+- name: getDomainPersonalNameservers
+  description: Get personal nameservers on a domain
+  source_operation: openapi/spaceship-openapi-original.json#getDomainPersonalNameservers
+- name: getDomainPersonalNameserverHostInfo
+  description: Get personal nameservers host configuration
+  source_operation: openapi/spaceship-openapi-original.json#getDomainPersonalNameserverHostInfo
+- name: updateDomainPersonalNameserverHostInfo
+  description: Update personal nameservers host configuration
+  source_operation: openapi/spaceship-openapi-original.json#updateDomainPersonalNameserverHostInfo
+- name: deleteDomainPersonalNameserverHostInfo
+  description: Delete personal nameservers host configuration
+  source_operation: openapi/spaceship-openapi-original.json#deleteDomainPersonalNameserverHostInfo
+- name: updateDomainEmailProtectionPreference
+  description: Update domain email protection preference
+  source_operation: openapi/spaceship-openapi-original.json#updateDomainEmailProtectionPreference
+- name: updateDomainPrivacyPreference
+  description: Update domain privacy preference
+  source_operation: openapi/spaceship-openapi-original.json#updateDomainPrivacyPreference
+- name: domainRenew
+  description: Requests domain renewal
+  source_operation: openapi/spaceship-openapi-original.json#domainRenew
+- name: domainRestore
+  description: Requests domain restoration
+  source_operation: openapi/spaceship-openapi-original.json#domainRestore
+- name: transferRequest
+  description: Requests domain transfer
+  source_operation: openapi/spaceship-openapi-original.json#transferRequest
+- name: getTransferInfo
+  description: Get the details of the domain transfer
+  source_operation: openapi/spaceship-openapi-original.json#getTransferInfo
+- name: getAuthCode
+  description: Get domain auth code
+  source_operation: openapi/spaceship-openapi-original.json#getAuthCode
+- name: updateTransferLock
+  description: Update domain transfer lock
+  source_operation: openapi/spaceship-openapi-original.json#updateTransferLock
+- name: createCheckoutLink
+  description: Create a checkout link
+  source_operation: openapi/spaceship-openapi-original.json#createCheckoutLink
+- name: getSellerHubDomainList
+  description: Get SellerHub domains list
+  source_operation: openapi/spaceship-openapi-original.json#getSellerHubDomainList
+- name: createSellerHubDomain
+  description: Create a SellerHub domain
+  source_operation: openapi/spaceship-openapi-original.json#createSellerHubDomain
+- name: getSoldDomains
+  description: Get sold domains
+  source_operation: openapi/spaceship-openapi-original.json#getSoldDomains
+- name: getSellerHubDomain
+  description: Get a specific SellerHub domain
+  source_operation: openapi/spaceship-openapi-original.json#getSellerHubDomain
+- name: updateSellerHubDomain
+  description: Update a SellerHub domain
+  source_operation: openapi/spaceship-openapi-original.json#updateSellerHubDomain
+- name: deleteSellerHubDomain
+  description: Delete a SellerHub domain
+  source_operation: openapi/spaceship-openapi-original.json#deleteSellerHubDomain
+- name: getSafePayTransactionList
+  description: List SafePay transactions
+  source_operation: openapi/spaceship-openapi-original.json#getSafePayTransactionList
+- name: createSafePayTransaction
+  description: Create a SafePay transaction
+  source_operation: openapi/spaceship-openapi-original.json#createSafePayTransaction
+- name: getSafePayTransaction
+  description: Get a SafePay transaction
+  source_operation: openapi/spaceship-openapi-original.json#getSafePayTransaction
+- name: getVerificationRecords
+  description: Get verification records
+  source_operation: openapi/spaceship-openapi-original.json#getVerificationRecords

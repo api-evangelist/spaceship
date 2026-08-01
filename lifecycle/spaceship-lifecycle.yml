@@ -1,0 +1,25 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.spaceship.dev/ and https://www.spaceship.com/application/api-manager/
+versioning:
+  scheme: uri-path
+  current: v1
+  mechanism: Version prefix in the path (/api/v1/...).
+  docs: https://docs.spaceship.dev/
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public RFC 8594 Sunset/Deprecation header policy documented; single v1 surface.
+sla:
+  url: null
+  public_uptime_target: null
+  notes: No public numeric uptime SLA published for the API.
+status_page: null
+async_model:
+  pattern: 202 Accepted + spaceship-async-operationid header
+  poll: /v1/async-operations/{operationId}
+  states:
+  - pending
+  - success
+  - failed
+deprecated_operations: []

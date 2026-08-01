@@ -1,0 +1,37 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.spaceship.dev/ (Permissions section of the API description)
+docs: https://www.spaceship.com/application/api-manager/
+model: api-key-scopes
+note: Spaceship does not use OAuth2. Scopes (permissions) are attached to an API key/secret pair at creation
+  time in the API Manager. The scopes below are the documented permission set.
+schemes:
+- name: apiKey+apiSecret
+  type: apiKey
+  headers:
+  - X-API-Key
+  - X-API-Secret
+  source: openapi/spaceship-openapi-original.json
+scopes:
+- scope: domains:read
+  description: Read domain information and check configuration.
+- scope: domains:write
+  description: Manage domains and domain settings.
+- scope: domains:transfer
+  description: Transfer domains in and out.
+- scope: domains:billing
+  description: Manage domains billing operations.
+- scope: contacts:read
+  description: Read contact details.
+- scope: contacts:write
+  description: Save contact details.
+- scope: dnsrecords:read
+  description: Read DNS resource records.
+- scope: dnsrecords:write
+  description: Write DNS resource records.
+- scope: asyncoperations:read
+  description: Read async operations details.
+- scope: sellerhub:read
+  description: Read SellerHub domains.
+- scope: sellerhub:write
+  description: Write SellerHub domains.

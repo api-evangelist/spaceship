@@ -1,0 +1,24 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/spaceship-openapi-original.json
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: apiKey
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  description: API key for authenticating requests, with a set of scopes (permissions) defined
+    by the user at the time of creation.
+  sources:
+  - openapi/spaceship-openapi-original.json
+- name: apiSecret
+  type: apiKey
+  in: header
+  parameter: X-API-Secret
+  description: API secret for authenticating requests must be set together with the API key.
+  sources:
+  - openapi/spaceship-openapi-original.json

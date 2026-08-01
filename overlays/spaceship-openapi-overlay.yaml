@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Spaceship API
+  version: 1.0.0
+extends: openapi/spaceship-openapi-original.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-21'
+    x-apievangelist-artifacts:
+    - authentication
+    - scopes
+    - conventions
+    - errors
+    - data-model
+    - conformance
+    - lifecycle
+    - mcp
+    - agentic-access
+    - skills
+    x-api-auth: apiKey pair (X-API-Key + X-API-Secret)
+    x-async-model: 202 + spaceship-async-operationid; poll /v1/async-operations/{id}
+- target: $.tags[*]
+  description: 'Spaceship groups operations into ten product areas: Domain Management/Settings/Transfer/Availability,
+    Personal Nameservers, Contacts, DNS records, SellerHub, and Async Operations.'

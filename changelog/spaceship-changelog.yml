@@ -1,0 +1,8 @@
+generated: '2026-07-21'
+method: none
+source: https://docs.spaceship.dev/
+scheme: uri-path (v1)
+current_version: v1
+note: No dated public API changelog was found (docs.spaceship.dev is a single ReDoc reference; www.spaceship.com
+  is Cloudflare-gated). No entries captured.
+entries: []

@@ -1,0 +1,24 @@
+generated: '2026-07-21'
+method: searched
+note: Probed /.well-known/* on the API host (spaceship.dev), docs host, and website. spaceship.dev gates
+  every path (including /.well-known/*) behind API auth (401); www.spaceship.com is Cloudflare-protected
+  (403); docs host returns 404. No discovery documents are publicly served.
+hosts:
+- host: https://spaceship.dev
+  documents:
+  - path: /.well-known/security.txt
+    status: 401
+  - path: /.well-known/oauth-authorization-server
+    status: 401
+  - path: /.well-known/openid-configuration
+    status: 401
+  - path: /.well-known/api-catalog
+    status: 401
+- host: https://www.spaceship.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+- host: https://docs.spaceship.dev
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
