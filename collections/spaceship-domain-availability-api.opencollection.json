@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Domain Availability API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Availability",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check domains availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/domains/available",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check domains availability.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit to check domains availability is 30 requests per user, within 30 seconds."
+        },
+        {
+          "info": {
+            "name": "Check single domain availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/available",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name in ASCII format (A-label) whose details are to be fetched. The domain name must be provided in a fully qualified domain format."
+              }
+            ]
+          },
+          "docs": "Check single domain availability.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit to check domain availability is 5 requests per domain, within 300 seconds.\n* The limit to check domain availability is 30 requests per user, within 30 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

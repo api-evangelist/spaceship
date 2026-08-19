@@ -1,0 +1,249 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations SellerHub API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SellerHub",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a checkout link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/sellerhub/checkout-links",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new checkout link for a domain listed in SellerHub.\n\nCheckout links provide a direct URL that can be shared with potential buyers, allowing them to purchase a domain at a specified price without requiring them to browse the marketplace.\n\n### Use Cases\n- Share a personalized purchase link with an interested buyer\n- Create campaign-specific links for marketing purposes\n- Generate time-limited offers for domain sales\n\n### Notes\n- The domain must already be listed in SellerHub before creat"
+        },
+        {
+          "info": {
+            "name": "Get SellerHub domains list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains",
+            "params": [
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items per page"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items to skip"
+              }
+            ]
+          },
+          "docs": "Returns a list of domains in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for fetching a SellerHub domain list is 300 requests per user, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Create a SellerHub domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new domain listing in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for creating a SellerHub domain is 300 requests per user, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Get sold domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains/reports/sold",
+            "params": [
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items per page. Required; integer between 1 and the operation-specific upper bound."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Opaque pagination cursor for fetching the next page of results. Obtained from the `cursor` field in a previous response. Omit on the first request."
+              },
+              {
+                "name": "saleDateTimeFrom",
+                "value": "",
+                "type": "query",
+                "description": "Inclusive lower bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-15T00:00:00.000Z`). When specified without `saleDateTimeTo`, returns all records from this date onwards. Must be earlier than `saleDateTimeTo` when both are provided."
+              },
+              {
+                "name": "saleDateTimeTo",
+                "value": "",
+                "type": "query",
+                "description": "Exclusive upper bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-16T00:00:00.000Z`). When specified without `saleDateTimeFrom`, returns all records before this date. Must be later than `saleDateTimeFrom` when both are provided."
+              }
+            ]
+          },
+          "docs": "Returns a cursor-paginated list of domains that have been sold through SellerHub.\n\nThis endpoint uses cursor-based pagination. To retrieve the first page, omit the `cursor` query parameter.\nFor subsequent pages, pass the `cursor` value from the previous response.\n\n### Pagination\n- Set `take` to control the page size (1-100).\n- If the response includes a `cursor`, more results are available.\n- If `cursor` is absent, you have reached the last page.\n\n### Filtering\n- Filter by sale time range using "
+        },
+        {
+          "info": {
+            "name": "Get a specific SellerHub domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific domain in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for obtaining info for a SellerHub domain is 300 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update a SellerHub domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Update request payload"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the configuration and pricing settings for a specific domain in SellerHub.\nOnly provided fields will be updated.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for updating a SellerHub domain is 300 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Delete a SellerHub domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://spaceship.dev/api/v1/sellerhub/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name"
+              }
+            ]
+          },
+          "docs": "Removes a domain from SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for deleting a SellerHub domain is 300 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "List SafePay transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/safepay-transactions",
+            "params": [
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items per page"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items to skip"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of SafePay transactions the caller is a party to — as buyer, seller, or (for a broker) the originating broker.\n\n### Pagination\n- Set `take` (required, 1-100) to control the page size.\n- Set `skip` (required, 0 or greater) to control the offset from the start of the result set.\n- Omitting `take` or `skip` returns a `400 Bad Request`.\n- Read `total` from the response for the overall number of matching transactions.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:"
+        },
+        {
+          "info": {
+            "name": "Create a SafePay transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/sellerhub/safepay-transactions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Opens a SafePay (escrow) transaction for a domain sale. The endpoint returns immediately; the counterparty confirms out of band.\n\nThe initiator role is stated via `initiatedBy` (`seller`, `buyer`, or `broker`). The returned `status` shows which side must still act (`pendingSellerConfirm` or `pendingBuyerConfirm`), or `active` when no confirmation remains.\n\n### Broker flow\nWhen `initiatedBy=broker`, the authenticated caller is the broker acting on behalf of both parties:\n- Provide the seller via "
+        },
+        {
+          "info": {
+            "name": "Get a SafePay transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/safepay-transactions/:transactionId",
+            "params": [
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path",
+                "description": "Unique SafePay transaction identifier (UUID), as returned by create or list."
+              }
+            ]
+          },
+          "docs": "Reads a single SafePay (escrow) transaction by id, including its current lifecycle status. The caller must be a party to it (buyer, seller, or originating broker); anything else is reported as not found.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for reading a SafePay transaction is 60 requests per transaction, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Get verification records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/sellerhub/verification-records"
+          },
+          "docs": "Returns verification options for domain ownership verification in SellerHub.\n\nThe response contains one or more verification options. You can choose ANY of the returned options\n(OR logic) that works best for your DNS setup. Within a chosen option, ALL records must\nbe created (AND logic).\n\n**Important:** The returned verification records are associated with your SellerHub account\nand can be used to verify ownership of ALL domains you want to add to SellerHub. You only\nneed to create these DNS rec"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

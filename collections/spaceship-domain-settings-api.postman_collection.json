@@ -1,0 +1,3374 @@
+{
+  "item": [
+    {
+      "id": "a8cb27c5-b4b0-4514-86fb-ac5d1608b3c8",
+      "name": "Domain Settings",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3fad7db5-4d77-40bb-bed8-a630bf542063",
+          "name": "Update the domain autorenewal state",
+          "request": {
+            "name": "Update the domain autorenewal state",
+            "description": {
+              "content": "Allows the modification of a domain's autorenewal state.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the autorenewal state for a domain is 5 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "autorenew"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose autorenewal state is being updated."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isEnabled\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1de9ea8c-8060-4c2e-b4a0-f25554bbac7b",
+              "name": "The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"isEnabled\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14201fac-f5c6-4736-8cab-33a1c9f8777c",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "infrastructure.bAdK"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "3yb7n2i7jtss1qua"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07cdffb1-8650-4053-9716-5ea09779eedd",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e0cdcab0-3c20-463e-b46e-71dc44b73bf3",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "631a094f-a58b-4363-93ba-facc1a3df4c4",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc1303d7-c06a-47f5-af60-fa131ad3e205",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63160b08-8318-4e6e-86c2-20ea55d04090",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "158564002"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "839577971"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d99964d0-63b8-4ddf-9d46-54236a8ff347",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "autorenew"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose autorenewal state is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isEnabled\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "faa12e32-3754-4203-aa34-050ebb37732f",
+          "name": "Update domain contacts",
+          "request": {
+            "name": "Update domain contacts",
+            "description": {
+              "content": "Allows the modification of domain name contacts.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating contacts for a domain is 5 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose contacts are being updated."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrant\": \"<string>\",\n  \"admin\": \"<string>\",\n  \"tech\": \"<string>\",\n  \"billing\": \"<string>\",\n  \"attributes\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2e48457b-1308-48d6-9e9f-4c380bb0fda9",
+              "name": "The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"verificationStatus\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db541ad7-8a98-4cc1-bcee-91875c0a54b2",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d66342c6-77dc-4f1f-a626-8e25268eacb8",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eaf6e566-45e9-4282-aa23-b91896bc3010",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cfc4dbe2-e0d8-486a-94d4-917c89fd48ac",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b24cafde-7dfd-4b5e-aa62-0b38309f5562",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lO\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b05f25d-6d69-4bfc-9b05-e8474303b2bf",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "158564002"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "839577971"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6ac26ce-599b-4bc2-bba1-c6e823a38376",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose contacts are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"registrant\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"admin\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"tech\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"billing\": \"1ZdMXpapqp9sle5dl8BlppTJXAzf5\",\n  \"attributes\": [\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf3\",\n    \"1ZdMXpapqp9sle5dl8BlppTJXAzf2\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3da5fb3c-bac3-4981-8199-7c647aa82c12",
+          "name": "Update domain nameservers",
+          "request": {
+            "name": "Update domain nameservers",
+            "description": {
+              "content": "Allows the modification of DNS settings for a specific domain by replacing its current nameservers with new ones.\nThis operation is crucial to ensure that your domain points to the correct DNS servers, which is essential for routing traffic accurately and implementing changes in DNS management.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating nameservers for a domain is 5 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "nameservers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"hosts\": [\n    \"<hostname>\",\n    \"<hostname>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a8a4f24c-12ca-4c12-bfc3-012110988a54",
+              "name": "Nameservers updated successfully. The response confirms that the domain's DNS settings have been modified.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ],\n  \"provider\": \"custom\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3befe94e-38bb-42d9-b8dd-2e6940efe432",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11ea940f-c3e2-4dc9-9b0c-5c5a5fc1f331",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d924b964-102c-4b78-9f51-076882cec28a",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86f6d552-0c12-48db-971e-21ca21eea03a",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4422c18-d6d3-4ce6-9d2d-add8cd14762e",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lO\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40b94d4f-0670-4589-b37a-fb0000c5082a",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "158564002"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "839577971"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8dfde467-8384-4b73-b7c1-6071a20a70be",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"custom\",\n  \"hosts\": [\n    \"ns1.exampledomain.com\",\n    \"ns2.exampledomain.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fe186e85-c527-4b17-8a0a-2e8e6220158a",
+          "name": "Update domain email protection preference",
+          "request": {
+            "name": "Update domain email protection preference",
+            "description": {
+              "content": "Allows the modification of a domain's email protection preference.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the domain email protection preference for a domain is 5 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "privacy",
+                "email-protection-preference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose email protection preference is being updated."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactForm\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9a1a9dce-81a2-43e1-bc6a-cc6937efe66d",
+              "name": "There is no content to send for this request, but the headers may be useful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1b9fd06d-c5af-4b34-b094-65c214147081",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf72d787-7373-40c3-bc2c-0d34e382f3a1",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66a1b00e-6770-4424-b2b0-f8b3327498a3",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5175e578-7a57-4ee7-8ab4-13ae4986a39b",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d952bd6-b4c8-41d5-87c1-e04c514f1850",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lO\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33d937a7-cbed-4f26-b223-c5d23baf99ec",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "158564002"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "839577971"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0987de01-d5b1-4010-b8d6-2db9b30a2fe4",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "email-protection-preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose email protection preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"contactForm\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5e75f7f5-9e98-4ce1-b491-b620ef6b1ed1",
+          "name": "Update domain privacy preference",
+          "request": {
+            "name": "Update domain privacy preference",
+            "description": {
+              "content": "Allows the modification of a domain's privacy preference.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the privacy preference for a domain is 5 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "privacy",
+                "preference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose privacy preference is being updated."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"privacyLevel\": \"<string>\",\n  \"userConsent\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a66d8e47-fe2a-424a-be47-53431a3b2024",
+              "name": "There is no content to send for this request, but the headers may be useful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9ec5495a-2bc5-42c0-894c-a4bc1636aafb",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21ff8dcc-eb10-4aa9-9c74-b7f3b52d8ac4",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a4e7727-53f3-4ef9-9444-026717f40d9b",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb5a931c-4b46-48b6-a95e-868cfcc51fd0",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91f44665-52ca-4e23-a63b-c07e16b18752",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lO\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9286a95f-5f04-47ac-948b-3e2975089302",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "158564002"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "839577971"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "839577971"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df622396-001d-485a-872e-d9db0942b20e",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "privacy",
+                    "preference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose privacy preference is being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"R8V MN-a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://spaceship.dev/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "cc7e7266-5334-4ddb-9310-12d048ae4e8b",
+    "name": "Spaceship.com Async Operations Domain Settings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains\n\nContact Support:\n Email: support@spaceship.com",
+      "type": "text/plain"
+    }
+  }
+}

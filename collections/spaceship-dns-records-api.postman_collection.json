@@ -1,0 +1,2076 @@
+{
+  "item": [
+    {
+      "id": "c931e1e4-7b3d-4c83-b7d8-d0e47130f738",
+      "name": "DNS records",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e770258a-a7c1-4ef5-98ef-29878775cfbc",
+          "name": "Save resource records",
+          "request": {
+            "name": "Save resource records",
+            "description": {
+              "content": "Add custom DNS resource records or update TTL.\nRecords are matched using case-insensitive comparison, except for TXT records.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:write\">dnsrecords:write</a>\n\n### Rate Limits \n\n * The limit for saving resource record details is 300 requests per user, per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "dns",
+                "records",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose resource records are being updated."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"type\": \"<string>\",\n      \"name\": \"<string>\",\n      \"ttl\": \"<integer>\"\n    }\n  ],\n  \"force\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5ae61337-8d14-483f-9b4b-9c87195e82e1",
+              "name": "There is no content to send for this request, but the headers may be useful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c6cb6ae4-1c10-4205-a8fe-daadca6f8fea",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "infrastructure.pZWT.G.s.WzMWBrNCYfG.L.KkvYtdNpj.ENJjl.UKAU.mPDWaC.qzLka"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "73vhturhray4lqqo"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84a6a083-ba2e-440b-a815-a7ea71730227",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "912a77fd-1e6a-46d8-a0c1-4c38bc91d0d3",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f63115bc-5fde-43a5-9fec-6558995eb4cd",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88a801ab-c4c6-4486-b98b-85a8905a4b99",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"yN\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9fbf927-c94d-46c5-bd0f-162b9de477ac",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1299542010"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1080361879"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "700f8581-fef6-495b-b881-75bc55015b67",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being updated."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force\": true,\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n      \"name\": \"@\",\n      \"ttl\": 3600\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "566c8615-7dbf-4dab-98a6-d3c2d382f7b6",
+          "name": "Delete resource records",
+          "request": {
+            "name": "Delete resource records",
+            "description": {
+              "content": "Delete custom DNS resource records.\nRecords matched using case-insensitive comparison, except for TXT records, which are case-sensitive.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:write\">dnsrecords:write</a>\n\n### Rate Limits \n\n * The limit for deleting resource record details is 300 requests per user, per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "dns",
+                "records",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose resource records are being deleted."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"type\": \"<string>\",\n    \"name\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c535173a-ccc9-4646-8d45-fb0312075d2b",
+              "name": "There is no content to send for this request, but the headers may be useful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ace2940a-bb5c-4945-989f-34a9d5abf4ac",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e7049933-a1e1-4608-b4c3-fb34ff94db08",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "351ace45-e6a3-4c36-975e-b5526fef6b76",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "595cc0fb-f3b1-4f95-876e-62be9efa6893",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "360a07c4-bbae-43ed-ab09-7cd614cde937",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lQS \",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c1147a2-ff71-4c75-b81d-bb2daef86dd9",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1299542010"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1080361879"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b60eb578-9f25-4bf8-ba20-26f3c9d78fb8",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being deleted."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"type\": \"A\",\n    \"address\": \"2001:0db8:85a3:0000:0000:8a2e:0370:7334\",\n    \"name\": \"@\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b9326be-8214-40b1-965c-730ef0502617",
+          "name": "Get domain resource records list",
+          "request": {
+            "name": "Get domain resource records list",
+            "description": {
+              "content": "Retrieves a paginated list of resource records, allowing the use of query parameters to customize the response.\nThis operation is essential for efficiently managing large collections of resource records, enabling smooth navigation and retrieval without overloading the system with unnecessary data.\n\n### Required Permissions \n\n - <a href=\"#scopes/dnsrecords:read\">dnsrecords:read</a>\n\n### Rate Limits \n\n * The limit for getting the domain resource records list is 300 requests per user, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "dns",
+                "records",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "take",
+                  "value": "<integer>",
+                  "description": "(Required) Number of response items per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "skip",
+                  "value": "<integer>",
+                  "description": "(Required) Number of response items to skip"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string>",
+                  "description": "Specifies fields and order to sort the response items"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain whose resource records are being fetched."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bfe09e41-f81b-418d-bb96-57ec45d82644",
+              "name": "Resource records list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"type\": \"A\",\n      \"name\": \"@\",\n      \"group\": {\n        \"type\": \"custom\"\n      },\n      \"ttl\": 3600\n    },\n    {\n      \"type\": \"A\",\n      \"name\": \"@\",\n      \"group\": {\n        \"type\": \"custom\"\n      },\n      \"ttl\": 3600\n    }\n  ],\n  \"total\": 100\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61abed3d-64f5-42f4-8d42-0629d691c9a9",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd125ff5-1a1d-47ba-9b55-fb552b6cfff1",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed9770cf-b92d-4eee-8947-7bfecfa75d90",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8a57f15-7df2-45d7-bb6c-ecb6f17212a6",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3ab27e8-a4ef-4954-b790-6e487baa0bc0",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"lQS \",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fbc2934f-7f1b-4e78-aa43-50574521956c",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "1299542010"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1080361879"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1080361879"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "345d8cb4-0221-40ec-8dd5-e57689494288",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "dns",
+                    "records",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "take",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "skip",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain whose resource records are being fetched."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"L\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://spaceship.dev/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "97add9fd-7321-4f66-8130-f8cea2022c14",
+    "name": "Spaceship.com Async Operations DNS records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains\n\nContact Support:\n Email: support@spaceship.com",
+      "type": "text/plain"
+    }
+  }
+}

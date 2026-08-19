@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Domain Transfer API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Transfer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the details of the domain transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/transfer",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose transfer details are to be returned."
+              }
+            ]
+          },
+          "docs": "Get the details of the ongoing domain transfer.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for requesting transfer info is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Requests domain transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/transfer",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain name for transfer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requests domain transfer.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to transfer domains is 30 requests per user, within 30 seconds."
+        },
+        {
+          "info": {
+            "name": "Get domain auth code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/transfer/auth-code",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose auth code is to be returned."
+              }
+            ]
+          },
+          "docs": "Get the domain's auth code, also known as EPP code, authorization code, transfer code or Auth-Info Code.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for obtaining auth codes is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update domain transfer lock",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/transfer/lock",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose transfer lock is being updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of a domain transfer lock.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:transfer\">domains:transfer</a>\n\n### Rate Limits \n\n * The limit for updating the transfer lock for a domain is 5 requests per domain within 300 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,160 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Domain Management API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get domain list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains",
+            "params": [
+              {
+                "name": "take",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items per page"
+              },
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Number of response items to skip"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Specifies fields and order to sort the response items"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of domains, allowing the use of query parameters to customize the response.\nThis operation is essential for efficiently managing large collections of domains, enabling smooth navigation and retrieval without overloading the system with unnecessary data.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for fetching a domain list is 300 requests per user, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Get domain info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name in ASCII format (A-label) whose details are to be fetched. The domain name must be provided in a fully qualified domain format."
+              }
+            ]
+          },
+          "docs": "Get details of a specific domain.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for obtaining info for a domain is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Register the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain name for registration."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register a specific domain.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to register domains is 30 requests per user, within 30 seconds."
+        },
+        {
+          "info": {
+            "name": "Delete the domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://spaceship.dev/api/v1/domains/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name in ASCII format (A-label) that must be deleted. The domain name must be provided in a fully qualified domain format."
+              }
+            ]
+          },
+          "docs": "<div style=\"font-size: 1.8em; color: #f06700; font-weight:bold; padding-bottom: 20px; line-height: 1.4em\">\nThis API is under development and currently returns an HTTP 501 status. \n<p style=\"font-size: 0.7em;\">The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.</p>\n</div> \n Delete the specific domain. Please note a refund will not be provided as part of this operation.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:w"
+        },
+        {
+          "info": {
+            "name": "Requests domain renewal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/renew",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain name to be renewed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requests domain renewal.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to renew domains is 30 requests per user, within 30 seconds."
+        },
+        {
+          "info": {
+            "name": "Requests domain restoration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/restore",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain name to be restored."
+              }
+            ]
+          },
+          "docs": "Requests domain restoration.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to restore domains is 30 requests per user, within 30 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

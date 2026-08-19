@@ -1,0 +1,2682 @@
+{
+  "item": [
+    {
+      "id": "89ec41e7-621e-4cb5-9b06-01072950697b",
+      "name": "Personal Nameservers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dd770faf-cc06-4066-97de-619e72d050ba",
+          "name": "Get personal nameservers on a domain",
+          "request": {
+            "name": "Get personal nameservers on a domain",
+            "description": {
+              "content": "Get the personal nameservers for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for fetching personal nameservers for a domain is 5 requests per domain within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "personal-nameservers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3fd26724-5f89-4018-bf7b-c0533abcd40a",
+              "name": "Personal nameservers for the domain retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"records\": [\n    {\n      \"host\": \"ns1\",\n      \"ips\": [\n        \"127.2.2.2\",\n        \"12.22.22.21\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "916e1fb3-833e-49bb-b185-f8fe6b6282cc",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "business.kjyixh.CY.E.GsVd.ESxc.mPmve.fKnSAab.hXuVgjmx"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "0vh1lhiqe8em80vh"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae131bae-af0f-427b-b660-af737db2b9f5",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6df7761e-71d0-48a8-8ac3-a32f47570fd3",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e0c07e5-7515-4e1c-b3c7-99562b7a044a",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36f33486-6e56-4e20-8696-87e70ed0c505",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"=R?(2;\",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0f0fabd4-72c9-4a04-8193-5ea47c59f4ca",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "2019789311"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1778009666"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f478b043-4d7c-4c96-a73d-5490f9e7837d",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11bf2691-9397-40af-956f-ef733d8f160a",
+          "name": "Get personal nameservers host configuration",
+          "request": {
+            "name": "Get personal nameservers host configuration",
+            "description": {
+              "content": "<div style=\"font-size: 1.8em; color: #f06700; font-weight:bold; padding-bottom: 20px; line-height: 1.4em\">\nThis API is under development and currently returns an HTTP 501 status. \n<p style=\"font-size: 0.7em;\">The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.</p>\n</div> \n Get the configuration for personal nameservers associated with a specific domain.\n\nPersonal nameservers consist of A records for a specific host and glue records at the domain registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "personal-nameservers",
+                ":currentHost"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<hostname>",
+                  "key": "currentHost",
+                  "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c94d331-75bf-44cc-97a1-28f7ad1cffb0",
+              "name": "The request was successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2f24104-2d89-4565-988d-5f0da51da8b5",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa1b5a63-8168-4a6e-b3a1-e0aa9deec38f",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08a5562d-7c2b-4d13-bb7f-0a608b207745",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39f83116-82f0-443e-8740-1ae49e3d54bc",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfb85fcb-92cd-4ad7-8c8a-16ba7c50b3c0",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"]?$d Xoq\\\" \",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95de0591-6c26-4662-b19a-96c92792abd4",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "2019789311"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1778009666"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a527d133-2c80-443e-840b-62dcbc0b1d3d",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fdfee176-e9ea-437c-a540-0e43ceec0af5",
+          "name": "Update personal nameservers host configuration",
+          "request": {
+            "name": "Update personal nameservers host configuration",
+            "description": {
+              "content": "Update the configuration for personal nameservers associated with a specific domain.\n\n**If the host in the request body differs from the host in the path, this operation will rename the host and update the IP addresses, making the old host return a 404.**\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the personal nameservers for a domain is 10 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "personal-nameservers",
+                ":currentHost"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<hostname>",
+                  "key": "currentHost",
+                  "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"host\": \"<hostname>\",\n  \"ips\": [\n    \"<ip>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b1d23243-cf52-44ab-be94-17485c0f9a2f",
+              "name": "Domain personal nameservers host is successfully updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf917af2-5045-410f-a63b-a8eb38833a33",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c5e8d38-6530-463e-a437-d7ec97bb267e",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dcb5c47d-fc53-4c5b-a9c9-3b7325620328",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "991aec4f-5783-4807-ab80-2d451d066e91",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44cb4a2f-34e8-408f-8044-ac350f08459f",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"]?$d Xoq\\\" \",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fbca6642-d9b4-45a4-a4fb-28358d922f37",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "2019789311"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1778009666"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e459dd48-2d91-4b4b-9f1e-edac08abb039",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) The domain name in fully qualified format whose nameserver configuration should be updated"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"host\": \"ns1\",\n  \"ips\": [\n    \"127.2.2.2\",\n    \"12.22.22.21\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48b94586-6069-43e9-8e34-056c78597121",
+          "name": "Delete personal nameservers host configuration",
+          "request": {
+            "name": "Delete personal nameservers host configuration",
+            "description": {
+              "content": "Delete the personal nameservers host configuration for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for deleting the personal nameservers host configuration for a domain is 10 requests per domain, within 300 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "domains",
+                ":domain",
+                "personal-nameservers",
+                ":currentHost"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<domain>",
+                  "key": "domain",
+                  "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<hostname>",
+                  "key": "currentHost",
+                  "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "be19b1b6-8bea-4b9e-b6fb-609bac891e71",
+              "name": "Domain personal nameservers host is successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "be18d92e-0f7a-40f7-9907-9c0d00d5b978",
+              "name": "The request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3dc24077-c742-4aa5-ae01-fba8befd1a15",
+              "name": "The user's request was not authorized properly.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bbb7dfc-b17a-4950-b0c1-a220e4764046",
+              "name": "The user's request not allowed to perform this action with the current scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e71a358-13cc-43c3-b66d-ba104a07dfbc",
+              "name": "The requested object was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abd76f6d-94e9-4af7-a997-dd550a175d59",
+              "name": "The entity is unprocessable.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"]?$d Xoq\\\" \",\n  \"data\": [\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    },\n    {\n      \"field\": \"name\",\n      \"details\": \"The domain name contains invalid characters\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8388a5c1-149f-43e8-9fa5-dcb38455c0b6",
+              "name": "The response indicates that the rate limit for the API has been exceeded. It includes details about the rate limit, like the number of requests left and the time the rate limit window resets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) Request limit per the allotted time window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of requests left for the time window",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "2019789311"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The UTC date/time when the current rate limit window resets",
+                  "key": "X-RateLimit-Reset",
+                  "value": "1778009666"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) The number of seconds inndicating how long the client ought to wait before making a follow-up request",
+                  "key": "Retry-After",
+                  "value": "1778009666"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a4f26d2-54b1-4a04-b4b6-73d68f1e6839",
+              "name": "The infrastructure encountered an error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "domains",
+                    ":domain",
+                    "personal-nameservers",
+                    ":currentHost"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<domain>",
+                      "key": "domain",
+                      "description": "(Required) Domain name in a fully qualified format whose personal nameservers host should be deleted"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<hostname>",
+                      "key": "currentHost",
+                      "description": "(Required) The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-error-code",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "description": "(Required) ",
+                  "key": "spaceship-operation-id",
+                  "value": "<string>"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"7, j& \\f >P\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://spaceship.dev/api",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "280a5f35-b836-4973-9d35-2ee6e3c62edd",
+    "name": "Spaceship.com Async Operations Personal Nameservers API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains\n\nContact Support:\n Email: support@spaceship.com",
+      "type": "text/plain"
+    }
+  }
+}

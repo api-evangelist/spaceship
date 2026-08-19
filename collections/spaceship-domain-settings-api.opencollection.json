@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Domain Settings API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update the domain autorenewal state",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/autorenew",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose autorenewal state is being updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of a domain's autorenewal state.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the autorenewal state for a domain is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update domain contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/contacts",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose contacts are being updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of domain name contacts.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating contacts for a domain is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update domain nameservers",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/nameservers",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose nameservers should be updated. The domain name must be provided in a fully qualified domain format."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of DNS settings for a specific domain by replacing its current nameservers with new ones.\nThis operation is crucial to ensure that your domain points to the correct DNS servers, which is essential for routing traffic accurately and implementing changes in DNS management.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating nameservers for a domain is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update domain email protection preference",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/privacy/email-protection-preference",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose email protection preference is being updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of a domain's email protection preference.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the domain email protection preference for a domain is 5 requests per domain, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Update domain privacy preference",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/privacy/preference",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain whose privacy preference is being updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Allows the modification of a domain's privacy preference.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the privacy preference for a domain is 5 requests per domain, within 300 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Async Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Obtain async operation details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/async-operations/:operationId",
+            "params": [
+              {
+                "name": "operationId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of async operation"
+              }
+            ]
+          },
+          "docs": "Retrieves the details of an async operation, including its status and any associated details.\nThis operation is essential for tracking the progress and outcome of async operations, providing users with the necessary information to manage their requests effectively.\n\n### Required Permissions \n\n - <a href=\"#scopes/asyncoperations:read\">asyncoperations:read</a>\n\n### Rate Limits \n\n * The limit for fetching async operation details is 60 requests per user, within 300 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

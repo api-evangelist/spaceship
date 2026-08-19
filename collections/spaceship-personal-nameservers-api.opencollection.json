@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Personal Nameservers API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Personal Nameservers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get personal nameservers on a domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/personal-nameservers",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "A domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+              }
+            ]
+          },
+          "docs": "Get the personal nameservers for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for fetching personal nameservers for a domain is 5 requests per domain within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Get personal nameservers host configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/personal-nameservers/:currentHost",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name whose details should be fetched. The domain name must be provided in a fully qualified domain format."
+              },
+              {
+                "name": "currentHost",
+                "value": "",
+                "type": "path",
+                "description": "The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+              }
+            ]
+          },
+          "docs": "<div style=\"font-size: 1.8em; color: #f06700; font-weight:bold; padding-bottom: 20px; line-height: 1.4em\">\nThis API is under development and currently returns an HTTP 501 status. \n<p style=\"font-size: 0.7em;\">The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.</p>\n</div> \n Get the configuration for personal nameservers associated with a specific domain.\n\nPersonal nameservers consist of A records for a specific host and glue "
+        },
+        {
+          "info": {
+            "name": "Update personal nameservers host configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/personal-nameservers/:currentHost",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "The domain name in fully qualified format whose nameserver configuration should be updated"
+              },
+              {
+                "name": "currentHost",
+                "value": "",
+                "type": "path",
+                "description": "The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the configuration for personal nameservers associated with a specific domain.\n\n**If the host in the request body differs from the host in the path, this operation will rename the host and update the IP addresses, making the old host return a 404.**\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit f"
+        },
+        {
+          "info": {
+            "name": "Delete personal nameservers host configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://spaceship.dev/api/v1/domains/:domain/personal-nameservers/:currentHost",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path",
+                "description": "Domain name in a fully qualified format whose personal nameservers host should be deleted"
+              },
+              {
+                "name": "currentHost",
+                "value": "",
+                "type": "path",
+                "description": "The host name part of the nameserver. For example, for `spaceship.dev` domain and `ns1.spaceship.dev` fully qualified name, the host is `ns1`."
+              }
+            ]
+          },
+          "docs": "Delete the personal nameservers host configuration for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for deleting the personal nameservers host configuration for a domain is 10 requests per domain, within 300 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

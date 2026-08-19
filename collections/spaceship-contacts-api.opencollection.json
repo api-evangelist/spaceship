@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Spaceship.com Async Operations Contacts API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Save contact details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://spaceship.dev/api/v1/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Save details for the contact and return the generated contact ID.\n\n> Validation rules for some parameters (such as `stateProvince` and `postalCode`) depend on the selected country. These fields may be required based on the country’s validation logic\n\n### Required Permissions \n\n - <a href=\"#scopes/contacts:write\">contacts:write</a>\n\n### Rate Limits \n\n * The limit for saving contact details is 300 requests per user, within 300 seconds."
+        },
+        {
+          "info": {
+            "name": "Read contact details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://spaceship.dev/api/v1/contacts/:contact",
+            "params": [
+              {
+                "name": "contact",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Read details of the contact by contact ID.\n\n### Required Permissions \n\n - <a href=\"#scopes/contacts:read\">contacts:read</a>\n\n### Rate Limits \n\n * The limit for listing contact details is 5 requests per contact, within 300 seconds."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
