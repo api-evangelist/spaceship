@@ -40,6 +40,15 @@ tags:
 - Nameservers
 - WHOIS
 - Developer Tools
+tags_raw:
+- Company
+- Domains
+- Domain Registrar
+- DNS
+- Domain Marketplace
+- Nameservers
+- WHOIS
+- Developer Tools
 - API
 maintainers:
 - FN: Kin Lane
@@ -95,6 +104,8 @@ apis:
   humanURL: https://docs.spaceship.dev/
   baseURL: https://spaceship.dev/api
   tags:
+  - DNS Records
+  tags_raw:
   - DNS records
   properties:
   - type: OpenAPI
