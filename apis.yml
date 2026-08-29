@@ -9,6 +9,17 @@ description: >-
   with per-key scopes; long-running actions use an async-operation polling model (202 + a
   spaceship-async-operationid header polled at /v1/async-operations/{operationId}).
 url: https://raw.githubusercontent.com/api-evangelist/spaceship/refs/heads/main/apis.yml
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
