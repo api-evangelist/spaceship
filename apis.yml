@@ -115,7 +115,7 @@ apis:
   humanURL: https://docs.spaceship.dev/
   baseURL: https://spaceship.dev/api
   tags:
-  - DNS Records
+  - DNS records
   tags_raw:
   - DNS records
   properties:
