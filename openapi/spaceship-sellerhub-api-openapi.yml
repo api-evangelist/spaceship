@@ -1,10 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Spaceship.com Async Operations SellerHub API
+  title: Spaceship.com Seller Hub API
   contact:
     email: support@spaceship.com
     url: https://www.spaceship.com/about/contact-us/
-  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  description: '# Spaceship API
+
+
+    ## Authentication
+
+
+    Spaceship API uses a combination of API key and API secret for authentication.'
   version: 1.0.0
   x-logo:
     url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
@@ -22,7 +28,38 @@ paths:
     post:
       operationId: createCheckoutLink
       summary: Create a checkout link
-      description: "Creates a new checkout link for a domain listed in SellerHub.\n\nCheckout links provide a direct URL that can be shared with potential buyers, allowing them to purchase a domain at a specified price without requiring them to browse the marketplace.\n\n### Use Cases\n- Share a personalized purchase link with an interested buyer\n- Create campaign-specific links for marketing purposes\n- Generate time-limited offers for domain sales\n\n### Notes\n- The domain must already be listed in SellerHub before creating a checkout link\n- The base price in the checkout link can differ from the listing price\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for creating a checkout link is 300 requests per user, within 300 seconds."
+      description: 'Creates a new checkout link for a domain listed in SellerHub.
+
+
+        Checkout links provide a direct URL that can be shared with potential buyers, allowing them to purchase a domain at a specified price without requiring them to browse the marketplace.
+
+
+        ### Use Cases
+
+        - Share a personalized purchase link with an interested buyer
+
+        - Create campaign-specific links for marketing purposes
+
+        - Generate time-limited offers for domain sales
+
+
+        ### Notes
+
+        - The domain must already be listed in SellerHub before creating a checkout link
+
+        - The base price in the checkout link can differ from the listing price
+
+
+        ### Required Permissions
+
+
+        - sellerhub:write
+
+
+        ### Rate Limits
+
+
+        * The limit for creating a checkout link is 300 requests per user, within 300 seconds.'
       parameters: []
       responses:
         '200':
@@ -192,7 +229,19 @@ paths:
     get:
       operationId: getSellerHubDomainList
       summary: Get SellerHub domains list
-      description: "Returns a list of domains in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for fetching a SellerHub domain list is 300 requests per user, within 300 seconds."
+      description: 'Returns a list of domains in SellerHub.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching a SellerHub domain list is 300 requests per user, within 300 seconds.'
       parameters:
       - name: take
         in: query
@@ -389,7 +438,19 @@ paths:
     post:
       operationId: createSellerHubDomain
       summary: Create a SellerHub domain
-      description: "Creates a new domain listing in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for creating a SellerHub domain is 300 requests per user, within 300 seconds."
+      description: 'Creates a new domain listing in SellerHub.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:write
+
+
+        ### Rate Limits
+
+
+        * The limit for creating a SellerHub domain is 300 requests per user, within 300 seconds.'
       parameters: []
       responses:
         '201':
@@ -559,7 +620,42 @@ paths:
     get:
       operationId: getSoldDomains
       summary: Get sold domains
-      description: "Returns a cursor-paginated list of domains that have been sold through SellerHub.\n\nThis endpoint uses cursor-based pagination. To retrieve the first page, omit the `cursor` query parameter.\nFor subsequent pages, pass the `cursor` value from the previous response.\n\n### Pagination\n- Set `take` to control the page size (1-100).\n- If the response includes a `cursor`, more results are available.\n- If `cursor` is absent, you have reached the last page.\n\n### Filtering\n- Filter by sale time range using `saleDateTimeFrom` (inclusive) and `saleDateTimeTo` (exclusive).\n- Both bounds accept a full ISO-8601 UTC datetime. When both are specified, `saleDateTimeFrom` must be strictly earlier than `saleDateTimeTo`.\n- Each bound can be provided independently. Providing only `saleDateTimeFrom` returns all sales from that time onwards; providing only `saleDateTimeTo` returns all sales before that time.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for fetching sold domains is 300 requests per user, within 300 seconds."
+      description: 'Returns a cursor-paginated list of domains that have been sold through SellerHub.
+
+
+        This endpoint uses cursor-based pagination. To retrieve the first page, omit the `cursor` query parameter.
+
+        For subsequent pages, pass the `cursor` value from the previous response.
+
+
+        ### Pagination
+
+        - Set `take` to control the page size (1-100).
+
+        - If the response includes a `cursor`, more results are available.
+
+        - If `cursor` is absent, you have reached the last page.
+
+
+        ### Filtering
+
+        - Filter by sale time range using `saleDateTimeFrom` (inclusive) and `saleDateTimeTo` (exclusive).
+
+        - Both bounds accept a full ISO-8601 UTC datetime. When both are specified, `saleDateTimeFrom` must be strictly earlier than `saleDateTimeTo`.
+
+        - Each bound can be provided independently. Providing only `saleDateTimeFrom` returns all sales from that time onwards; providing only `saleDateTimeTo` returns all sales before that time.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching sold domains is 300 requests per user, within 300 seconds.'
       parameters:
       - name: take
         in: query
@@ -756,7 +852,19 @@ paths:
     get:
       operationId: getSellerHubDomain
       summary: Get a specific SellerHub domain
-      description: "Retrieves detailed information about a specific domain in SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for obtaining info for a SellerHub domain is 300 requests per domain, within 300 seconds."
+      description: 'Retrieves detailed information about a specific domain in SellerHub.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for obtaining info for a SellerHub domain is 300 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -929,7 +1037,21 @@ paths:
     patch:
       operationId: updateSellerHubDomain
       summary: Update a SellerHub domain
-      description: "Updates the configuration and pricing settings for a specific domain in SellerHub.\nOnly provided fields will be updated.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for updating a SellerHub domain is 300 requests per domain, within 300 seconds."
+      description: 'Updates the configuration and pricing settings for a specific domain in SellerHub.
+
+        Only provided fields will be updated.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:write
+
+
+        ### Rate Limits
+
+
+        * The limit for updating a SellerHub domain is 300 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -1108,7 +1230,19 @@ paths:
     delete:
       operationId: deleteSellerHubDomain
       summary: Delete a SellerHub domain
-      description: "Removes a domain from SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for deleting a SellerHub domain is 300 requests per domain, within 300 seconds."
+      description: 'Removes a domain from SellerHub.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:write
+
+
+        ### Rate Limits
+
+
+        * The limit for deleting a SellerHub domain is 300 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -1278,7 +1412,30 @@ paths:
     get:
       operationId: getSafePayTransactionList
       summary: List SafePay transactions
-      description: "Returns a paginated list of SafePay transactions the caller is a party to — as buyer, seller, or (for a broker) the originating broker.\n\n### Pagination\n- Set `take` (required, 1-100) to control the page size.\n- Set `skip` (required, 0 or greater) to control the offset from the start of the result set.\n- Omitting `take` or `skip` returns a `400 Bad Request`.\n- Read `total` from the response for the overall number of matching transactions.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for listing SafePay transactions is 300 requests per user, within 300 seconds."
+      description: 'Returns a paginated list of SafePay transactions the caller is a party to — as buyer, seller, or (for a broker) the originating broker.
+
+
+        ### Pagination
+
+        - Set `take` (required, 1-100) to control the page size.
+
+        - Set `skip` (required, 0 or greater) to control the offset from the start of the result set.
+
+        - Omitting `take` or `skip` returns a `400 Bad Request`.
+
+        - Read `total` from the response for the overall number of matching transactions.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for listing SafePay transactions is 300 requests per user, within 300 seconds.'
       parameters:
       - name: take
         in: query
@@ -1475,7 +1632,44 @@ paths:
     post:
       operationId: createSafePayTransaction
       summary: Create a SafePay transaction
-      description: "Opens a SafePay (escrow) transaction for a domain sale. The endpoint returns immediately; the counterparty confirms out of band.\n\nThe initiator role is stated via `initiatedBy` (`seller`, `buyer`, or `broker`). The returned `status` shows which side must still act (`pendingSellerConfirm` or `pendingBuyerConfirm`), or `active` when no confirmation remains.\n\n### Broker flow\nWhen `initiatedBy=broker`, the authenticated caller is the broker acting on behalf of both parties:\n- Provide the seller via `sellerEmail` or `sellerUsername`, and optionally the buyer via `buyerEmail` or `buyerUsername`.\n- Use `confirmedBy` to pre-confirm the seller and/or buyer at creation, skipping their confirmation step.\n\n### Notes\n- `basePrice` is required for both types: for `buyNow` it is the amount the buyer pays; for `leaseToOwn` it is the lease total from which the plan is derived, and `ltoSettings` then supplies `downPaymentPercentage` + `installmentPeriods`. Omitting the field required for the chosen `type` returns a `400 Bad Request`.\n- **Minimum payment:** every payment must be at least 100 (in the given currency) — for `buyNow` that is `basePrice`; for `leaseToOwn` it is the derived down payment and each installment. A plan that produces any payment below 100 returns a `400 Bad Request`.\n- `feePercentageShare` sets how the marketplace commission is split between seller and buyer.\n- **`paymentMethod`:** required when the buyer commits upfront without a later confirmation step — i.e. `initiatedBy=buyer`, or a broker pre-confirming the buyer (`confirmedBy.buyer=true`); omitting it then returns `400 Bad Request`. Omit it in every other flow.\n- **Conflict (`409`):** returned when the domain already has an agreement to sell in place (an accepted offer / agreement-reached lead). Complete or cancel that agreement before opening a SafePay transaction for the domain.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:write\">sellerhub:write</a>\n\n### Rate Limits \n\n * The limit for creating a SafePay transaction is 300 requests per user, within 300 seconds."
+      description: 'Opens a SafePay (escrow) transaction for a domain sale. The endpoint returns immediately; the counterparty confirms out of band.
+
+
+        The initiator role is stated via `initiatedBy` (`seller`, `buyer`, or `broker`). The returned `status` shows which side must still act (`pendingSellerConfirm` or `pendingBuyerConfirm`), or `active` when no confirmation remains.
+
+
+        ### Broker flow
+
+        When `initiatedBy=broker`, the authenticated caller is the broker acting on behalf of both parties:
+
+        - Provide the seller via `sellerEmail` or `sellerUsername`, and optionally the buyer via `buyerEmail` or `buyerUsername`.
+
+        - Use `confirmedBy` to pre-confirm the seller and/or buyer at creation, skipping their confirmation step.
+
+
+        ### Notes
+
+        - `basePrice` is required for both types: for `buyNow` it is the amount the buyer pays; for `leaseToOwn` it is the lease total from which the plan is derived, and `ltoSettings` then supplies `downPaymentPercentage` + `installmentPeriods`. Omitting the field required for the chosen `type` returns a `400 Bad Request`.
+
+        - **Minimum payment:** every payment must be at least 100 (in the given currency) — for `buyNow` that is `basePrice`; for `leaseToOwn` it is the derived down payment and each installment. A plan that produces any payment below 100 returns a `400 Bad Request`.
+
+        - `feePercentageShare` sets how the marketplace commission is split between seller and buyer.
+
+        - **`paymentMethod`:** required when the buyer commits upfront without a later confirmation step — i.e. `initiatedBy=buyer`, or a broker pre-confirming the buyer (`confirmedBy.buyer=true`); omitting it then returns `400 Bad Request`. Omit it in every other flow.
+
+        - **Conflict (`409`):** returned when the domain already has an agreement to sell in place (an accepted offer / agreement-reached lead). Complete or cancel that agreement before opening a SafePay transaction for the domain.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:write
+
+
+        ### Rate Limits
+
+
+        * The limit for creating a SafePay transaction is 300 requests per user, within 300 seconds.'
       parameters: []
       responses:
         '201':
@@ -1660,7 +1854,19 @@ paths:
     get:
       operationId: getSafePayTransaction
       summary: Get a SafePay transaction
-      description: "Reads a single SafePay (escrow) transaction by id, including its current lifecycle status. The caller must be a party to it (buyer, seller, or originating broker); anything else is reported as not found.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for reading a SafePay transaction is 60 requests per transaction, within 300 seconds."
+      description: 'Reads a single SafePay (escrow) transaction by id, including its current lifecycle status. The caller must be a party to it (buyer, seller, or originating broker); anything else is reported as not found.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for reading a SafePay transaction is 60 requests per transaction, within 300 seconds.'
       parameters:
       - name: transactionId
         in: path
@@ -1833,7 +2039,49 @@ paths:
     get:
       operationId: getVerificationRecords
       summary: Get verification records
-      description: "Returns verification options for domain ownership verification in SellerHub.\n\nThe response contains one or more verification options. You can choose ANY of the returned options\n(OR logic) that works best for your DNS setup. Within a chosen option, ALL records must\nbe created (AND logic).\n\n**Important:** The returned verification records are associated with your SellerHub account\nand can be used to verify ownership of ALL domains you want to add to SellerHub. You only\nneed to create these DNS records once per account, not separately for each domain.\n\n**Usage:**\n1. Call this endpoint to retrieve verification options\n2. Select ONE option from `options` array\n3. Create ALL DNS records listed in your selected option's `records` array on any domain\n4. Wait for DNS propagation; the system will verify your domain\n5. The same records can be used for verifying additional domains in your SellerHub account\n\nThis verification process is required for adding external domains to SellerHub.\n\n### Required Permissions \n\n - <a href=\"#scopes/sellerhub:read\">sellerhub:read</a>\n\n### Rate Limits \n\n * The limit for fetching verification records is 10 requests per user, within 60 seconds."
+      description: 'Returns verification options for domain ownership verification in SellerHub.
+
+
+        The response contains one or more verification options. You can choose ANY of the returned options
+
+        (OR logic) that works best for your DNS setup. Within a chosen option, ALL records must
+
+        be created (AND logic).
+
+
+        **Important:** The returned verification records are associated with your SellerHub account
+
+        and can be used to verify ownership of ALL domains you want to add to SellerHub. You only
+
+        need to create these DNS records once per account, not separately for each domain.
+
+
+        **Usage:**
+
+        1. Call this endpoint to retrieve verification options
+
+        2. Select ONE option from `options` array
+
+        3. Create ALL DNS records listed in your selected option''s `records` array on any domain
+
+        4. Wait for DNS propagation; the system will verify your domain
+
+        5. The same records can be used for verifying additional domains in your SellerHub account
+
+
+        This verification process is required for adding external domains to SellerHub.
+
+
+        ### Required Permissions
+
+
+        - sellerhub:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching verification records is 10 requests per user, within 60 seconds.'
       parameters: []
       responses:
         '200':
@@ -1993,68 +2241,27 @@ paths:
       - lang: shell
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/sellerhub/verification-records \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
-  parameters:
-    GetSoldDomainsQueryParams.saleDateTimeTo:
-      name: saleDateTimeTo
-      in: query
-      required: false
-      description: Exclusive upper bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-16T00:00:00.000Z`). When specified without `saleDateTimeFrom`, returns all records before this date. Must be later than `saleDateTimeFrom` when both are provided.
-      schema:
-        type: string
-        example: '2100-01-01T00:00:00.000Z'
-        maxLength: 27
-        format: date-time
-        description: ISO-8601 DateTime
-      explode: false
-    GetSoldDomainsQueryParams.saleDateTimeFrom:
-      name: saleDateTimeFrom
-      in: query
-      required: false
-      description: Inclusive lower bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-15T00:00:00.000Z`). When specified without `saleDateTimeTo`, returns all records from this date onwards. Must be earlier than `saleDateTimeTo` when both are provided.
-      schema:
-        type: string
-        example: '2100-01-01T00:00:00.000Z'
-        maxLength: 27
-        format: date-time
-        description: ISO-8601 DateTime
-      explode: false
   schemas:
-    domainNameULabel:
+    PriceUpdate:
+      type: object
+      properties:
+        amount:
+          type: string
+          example: '10.99'
+          maxLength: 20
+          pattern: ^[0-9]+(\.[0-9]{1,2})?$
+          description: Amount as string to preserve precision
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+          description: Currency code (ISO 4217)
+      description: Money amount with currency
+    isoDate:
       type: string
-      example: spaceship.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: Domain name in UTF-8 format (U-label)
-    domainDescription:
-      type: string
-      example: Premium domain for sale
-      maxLength: 5000
-      pattern: ^[\s\S]*$
-      description: Domain description text
-    SellerHubDomainStatus:
-      type: string
-      enum:
-      - failed
-      - verifying
-      - onSale
-      - onSaleStopped
-      - saleProcessing
-      - leaseActive
-      - sold
-      description: SellerHub domain status
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    Currency:
-      type: string
-      example: USD
-      minLength: 3
-      maxLength: 3
-      pattern: ^USD$
-      description: Currency code following ISO 4217 standard. Currently only USD is supported.
+      example: '2100-01-01T00:00:00.000Z'
+      maxLength: 27
+      format: date-time
+      description: ISO-8601 DateTime
     Price:
       type: object
       required:
@@ -2072,152 +2279,57 @@ components:
           - $ref: '#/components/schemas/Currency'
           description: Currency code (ISO 4217)
       description: Money amount with currency
-    ErrorDetail:
+    SellerHub.VerificationResponse:
       type: object
       required:
-      - detail
+      - options
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SafePayConfirmedBy:
-      type: object
-      required:
-      - seller
-      - buyer
-      properties:
-        seller:
-          type: boolean
-          example: true
-          description: Whether the seller has confirmed (or is pre-confirmed at creation).
-        buyer:
-          type: boolean
-          example: false
-          description: Whether the buyer has confirmed (or is pre-confirmed at creation).
-      description: 'Per-party confirmation flags.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/SellerHub.VerificationOption'
+          minItems: 1
+          maxItems: 5
+          description: 'Array of verification options available for domain verification.
 
 
-        On **create** (broker flow only): a broker may open a transaction already pre-confirmed by the seller and/or the buyer, skipping the respective confirmation step. Ignored for seller- and buyer-initiated transactions.
+            **OR Logic:** Choose any ONE option from this array to verify your domain.
+
+            **AND Logic:** Within the chosen option, create ALL records listed.
 
 
-        On **read**: reflects which parties have confirmed so far.'
-    CreateSellerHubDomainRequest:
-      type: object
-      required:
-      - name
-      properties:
-        description:
-          allOf:
-          - $ref: '#/components/schemas/domainDescription'
-          description: Domain description
-        displayName:
-          allOf:
-          - $ref: '#/components/schemas/displayName'
-          description: Display name for the domain
-        binPriceEnabled:
-          type: boolean
-          description: Enable or disable the Buy It Now (BIN) option
-        binPrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: Buy It Now (BIN) price for the domain
-        minPriceEnabled:
-          type: boolean
-          description: Enable or disable offer negotiation with minimum price
-        minPrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: Minimum offer price for the domain
-        name:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: spaceship.com
-          description: Domain name in Unicode format
-      description: Create SellerHub domain request
-    SafePayLtoSettings:
-      type: object
-      required:
-      - downPaymentPercentage
-      - installmentPeriods
-      properties:
-        downPaymentPercentage:
-          type: integer
-          format: int32
-          example: 10
-          minimum: 0
-          maximum: 99
-          description: 'Down payment as a whole-number percentage of the total lease price (integer only — fractional percentages are rejected). Capped at 99: a Lease-to-Own plan must leave a balance for the installments. A value near the cap leaves little per installment, and since each installment must be at least the platform minimum, an excessive percentage is still rejected on create. On read this is the nearest whole percent derived from the stored down-payment amount.'
-        installmentPeriods:
-          type: integer
-          format: int32
-          example: 5
-          minimum: 1
-          maximum: 120
-          description: Number of monthly installment periods over which the balance is paid.
-      description: 'Lease-to-Own terms for a `leaseToOwn` transaction: the down payment percentage and the number of installment periods. The total lease price is carried by `basePrice`.
+            If only one option is provided, that is the required verification method.
 
+            If multiple options are provided, you can choose the most convenient method for your setup.'
+      example:
+        options:
+        - records:
+          - type: TXT
+            name: '@'
+            value: spaceship-verification-token-abc123
+        - records:
+          - type: A
+            name: _spaceship_verify
+            value: 192.0.2.1
+          - type: AAAA
+            name: _spaceship_verify
+            value: 2001:db8::1
+      description: 'Verification response containing one or more verification options.
 
-        On **create** these two values, together with `basePrice`, define the plan — the down payment amount, per-installment amount, and any remainder are derived server-side. On **read** the same two values are recomputed from the stored plan: both remain whole numbers (never fractional), and `downPaymentPercentage` is rounded to the nearest whole percent of the down-payment amount. A plan created through this API round-trips to the submitted values; a plan created elsewhere with an explicit down-payment amount may report the closest whole percent.'
-    CreateCheckoutLinkRequest:
-      type: object
-      required:
-      - type
-      - domainName
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/CheckoutLinkType'
-          description: Specifies the checkout flow type. Currently supports 'BuyNow' for immediate purchase at the specified price.
-        basePrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: The price at which the domain will be offered in the checkout link. This is the amount the buyer will pay to purchase the domain. If not provided, the domain's Buy It Now price will be used.
-        domainName:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: example.com
-          description: The domain name to create a checkout link for. Must be a domain currently listed in SellerHub.
-        feePercentageShare:
-          allOf:
-          - $ref: '#/components/schemas/FeePercentageShare'
-          description: Commission split configuration. Determines how the platform commission is divided between seller and buyer. If omitted, defaults to 100% seller / 0% buyer.
-      description: Request payload for creating a checkout link. A checkout link allows potential buyers to purchase a domain listed in SellerHub through a direct URL.
-    SafePayTransactionStatus:
+        Users can choose to implement ANY ONE of the provided options (OR logic).
+
+        Within each option, ALL records must be created (AND logic).'
+    domainDescription:
       type: string
-      enum:
-      - active
-      - pendingSellerConfirm
-      - pendingBuyerConfirm
-      - processing
-      - verification
-      - deactivated
-      - purchased
-      - expired
-      example: active
-      description: 'Lifecycle status of a SafePay transaction.
-
-
-        Pre-confirmation states (`pendingSellerConfirm`, `pendingBuyerConfirm`) require counterparty action. `processing` and `verification` are intermediate states after the buyer pays (payment settlement and domain-ownership verification) that resolve to `purchased` or a terminal error state. Terminal states are `purchased`, `deactivated`, and `expired`.'
-    isoDate:
+      example: Premium domain for sale
+      maxLength: 5000
+      pattern: ^[\s\S]*$
+      description: Domain description text
+    errorCode:
       type: string
-      example: '2100-01-01T00:00:00.000Z'
-      maxLength: 27
-      format: date-time
-      description: ISO-8601 DateTime
-    SafePayTransactionType:
-      type: string
-      enum:
-      - buyNow
-      - leaseToOwn
-      example: buyNow
-      description: 'Sale type for the SafePay transaction.
-
-
-        - **buyNow**: single-payment purchase at the agreed `basePrice`.
-
-        - **leaseToOwn**: installment-based purchase; `ltoSettings` carries the plan and `basePrice` is the total lease price.'
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     CreateSafePayTransactionRequest:
       type: object
       required:
@@ -2298,6 +2410,53 @@ components:
 
 
         `basePrice` is always required: for `buyNow` it is the single payment; for `leaseToOwn` it is the total lease price the plan is derived from. When `type=leaseToOwn`, also provide `ltoSettings` (`downPaymentPercentage` + `installmentPeriods`) — the down payment, installment amount, and final split are computed from `basePrice` and these two values.'
+    CheckoutLinkType:
+      type: string
+      enum:
+      - buyNow
+      description: 'Specifies the type of checkout link to be created. Each type determines a different purchase flow that buyers will experience when accessing the link.
+
+
+        Available types:
+
+        - **buyNow**: Direct purchase at a fixed price without negotiation
+
+        - **leaseToOwn**: Installment-based purchase plan (coming soon)
+
+        - **makeOffer**: Negotiation-based purchase where buyers submit offers (coming soon)'
+    SafePayPaymentMethod:
+      type: string
+      enum:
+      - btcPay
+      - wireTransfer
+      - creditCard
+      - payPal
+      - alipay
+      example: creditCard
+      description: Payment method the buyer commits to for a SafePay transaction.
+    uuid:
+      type: string
+      example: 550e8400-e29b-41d4-a716-446655440000
+      minLength: 32
+      maxLength: 36
+      format: uuid
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    displayName:
+      type: string
+      example: SpaceShip.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Display name for a domain with original capitalization
     UpdateSellerHubDomainRequest:
       type: object
       properties:
@@ -2324,51 +2483,97 @@ components:
           - $ref: '#/components/schemas/PriceUpdate'
           description: Minimum offer price for the domain
       description: Update SellerHub domain request
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SafePayPaymentMethod:
+    SafePayTransactionStatus:
       type: string
       enum:
-      - btcPay
-      - wireTransfer
-      - creditCard
-      - payPal
-      - alipay
-      example: creditCard
-      description: Payment method the buyer commits to for a SafePay transaction.
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SafePayInitiatedBy:
+      - active
+      - pendingSellerConfirm
+      - pendingBuyerConfirm
+      - processing
+      - verification
+      - deactivated
+      - purchased
+      - expired
+      example: active
+      description: 'Lifecycle status of a SafePay transaction.
+
+
+        Pre-confirmation states (`pendingSellerConfirm`, `pendingBuyerConfirm`) require counterparty action. `processing` and `verification` are intermediate states after the buyer pays (payment settlement and domain-ownership verification) that resolve to `purchased` or a terminal error state. Terminal states are `purchased`, `deactivated`, and `expired`.'
+    SellerHubDomainStatus:
       type: string
       enum:
-      - seller
-      - buyer
-      - broker
-      example: seller
-      description: Which party opened the SafePay transaction. The other party (or parties) must confirm before the deal becomes active.
-    displayName:
+      - failed
+      - verifying
+      - onSale
+      - onSaleStopped
+      - saleProcessing
+      - leaseActive
+      - sold
+      description: SellerHub domain status
+    email:
       type: string
-      example: SpaceShip.com
-      minLength: 4
+      example: user@example.com
+      minLength: 6
       maxLength: 255
-      format: domain
-      description: Display name for a domain with original capitalization
+      format: email
+      description: An email address.
+    CreateCheckoutLinkRequest:
+      type: object
+      required:
+      - type
+      - domainName
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CheckoutLinkType'
+          description: Specifies the checkout flow type. Currently supports 'BuyNow' for immediate purchase at the specified price.
+        basePrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: The price at which the domain will be offered in the checkout link. This is the amount the buyer will pay to purchase the domain. If not provided, the domain's Buy It Now price will be used.
+        domainName:
+          allOf:
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: example.com
+          description: The domain name to create a checkout link for. Must be a domain currently listed in SellerHub.
+        feePercentageShare:
+          allOf:
+          - $ref: '#/components/schemas/FeePercentageShare'
+          description: Commission split configuration. Determines how the platform commission is divided between seller and buyer. If omitted, defaults to 100% seller / 0% buyer.
+      description: Request payload for creating a checkout link. A checkout link allows potential buyers to purchase a domain listed in SellerHub through a direct URL.
+    SellerHub.VerificationRecord:
+      type: object
+      required:
+      - type
+      - name
+      - value
+      properties:
+        type:
+          type: string
+          example: TXT
+          minLength: 1
+          maxLength: 5
+          pattern: \w+
+          description: Type of DNS resource record to create for domain verification
+        name:
+          allOf:
+          - $ref: '#/components/schemas/hostNameValue'
+          example: '@'
+          description: 'Name of resource record excluding domain name part. ''@'' can be used as an apex domain.
+
+            Use this value as the ''Name'' or ''Host'' field when creating the DNS record.
+
+
+            Common values:
+
+            - ''@'' - Applies the record at the apex/root of your domain'
+        value:
+          type: string
+          example: 7e018923-c48d-4579-1111-1b9bb6952c96
+          maxLength: 256
+          pattern: ^[a-zA-Z0-9._:/-]+$
+          description: Verification value to be set as the DNS record value. Format depends on record type (token for TXT, IP for A/AAAA, etc.).
+      description: Verification record response
     UnexpectedError:
       type: object
       required:
@@ -2379,36 +2584,6 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    username:
-      type: string
-      example: domainseller
-      minLength: 1
-      maxLength: 255
-      pattern: ^[A-Za-z0-9._-]+$
-      description: A platform account username.
-    CreateCheckoutLinkResponse:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-          example: https://www.spaceship.com/s/buy/adsept.com/EhA4rDdGc9lTP320
-          maxLength: 2048
-          format: uri
-          description: The full URL of the checkout link. Share this URL with potential buyers to allow them to purchase the domain directly.
-        validTill:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: The expiration date and time of the checkout link in ISO-8601 format. After this time, the link will no longer be valid for purchases. If not provided, the link does not have an expiration date.
-      description: Response containing the newly created checkout link details. The checkout link can be shared with potential buyers for direct domain purchase.
-    email:
-      type: string
-      example: user@example.com
-      minLength: 6
-      maxLength: 255
-      format: email
-      description: An email address.
     SafePayTransactionUrls:
       type: object
       required:
@@ -2428,80 +2603,21 @@ components:
           format: uri
           description: Buyer-side SafePay review URL.
       description: Role-specific SafePay review URLs for the transaction.
-    SoldDomainResponse:
-      type: object
-      required:
-      - name
-      - unicodeName
-      - saleDateTime
-      - salePrice
-      - payout
-      - source
-      properties:
-        name:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: xn--spceship-9ya.com
-          description: Domain name in ASCII-compatible encoding (A-label / punycode). Always-safe form for tooling that doesn't render Unicode; the human-readable form lives in `unicodeName`.
-        unicodeName:
-          allOf:
-          - $ref: '#/components/schemas/domainNameULabel'
-          example: spaceship.com
-          description: Domain name in Unicode form (U-label). Equals `name` for ASCII-only domains; differs for internationalized domains.
-        displayName:
-          allOf:
-          - $ref: '#/components/schemas/displayName'
-          description: Display form of the domain name preserving the original capitalization configured by the seller (e.g., "SpaceShip.com"). Identical to `unicodeName` for domains without custom capitalization.
-        saleDateTime:
-          type: object
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          nullable: true
-          description: Date and time when the domain was sold as a full ISO-8601 UTC datetime (e.g., `2024-01-15T14:30:00.000Z`). Null if the sale date is not available. Records with a null sale date are excluded from results when a `saleDateTimeFrom`/`saleDateTimeTo` filter is applied.
-        salePrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: The gross amount at which the domain was sold (buyer's purchase price, before Spaceship marketplace fees are deducted).
-        payout:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: The net amount paid to the seller after Spaceship marketplace fees are deducted from the sale price.
-        source:
-          type: string
-          example: forSalePage
-          maxLength: 100
-          pattern: ^([A-Za-z][A-Za-z0-9]*|N/A)$
-          description: The channel through which the domain was sold (e.g., spaceshipSearch, forSalePage, checkoutLink). Returned as the literal `N/A` when the channel is unknown. New camelCase values may be added in the future.
-      description: Represents a sold domain in SellerHub
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SellerHub.VerificationOption:
-      type: object
-      required:
-      - records
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/SellerHub.VerificationRecord'
-          minItems: 1
-          maxItems: 10
-          description: 'Array of DNS records that must all be created for this verification option.
-
-            All records in this array are required (AND logic).'
-      description: 'Represents one verification method option.
-
-        Each option contains one or more DNS records that must all be created together.
-
-        Users can choose any ONE option from the available options to verify domain ownership.'
+    username:
+      type: string
+      example: domainseller
+      minLength: 1
+      maxLength: 255
+      pattern: ^[A-Za-z0-9._-]+$
+      description: A platform account username.
+    SafePayInitiatedBy:
+      type: string
+      enum:
+      - seller
+      - buyer
+      - broker
+      example: seller
+      description: Which party opened the SafePay transaction. The other party (or parties) must confirm before the deal becomes active.
     ValidationError:
       type: object
       required:
@@ -2535,25 +2651,26 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    PriceUpdate:
+    ObjectNotFoundError:
       type: object
+      required:
+      - detail
       properties:
-        amount:
+        detail:
           type: string
-          example: '10.99'
-          maxLength: 20
-          pattern: ^[0-9]+(\.[0-9]{1,2})?$
-          description: Amount as string to preserve precision
-        currency:
-          allOf:
-          - $ref: '#/components/schemas/Currency'
-          description: Currency code (ISO 4217)
-      description: Money amount with currency
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     SafePayTransaction:
       type: object
       required:
@@ -2622,12 +2739,108 @@ components:
 
 
         Party emails are present only when supplied at creation.'
+    SafePayLtoSettings:
+      type: object
+      required:
+      - downPaymentPercentage
+      - installmentPeriods
+      properties:
+        downPaymentPercentage:
+          type: integer
+          format: int32
+          example: 10
+          minimum: 0
+          maximum: 99
+          description: 'Down payment as a whole-number percentage of the total lease price (integer only — fractional percentages are rejected). Capped at 99: a Lease-to-Own plan must leave a balance for the installments. A value near the cap leaves little per installment, and since each installment must be at least the platform minimum, an excessive percentage is still rejected on create. On read this is the nearest whole percent derived from the stored down-payment amount.'
+        installmentPeriods:
+          type: integer
+          format: int32
+          example: 5
+          minimum: 1
+          maximum: 120
+          description: Number of monthly installment periods over which the balance is paid.
+      description: 'Lease-to-Own terms for a `leaseToOwn` transaction: the down payment percentage and the number of installment periods. The total lease price is carried by `basePrice`.
+
+
+        On **create** these two values, together with `basePrice`, define the plan — the down payment amount, per-installment amount, and any remainder are derived server-side. On **read** the same two values are recomputed from the stored plan: both remain whole numbers (never fractional), and `downPaymentPercentage` is rounded to the nearest whole percent of the down-payment amount. A plan created through this API round-trips to the submitted values; a plan created elsewhere with an explicit down-payment amount may report the closest whole percent.'
+    SoldDomainResponse:
+      type: object
+      required:
+      - name
+      - unicodeName
+      - saleDateTime
+      - salePrice
+      - payout
+      - source
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: xn--spceship-9ya.com
+          description: Domain name in ASCII-compatible encoding (A-label / punycode). Always-safe form for tooling that doesn't render Unicode; the human-readable form lives in `unicodeName`.
+        unicodeName:
+          allOf:
+          - $ref: '#/components/schemas/domainNameULabel'
+          example: spaceship.com
+          description: Domain name in Unicode form (U-label). Equals `name` for ASCII-only domains; differs for internationalized domains.
+        displayName:
+          allOf:
+          - $ref: '#/components/schemas/displayName'
+          description: Display form of the domain name preserving the original capitalization configured by the seller (e.g., "SpaceShip.com"). Identical to `unicodeName` for domains without custom capitalization.
+        saleDateTime:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Date and time when the domain was sold as a full ISO-8601 UTC datetime (e.g., `2024-01-15T14:30:00.000Z`). Null if the sale date is not available. Records with a null sale date are excluded from results when a `saleDateTimeFrom`/`saleDateTimeTo` filter is applied.
+        salePrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: The gross amount at which the domain was sold (buyer's purchase price, before Spaceship marketplace fees are deducted).
+        payout:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: The net amount paid to the seller after Spaceship marketplace fees are deducted from the sale price.
+        source:
+          type: string
+          example: forSalePage
+          maxLength: 100
+          pattern: ^([A-Za-z][A-Za-z0-9]*|N/A)$
+          description: The channel through which the domain was sold (e.g., spaceshipSearch, forSalePage, checkoutLink). Returned as the literal `N/A` when the channel is unknown. New camelCase values may be added in the future.
+      description: Represents a sold domain in SellerHub
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     hostNameValue:
       type: string
       example: '@'
       minLength: 1
       maxLength: 253
       pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
+    CreateCheckoutLinkResponse:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          example: https://www.spaceship.com/s/buy/adsept.com/EhA4rDdGc9lTP320
+          maxLength: 2048
+          format: uri
+          description: The full URL of the checkout link. Share this URL with potential buyers to allow them to purchase the domain directly.
+        validTill:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: The expiration date and time of the checkout link in ISO-8601 format. After this time, the link will no longer be valid for purchases. If not provided, the link does not have an expiration date.
+      description: Response containing the newly created checkout link details. The checkout link can be shared with potential buyers for direct domain purchase.
     sellerhubDomainName:
       type: string
       example: onsale.com
@@ -2635,99 +2848,39 @@ components:
       maxLength: 255
       format: domain
       description: SellerHub Domain Name
-    SellerHub.VerificationResponse:
+    CreateSellerHubDomainRequest:
       type: object
       required:
-      - options
-      properties:
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/SellerHub.VerificationOption'
-          minItems: 1
-          maxItems: 5
-          description: 'Array of verification options available for domain verification.
-
-
-            **OR Logic:** Choose any ONE option from this array to verify your domain.
-
-            **AND Logic:** Within the chosen option, create ALL records listed.
-
-
-            If only one option is provided, that is the required verification method.
-
-            If multiple options are provided, you can choose the most convenient method for your setup.'
-      example:
-        options:
-        - records:
-          - type: TXT
-            name: '@'
-            value: spaceship-verification-token-abc123
-        - records:
-          - type: A
-            name: _spaceship_verify
-            value: 192.0.2.1
-          - type: AAAA
-            name: _spaceship_verify
-            value: 2001:db8::1
-      description: 'Verification response containing one or more verification options.
-
-        Users can choose to implement ANY ONE of the provided options (OR logic).
-
-        Within each option, ALL records must be created (AND logic).'
-    uuid:
-      type: string
-      example: 550e8400-e29b-41d4-a716-446655440000
-      minLength: 32
-      maxLength: 36
-      format: uuid
-    CheckoutLinkType:
-      type: string
-      enum:
-      - buyNow
-      description: 'Specifies the type of checkout link to be created. Each type determines a different purchase flow that buyers will experience when accessing the link.
-
-
-        Available types:
-
-        - **buyNow**: Direct purchase at a fixed price without negotiation
-
-        - **leaseToOwn**: Installment-based purchase plan (coming soon)
-
-        - **makeOffer**: Negotiation-based purchase where buyers submit offers (coming soon)'
-    SellerHub.VerificationRecord:
-      type: object
-      required:
-      - type
       - name
-      - value
       properties:
-        type:
-          type: string
-          example: TXT
-          minLength: 1
-          maxLength: 5
-          pattern: \w+
-          description: Type of DNS resource record to create for domain verification
+        description:
+          allOf:
+          - $ref: '#/components/schemas/domainDescription'
+          description: Domain description
+        displayName:
+          allOf:
+          - $ref: '#/components/schemas/displayName'
+          description: Display name for the domain
+        binPriceEnabled:
+          type: boolean
+          description: Enable or disable the Buy It Now (BIN) option
+        binPrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: Buy It Now (BIN) price for the domain
+        minPriceEnabled:
+          type: boolean
+          description: Enable or disable offer negotiation with minimum price
+        minPrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: Minimum offer price for the domain
         name:
           allOf:
-          - $ref: '#/components/schemas/hostNameValue'
-          example: '@'
-          description: 'Name of resource record excluding domain name part. ''@'' can be used as an apex domain.
-
-            Use this value as the ''Name'' or ''Host'' field when creating the DNS record.
-
-
-            Common values:
-
-            - ''@'' - Applies the record at the apex/root of your domain'
-        value:
-          type: string
-          example: 7e018923-c48d-4579-1111-1b9bb6952c96
-          maxLength: 256
-          pattern: ^[a-zA-Z0-9._:/-]+$
-          description: Verification value to be set as the DNS record value. Format depends on record type (token for TXT, IP for A/AAAA, etc.).
-      description: Verification record response
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: spaceship.com
+          description: Domain name in Unicode format
+      description: Create SellerHub domain request
     SellerHubDomainResponse:
       type: object
       required:
@@ -2769,16 +2922,6 @@ components:
         minPriceEnabled:
           type: boolean
           description: Indicates whether offer negotiation with minimum price is enabled
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     FeePercentage:
       type: integer
       enum:
@@ -2792,6 +2935,40 @@ components:
       format: int32
       minimum: 0
       maximum: 100
+    Currency:
+      type: string
+      example: USD
+      minLength: 3
+      maxLength: 3
+      pattern: ^USD$
+      description: Currency code following ISO 4217 standard. Currently only USD is supported.
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    SafePayTransactionType:
+      type: string
+      enum:
+      - buyNow
+      - leaseToOwn
+      example: buyNow
+      description: 'Sale type for the SafePay transaction.
+
+
+        - **buyNow**: single-payment purchase at the agreed `basePrice`.
+
+        - **leaseToOwn**: installment-based purchase; `ltoSettings` carries the plan and `basePrice` is the total lease price.'
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     FeePercentageShare:
       type: object
       required:
@@ -2812,6 +2989,78 @@ components:
         seller: 0
         buyer: 100
       description: Commission split between seller and buyer. Determines how the platform commission is distributed. The seller and buyer percentages must sum to 100.
+    SafePayConfirmedBy:
+      type: object
+      required:
+      - seller
+      - buyer
+      properties:
+        seller:
+          type: boolean
+          example: true
+          description: Whether the seller has confirmed (or is pre-confirmed at creation).
+        buyer:
+          type: boolean
+          example: false
+          description: Whether the buyer has confirmed (or is pre-confirmed at creation).
+      description: 'Per-party confirmation flags.
+
+
+        On **create** (broker flow only): a broker may open a transaction already pre-confirmed by the seller and/or the buyer, skipping the respective confirmation step. Ignored for seller- and buyer-initiated transactions.
+
+
+        On **read**: reflects which parties have confirmed so far.'
+    domainNameULabel:
+      type: string
+      example: spaceship.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Domain name in UTF-8 format (U-label)
+    SellerHub.VerificationOption:
+      type: object
+      required:
+      - records
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/SellerHub.VerificationRecord'
+          minItems: 1
+          maxItems: 10
+          description: 'Array of DNS records that must all be created for this verification option.
+
+            All records in this array are required (AND logic).'
+      description: 'Represents one verification method option.
+
+        Each option contains one or more DNS records that must all be created together.
+
+        Users can choose any ONE option from the available options to verify domain ownership.'
+  parameters:
+    GetSoldDomainsQueryParams.saleDateTimeFrom:
+      name: saleDateTimeFrom
+      in: query
+      required: false
+      description: Inclusive lower bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-15T00:00:00.000Z`). When specified without `saleDateTimeTo`, returns all records from this date onwards. Must be earlier than `saleDateTimeTo` when both are provided.
+      schema:
+        type: string
+        example: '2100-01-01T00:00:00.000Z'
+        maxLength: 27
+        format: date-time
+        description: ISO-8601 DateTime
+      explode: false
+    GetSoldDomainsQueryParams.saleDateTimeTo:
+      name: saleDateTimeTo
+      in: query
+      required: false
+      description: Exclusive upper bound for the sale time filter as a full ISO-8601 UTC datetime (e.g., `2024-01-16T00:00:00.000Z`). When specified without `saleDateTimeFrom`, returns all records before this date. Must be later than `saleDateTimeFrom` when both are provided.
+      schema:
+        type: string
+        example: '2100-01-01T00:00:00.000Z'
+        maxLength: 27
+        format: date-time
+        description: ISO-8601 DateTime
+      explode: false
   securitySchemes:
     apiKey:
       type: apiKey

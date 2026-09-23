@@ -1,10 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
   title: Spaceship.com Async Operations API
   contact:
     email: support@spaceship.com
     url: https://www.spaceship.com/about/contact-us/
-  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  description: '# Spaceship API
+
+
+    ## Authentication
+
+
+    Spaceship API uses a combination of API key and API secret for authentication.'
   version: 1.0.0
   x-logo:
     url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
@@ -22,7 +28,21 @@ paths:
     get:
       operationId: getAsyncOperationDetails
       summary: Obtain async operation details
-      description: "Retrieves the details of an async operation, including its status and any associated details.\nThis operation is essential for tracking the progress and outcome of async operations, providing users with the necessary information to manage their requests effectively.\n\n### Required Permissions \n\n - <a href=\"#scopes/asyncoperations:read\">asyncoperations:read</a>\n\n### Rate Limits \n\n * The limit for fetching async operation details is 60 requests per user, within 300 seconds."
+      description: 'Retrieves the details of an async operation, including its status and any associated details.
+
+        This operation is essential for tracking the progress and outcome of async operations, providing users with the necessary information to manage their requests effectively.
+
+
+        ### Required Permissions
+
+
+        - asyncoperations:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching async operation details is 60 requests per user, within 300 seconds.'
       parameters:
       - name: operationId
         in: path
@@ -191,36 +211,6 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/async-operations/%7BoperationId%7D \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    AsyncOperationStatus:
-      type: string
-      enum:
-      - pending
-      - failed
-      - success
-    AsyncOperationDetails:
-      type: object
-      description: Async operation details
-    isoDate:
-      type: string
-      example: '2100-01-01T00:00:00.000Z'
-      maxLength: 27
-      format: date-time
-      description: ISO-8601 DateTime
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
     ForbiddenError:
       type: object
       required:
@@ -264,6 +254,39 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    AsyncOperationDetails:
+      type: object
+      description: Async operation details
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     AsyncOperationData:
       type: object
       required:
@@ -294,31 +317,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/isoDate'
           description: The time the async operation was last modified.
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    errorCode:
+    operationId:
       type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     UnauthorizedError:
       type: object
       required:
@@ -329,6 +332,17 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
+    isoDate:
+      type: string
+      example: '2100-01-01T00:00:00.000Z'
+      maxLength: 27
+      format: date-time
+      description: ISO-8601 DateTime
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     UnexpectedError:
       type: object
       required:
@@ -339,6 +353,12 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
+    AsyncOperationStatus:
+      type: string
+      enum:
+      - pending
+      - failed
+      - success
   securitySchemes:
     apiKey:
       type: apiKey

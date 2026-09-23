@@ -1,10 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Spaceship.com Async Operations Domain Management API
+  title: Spaceship.com Domain Management API
   contact:
     email: support@spaceship.com
     url: https://www.spaceship.com/about/contact-us/
-  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  description: '# Spaceship API
+
+
+    ## Authentication
+
+
+    Spaceship API uses a combination of API key and API secret for authentication.'
   version: 1.0.0
   x-logo:
     url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
@@ -22,7 +28,21 @@ paths:
     get:
       operationId: getDomainList
       summary: Get domain list
-      description: "Retrieves a paginated list of domains, allowing the use of query parameters to customize the response.\nThis operation is essential for efficiently managing large collections of domains, enabling smooth navigation and retrieval without overloading the system with unnecessary data.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for fetching a domain list is 300 requests per user, within 300 seconds."
+      description: 'Retrieves a paginated list of domains, allowing the use of query parameters to customize the response.
+
+        This operation is essential for efficiently managing large collections of domains, enabling smooth navigation and retrieval without overloading the system with unnecessary data.
+
+
+        ### Required Permissions
+
+
+        - domains:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching a domain list is 300 requests per user, within 300 seconds.'
       parameters:
       - name: take
         in: query
@@ -239,7 +259,19 @@ paths:
     get:
       operationId: getDomainInfo
       summary: Get domain info
-      description: "Get details of a specific domain.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for obtaining info for a domain is 5 requests per domain, within 300 seconds."
+      description: 'Get details of a specific domain.
+
+
+        ### Required Permissions
+
+
+        - domains:read
+
+
+        ### Rate Limits
+
+
+        * The limit for obtaining info for a domain is 5 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -412,7 +444,19 @@ paths:
     delete:
       operationId: domainDelete
       summary: Delete the domain
-      description: "<div style=\"font-size: 1.8em; color: #f06700; font-weight:bold; padding-bottom: 20px; line-height: 1.4em\">\nThis API is under development and currently returns an HTTP 501 status. \n<p style=\"font-size: 0.7em;\">The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.</p>\n</div> \n Delete the specific domain. Please note a refund will not be provided as part of this operation.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>"
+      description: 'This API is under development and currently returns an HTTP 501 status.
+
+
+        The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.
+
+
+        Delete the specific domain. Please note a refund will not be provided as part of this operation.
+
+
+        ### Required Permissions
+
+
+        - domains:write'
       parameters:
       - name: domain
         in: path
@@ -581,7 +625,19 @@ paths:
     post:
       operationId: domainCreate
       summary: Register the domain
-      description: "Register a specific domain.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to register domains is 30 requests per user, within 30 seconds."
+      description: 'Register a specific domain.
+
+
+        ### Required Permissions
+
+
+        - domains:billing
+
+
+        ### Rate Limits
+
+
+        * The limit to register domains is 30 requests per user, within 30 seconds.'
       parameters:
       - name: domain
         in: path
@@ -765,7 +821,19 @@ paths:
     post:
       operationId: domainRenew
       summary: Requests domain renewal
-      description: "Requests domain renewal.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to renew domains is 30 requests per user, within 30 seconds."
+      description: 'Requests domain renewal.
+
+
+        ### Required Permissions
+
+
+        - domains:billing
+
+
+        ### Rate Limits
+
+
+        * The limit to renew domains is 30 requests per user, within 30 seconds.'
       parameters:
       - name: domain
         in: path
@@ -949,7 +1017,19 @@ paths:
     post:
       operationId: domainRestore
       summary: Requests domain restoration
-      description: "Requests domain restoration.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:billing\">domains:billing</a>\n\n### Rate Limits \n\n * The limit to restore domains is 30 requests per user, within 30 seconds."
+      description: 'Requests domain restoration.
+
+
+        ### Required Permissions
+
+
+        - domains:billing
+
+
+        ### Rate Limits
+
+
+        * The limit to restore domains is 30 requests per user, within 30 seconds.'
       parameters:
       - name: domain
         in: path
@@ -1125,57 +1205,6 @@ paths:
         source: "curl --request POST \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/restore \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    fqdn:
-      type: string
-      example: ns1.spaceship.dev
-      minLength: 4
-      maxLength: 255
-      format: hostname
-    domainNameULabel:
-      type: string
-      example: spaceship.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: Domain name in UTF-8 format (U-label)
-    DomainClientEPPStatus:
-      type: string
-      enum:
-      - clientDeleteProhibited
-      - clientHold
-      - clientRenewProhibited
-      - clientTransferProhibited
-      - clientUpdateProhibited
-    domainNameALabel:
-      type: string
-      example: xn--spceship-9ya.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: Domain name in ASCII format (A-label)
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    DomainLifecycleStatus:
-      type: string
-      enum:
-      - creating
-      - registered
-      - grace1
-      - grace2
-      - redemption
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     DomainPrivacyProtection:
       type: object
       required:
@@ -1191,43 +1220,17 @@ components:
           - $ref: '#/components/schemas/DomainPrivacyLevel'
           example: high
           description: Level of privacy protection set for the domain
-    DomainContacts:
-      type: object
-      required:
-      - registrant
-      properties:
-        registrant:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the registrant contact person
-        admin:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the admin contact person
-        tech:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the technical contact person
-        billing:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the billing contact person
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/contactId'
-          example:
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
-          maxItems: 5
-          description: List of extended attribute contact point IDs
-      description: Domain Contacts presented as ID references
     isoDate:
       type: string
       example: '2100-01-01T00:00:00.000Z'
       maxLength: 27
       format: date-time
       description: ISO-8601 DateTime
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     DomainVerificationStatus:
       type: string
       enum:
@@ -1242,238 +1245,6 @@ components:
         * `success` - Verification success.
 
         * `failed` - Verification failed.'
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    Provider:
-      type: string
-      enum:
-      - basic
-      - custom
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    DomainSuspensionDetails:
-      type: object
-      required:
-      - reasonCode
-      properties:
-        reasonCode:
-          type: string
-          enum:
-          - raaVerification
-          - abuse
-          - promoAbuse
-          - fraud
-          - pendingAccountVerification
-          - unauthorizedAccess
-          - tosViolation
-          - transferDispute
-          - restrictedSecurity
-          - lockCourt
-          - suspendCourt
-          - udrpUrs
-          - restrictedLegal
-          - paymentPending
-          - unpaidService
-          - restrictedWhois
-          - lockedWhois
-          example: raaVerification
-          description: Suspension reason code
-    DomainNameServersConfigurationResponse:
-      type: object
-      required:
-      - hosts
-      properties:
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/fqdn'
-          example:
-          - ns1.exampledomain.com
-          - ns2.exampledomain.com
-          minItems: 2
-          maxItems: 12
-          description: A list of nameservers assigned to the domain. Each nameserver is provided in a fully qualified domain format.
-      allOf:
-      - $ref: '#/components/schemas/DomainNameServersConfigurationRequest'
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ValidationError:
-      type: object
-      required:
-      - detail
-      - data
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                example: name
-                pattern: ^[\s|\S]*$
-                description: The path to the field that caused the validation error
-                readOnly: true
-              details:
-                type: string
-                example: The domain name contains invalid characters
-                pattern: ^[\s|\S]*$
-                description: A specific message about what is wrong with the field
-                readOnly: true
-            required:
-            - field
-            - details
-          description: A detailed list of validation errors
-          readOnly: true
-    DomainNameServersConfigurationRequest:
-      type: object
-      required:
-      - provider
-      properties:
-        provider:
-          allOf:
-          - $ref: '#/components/schemas/Provider'
-          example: custom
-          description: Nameservers provider
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/fqdn'
-          example:
-          - ns1.exampledomain.com
-          - ns2.exampledomain.com
-          minItems: 2
-          maxItems: 12
-          description: 'A list of nameservers to be assigned to the domain. Each nameserver must be provided in a fully qualified domain format.
-
-            This field must be specified only for the "custom" provider; for the "basic" provider it should be omitted.'
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    Domains.DomainRenewalRequestInfo:
-      type: object
-      required:
-      - years
-      - currentExpirationDate
-      properties:
-        years:
-          type: integer
-          format: int32
-          example: 1
-          minimum: 1
-          maximum: 10
-          description: Renewal years
-        currentExpirationDate:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: Current expiration date
-      description: Parameters required to request a domain renewal
-    contactId:
-      type: string
-      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-      minLength: 27
-      maxLength: 32
-      pattern: '[a-zA-Z0-9]+'
-      description: Contact ID
-    DomainPrivacyLevel:
-      type: string
-      enum:
-      - public
-      - high
-    DomainPrivacyOptions:
-      type: object
-      required:
-      - level
-      - userConsent
-      properties:
-        level:
-          allOf:
-          - $ref: '#/components/schemas/DomainPrivacyLevel'
-          example: high
-          description: 'Indicates the level of privacy protection. Set this property to "high" to enable privacy protection and hide your personal details, or to "public" to display your real contact information.
-
-            When choosing the "public" level, the "userConsent" property must be set to true to confirm your explicit consent for making your contact information publicly available.
-
-
-            Note: not all TLDs support "high" privacy protection level'
-        userConsent:
-          type: boolean
-          example: true
-          description: Indicates whether the user consents to the Public privacy settings
-      description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
-    DomainCreateRequest:
-      type: object
-      required:
-      - autoRenew
-      - years
-      - privacyProtection
-      - contacts
-      properties:
-        autoRenew:
-          type: boolean
-          example: false
-          description: Specifies whether automatic renewal will be enabled for the domain after the registration. After that, if autoRenew is set to true, the domain will be automatically renewed using the account’s default payment method upon each expiration
-        years:
-          type: integer
-          format: int32
-          example: 1
-          minimum: 1
-          maximum: 10
-          description: Number of years to register the domain
-        privacyProtection:
-          $ref: '#/components/schemas/DomainPrivacyOptions'
-        contacts:
-          allOf:
-          - $ref: '#/components/schemas/DomainContacts'
-          example:
-            registrant: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            admin: 1ZdMXpapqp9sle5dl8BlppTJXAzf6
-            tech: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            attributes:
-            - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
-          description: Domain contacts are specified using contact IDs. These contact IDs can be obtained from the “Get domain info” endpoint (/domains) for an existing domain, or by creating new contacts through the “Save contact details” endpoint (/contacts). Each contact ID corresponds to a specific contact person and includes their details (such as name, address, and email). These contacts will be associated with the domain during registration.
     DomainInfo:
       type: object
       required:
@@ -1539,7 +1310,6 @@ components:
         verificationStatus:
           allOf:
           - $ref: '#/components/schemas/DomainVerificationStatus'
-          nullable: true
           example: success
           description: Status of the RAA verification process. `null` if RAA procedure is not applied for the domain.
           readOnly: true
@@ -1581,6 +1351,52 @@ components:
             billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
             attributes:
             - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
+    fqdn:
+      type: string
+      example: ns1.spaceship.dev
+      minLength: 4
+      maxLength: 255
+      format: hostname
+    DomainNameServersConfigurationRequest:
+      type: object
+      required:
+      - provider
+      properties:
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/Provider'
+          example: custom
+          description: Nameservers provider
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/fqdn'
+          example:
+          - ns1.exampledomain.com
+          - ns2.exampledomain.com
+          minItems: 2
+          maxItems: 12
+          description: 'A list of nameservers to be assigned to the domain. Each nameserver must be provided in a fully qualified domain format.
+
+            This field must be specified only for the "custom" provider; for the "basic" provider it should be omitted.'
+    Domains.DomainRenewalRequestInfo:
+      type: object
+      required:
+      - years
+      - currentExpirationDate
+      properties:
+        years:
+          type: integer
+          format: int32
+          example: 1
+          minimum: 1
+          maximum: 10
+          description: Renewal years
+        currentExpirationDate:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Current expiration date
+      description: Parameters required to request a domain renewal
     RateLimitError:
       type: object
       required:
@@ -1591,6 +1407,269 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
+    DomainSuspensionDetails:
+      type: object
+      required:
+      - reasonCode
+      properties:
+        reasonCode:
+          type: string
+          enum:
+          - raaVerification
+          - abuse
+          - promoAbuse
+          - fraud
+          - pendingAccountVerification
+          - unauthorizedAccess
+          - tosViolation
+          - transferDispute
+          - restrictedSecurity
+          - lockCourt
+          - suspendCourt
+          - udrpUrs
+          - restrictedLegal
+          - paymentPending
+          - unpaidService
+          - restrictedWhois
+          - lockedWhois
+          example: raaVerification
+          description: Suspension reason code
+    DomainPrivacyOptions:
+      type: object
+      required:
+      - level
+      - userConsent
+      properties:
+        level:
+          allOf:
+          - $ref: '#/components/schemas/DomainPrivacyLevel'
+          example: high
+          description: 'Indicates the level of privacy protection. Set this property to "high" to enable privacy protection and hide your personal details, or to "public" to display your real contact information.
+
+            When choosing the "public" level, the "userConsent" property must be set to true to confirm your explicit consent for making your contact information publicly available.
+
+
+            Note: not all TLDs support "high" privacy protection level'
+        userConsent:
+          type: boolean
+          example: true
+          description: Indicates whether the user consents to the Public privacy settings
+      description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
+    contactId:
+      type: string
+      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+      minLength: 27
+      maxLength: 32
+      pattern: '[a-zA-Z0-9]+'
+      description: Contact ID
+    DomainContacts:
+      type: object
+      required:
+      - registrant
+      properties:
+        registrant:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the registrant contact person
+        admin:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the admin contact person
+        tech:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the technical contact person
+        billing:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the billing contact person
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactId'
+          example:
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
+          maxItems: 5
+          description: List of extended attribute contact point IDs
+      description: Domain Contacts presented as ID references
+    DomainNameServersConfigurationResponse:
+      type: object
+      required:
+      - hosts
+      properties:
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/fqdn'
+          example:
+          - ns1.exampledomain.com
+          - ns2.exampledomain.com
+          minItems: 2
+          maxItems: 12
+          description: A list of nameservers assigned to the domain. Each nameserver is provided in a fully qualified domain format.
+      allOf:
+      - $ref: '#/components/schemas/DomainNameServersConfigurationRequest'
+    DomainPrivacyLevel:
+      type: string
+      enum:
+      - public
+      - high
+    DomainClientEPPStatus:
+      type: string
+      enum:
+      - clientDeleteProhibited
+      - clientHold
+      - clientRenewProhibited
+      - clientTransferProhibited
+      - clientUpdateProhibited
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ValidationError:
+      type: object
+      required:
+      - detail
+      - data
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    DomainLifecycleStatus:
+      type: string
+      enum:
+      - creating
+      - registered
+      - grace1
+      - grace2
+      - redemption
+    DomainCreateRequest:
+      type: object
+      required:
+      - autoRenew
+      - years
+      - privacyProtection
+      - contacts
+      properties:
+        autoRenew:
+          type: boolean
+          example: false
+          description: Specifies whether automatic renewal will be enabled for the domain after the registration. After that, if autoRenew is set to true, the domain will be automatically renewed using the account’s default payment method upon each expiration
+        years:
+          type: integer
+          format: int32
+          example: 1
+          minimum: 1
+          maximum: 10
+          description: Number of years to register the domain
+        privacyProtection:
+          $ref: '#/components/schemas/DomainPrivacyOptions'
+        contacts:
+          allOf:
+          - $ref: '#/components/schemas/DomainContacts'
+          example:
+            registrant: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            admin: 1ZdMXpapqp9sle5dl8BlppTJXAzf6
+            tech: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            attributes:
+            - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
+          description: Domain contacts are specified using contact IDs. These contact IDs can be obtained from the “Get domain info” endpoint (/domains) for an existing domain, or by creating new contacts through the “Save contact details” endpoint (/contacts). Each contact ID corresponds to a specific contact person and includes their details (such as name, address, and email). These contacts will be associated with the domain during registration.
+    domainNameALabel:
+      type: string
+      example: xn--spceship-9ya.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Domain name in ASCII format (A-label)
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    Provider:
+      type: string
+      enum:
+      - basic
+      - custom
+    domainNameULabel:
+      type: string
+      example: spaceship.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Domain name in UTF-8 format (U-label)
   securitySchemes:
     apiKey:
       type: apiKey

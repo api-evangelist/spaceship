@@ -1,10 +1,16 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Spaceship.com Async Operations Personal Nameservers API
+  title: Spaceship.com Personal Nameservers API
   contact:
     email: support@spaceship.com
     url: https://www.spaceship.com/about/contact-us/
-  description: "# Spaceship API\n\n## Authentication\n\nSpaceship API uses a combination of API key and API secret for authentication.\n\n### API key setup\nYou can generate your API key and secret in [API Manager](https://www.spaceship.com/application/api-manager/). Use the \"New API key\" button to set up a new API key and follow the guide to get started.\nAfter the key setup has been successful, it should appear on the API Manager application page.\n\n### API key usage\nAs shown in the example below, API consumers shall pass a valid API key and a corresponding API secret in the X-API-Secret headers.\nYou do not need to encode the API key and the API secret.\n```bash\ncurl -X GET '/api/resource' \\\n-H 'X-Api-Secret: F3brvQluT4s8aDB7PeFBH6qKHfH2xTKTneCjZbq3z2w7rj2vV6n_zhSvvJoQ' \\\n-H 'X-Api-Key: JdIS8QYFMZpVKupJtdc3'\n```\n\n## Asynchronous Operations\n\nSome API operations may take an extended period to complete. For these long-running operations, the API returns an HTTP 202 Accepted response with a `spaceship-async-operationid` header containing a unique operation identifier.\n\n### How Async Operations Work\n\n1. **Initiate Operation**: When you make a request that requires asynchronous processing (e.g., domain registration, transfer operations), the API immediately returns a 202 response.\n\n2. **Receive Operation ID**: The response includes the `spaceship-async-operationid` header with a unique identifier for tracking the operation.\n\n3. **Poll for Status**: Use the operation ID to poll the `/v1/async-operations/{operationId}` endpoint to check the current status of your operation.\n\n4. **Operation States**: Async operations can have the following statuses:\n   - `pending` - The operation is still in progress\n   - `success` - The operation completed successfully\n   - `failed` - The operation encountered an error and could not complete\n\n### Example Workflow\n\n```bash\n# Step 1: Initiate an async operation (e.g., domain registration)\ncurl -X POST '/api/v1/domains/example.com' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY' \\\n-H 'Content-Type: application/json' \\\n-d '{\n  \"autoRenew\": false,\n  \"years\": 1,\n  \"privacyProtection\": {\n    \"level\": \"high\",\n    \"userConsent\": true\n  },\n  \"contacts\": {\n    \"registrant\": \"CONTACT_ID\",\n    \"admin\": \"CONTACT_ID\",\n    \"tech\": \"CONTACT_ID\",\n    \"billing\": \"CONTACT_ID\"\n  }\n}'\n\n# Response: 202 Accepted\n# Headers: spaceship-async-operationid: abc123xyz\n\n# Step 2: Check operation status\ncurl -X GET '/api/v1/async-operations/abc123xyz' \\\n-H 'X-Api-Secret: YOUR_SECRET' \\\n-H 'X-Api-Key: YOUR_KEY'\n\n# Response includes:\n# - status: \"pending\" | \"success\" | \"failed\"\n# - type: Operation type (e.g., \"domains_Create\")\n# - details: Additional information about the operation\n# - createdAt: Timestamp when operation was created\n# - modifiedAt: Timestamp of last status update\n```\n\n### Permissions \n\n - <b id=\"scopes/domains:read\">domains:read</b> - Read domain information and check configuration\n- <b id=\"scopes/domains:write\">domains:write</b> - Manage domains and domain settings\n- <b id=\"scopes/domains:transfer\">domains:transfer</b> - Transfer domains in and out\n- <b id=\"scopes/domains:billing\">domains:billing</b> - Manage domains billing operations\n- <b id=\"scopes/contacts:write\">contacts:write</b> - Save contact details\n- <b id=\"scopes/contacts:read\">contacts:read</b> - Read contact details\n- <b id=\"scopes/dnsrecords:write\">dnsrecords:write</b> - Write DNS resource records\n- <b id=\"scopes/dnsrecords:read\">dnsrecords:read</b> - Read DNS resource records\n- <b id=\"scopes/asyncoperations:read\">asyncoperations:read</b> - Read async operations details\n- <b id=\"scopes/sellerhub:read\">sellerhub:read</b> - Read SellerHub Domains\n- <b id=\"scopes/sellerhub:write\">sellerhub:write</b> - Write SellerHub Domains"
+  description: '# Spaceship API
+
+
+    ## Authentication
+
+
+    Spaceship API uses a combination of API key and API secret for authentication.'
   version: 1.0.0
   x-logo:
     url: https://spaceship-cdn.com/spaceship-api-doc-assets/logo.svg
@@ -22,7 +28,22 @@ paths:
     get:
       operationId: getDomainPersonalNameservers
       summary: Get personal nameservers on a domain
-      description: "Get the personal nameservers for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>\n\n### Rate Limits \n\n * The limit for fetching personal nameservers for a domain is 5 requests per domain within 300 seconds."
+      description: 'Get the personal nameservers for a specific domain.
+
+
+        Personal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.
+
+
+        ### Required Permissions
+
+
+        - domains:read
+
+
+        ### Rate Limits
+
+
+        * The limit for fetching personal nameservers for a domain is 5 requests per domain within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -196,7 +217,22 @@ paths:
     get:
       operationId: getDomainPersonalNameserverHostInfo
       summary: Get personal nameservers host configuration
-      description: "<div style=\"font-size: 1.8em; color: #f06700; font-weight:bold; padding-bottom: 20px; line-height: 1.4em\">\nThis API is under development and currently returns an HTTP 501 status. \n<p style=\"font-size: 0.7em;\">The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.</p>\n</div> \n Get the configuration for personal nameservers associated with a specific domain.\n\nPersonal nameservers consist of A records for a specific host and glue records at the domain registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:read\">domains:read</a>"
+      description: 'This API is under development and currently returns an HTTP 501 status.
+
+
+        The provided information is for preliminary familiarization only. Once the API is implemented, this notice will be removed.
+
+
+        Get the configuration for personal nameservers associated with a specific domain.
+
+
+        Personal nameservers consist of A records for a specific host and glue records at the domain registry.
+
+
+        ### Required Permissions
+
+
+        - domains:read'
       parameters:
       - name: domain
         in: path
@@ -379,7 +415,25 @@ paths:
     put:
       operationId: updateDomainPersonalNameserverHostInfo
       summary: Update personal nameservers host configuration
-      description: "Update the configuration for personal nameservers associated with a specific domain.\n\n**If the host in the request body differs from the host in the path, this operation will rename the host and update the IP addresses, making the old host return a 404.**\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for updating the personal nameservers for a domain is 10 requests per domain, within 300 seconds."
+      description: 'Update the configuration for personal nameservers associated with a specific domain.
+
+
+        **If the host in the request body differs from the host in the path, this operation will rename the host and update the IP addresses, making the old host return a 404.**
+
+
+        Personal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.
+
+
+        ### Required Permissions
+
+
+        - domains:write
+
+
+        ### Rate Limits
+
+
+        * The limit for updating the personal nameservers for a domain is 10 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -568,7 +622,22 @@ paths:
     delete:
       operationId: deleteDomainPersonalNameserverHostInfo
       summary: Delete personal nameservers host configuration
-      description: "Delete the personal nameservers host configuration for a specific domain.\n\nPersonal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.\n\n### Required Permissions \n\n - <a href=\"#scopes/domains:write\">domains:write</a>\n\n### Rate Limits \n\n * The limit for deleting the personal nameservers host configuration for a domain is 10 requests per domain, within 300 seconds."
+      description: 'Delete the personal nameservers host configuration for a specific domain.
+
+
+        Personal nameservers are a combination of A records set for a specific host and glue records set for the domain on the registry.
+
+
+        ### Required Permissions
+
+
+        - domains:write
+
+
+        ### Rate Limits
+
+
+        * The limit for deleting the personal nameservers host configuration for a domain is 10 requests per domain, within 300 seconds.'
       parameters:
       - name: domain
         in: path
@@ -746,80 +815,6 @@ paths:
         source: "curl --request DELETE \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/personal-nameservers/api.www \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    ipAddress:
-      type: string
-      maxLength: 39
-      format: ip
-      description: An IP address represented as a string, which can be either IPv4 or IPv6 format.
-    PersonalNameserverRecord:
-      type: object
-      required:
-      - host
-      - ips
-      properties:
-        host:
-          allOf:
-          - $ref: '#/components/schemas/host'
-          example: ns1
-          description: The host name of the personal nameserver
-        ips:
-          type: array
-          items:
-            $ref: '#/components/schemas/ipAddress'
-          example:
-          - 127.2.2.2
-          - 12.22.22.21
-          minItems: 1
-          maxItems: 16
-          description: List of IP addresses associated with the personal nameserver host
-    HostNameServers:
-      type: object
-      required:
-      - ips
-      properties:
-        ips:
-          type: array
-          items:
-            $ref: '#/components/schemas/ipAddress'
-          example:
-          - 127.2.2.2
-          - 12.22.22.21
-          maxItems: 255
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    PersonalNameservers:
-      type: object
-      required:
-      - records
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalNameserverRecord'
-          example:
-          - host: ns1
-            ips:
-            - 127.0.0.1
-            - 127.0.0.2
-          - host: ns2
-            ips:
-            - 2001:0db8:85a3:0000:0000:8a2e:0370:7334
-          minItems: 1
-          maxItems: 255
-          description: List of hosts and IP addresses associated with the personal nameservers
     ForbiddenError:
       type: object
       required:
@@ -863,6 +858,16 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ObjectNotFoundError:
       type: object
       required:
@@ -873,12 +878,6 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    host:
-      type: string
-      example: api.www
-      minLength: 1
-      maxLength: 255
-      format: hostname
     ErrorDetail:
       type: object
       required:
@@ -889,11 +888,16 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    errorCode:
+    ipAddress:
       type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
+      maxLength: 39
+      format: ip
+      description: An IP address represented as a string, which can be either IPv4 or IPv6 format.
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     UnauthorizedError:
       type: object
       required:
@@ -904,6 +908,58 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
+    PersonalNameserverRecord:
+      type: object
+      required:
+      - host
+      - ips
+      properties:
+        host:
+          allOf:
+          - $ref: '#/components/schemas/host'
+          example: ns1
+          description: The host name of the personal nameserver
+        ips:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipAddress'
+          example:
+          - 127.2.2.2
+          - 12.22.22.21
+          minItems: 1
+          maxItems: 16
+          description: List of IP addresses associated with the personal nameserver host
+    host:
+      type: string
+      example: api.www
+      minLength: 1
+      maxLength: 255
+      format: hostname
+    PersonalNameservers:
+      type: object
+      required:
+      - records
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalNameserverRecord'
+          example:
+          - host: ns1
+            ips:
+            - 127.0.0.1
+            - 127.0.0.2
+          - host: ns2
+            ips:
+            - 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+          minItems: 1
+          maxItems: 255
+          description: List of hosts and IP addresses associated with the personal nameservers
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     UnexpectedError:
       type: object
       required:
@@ -914,6 +970,19 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
+    HostNameServers:
+      type: object
+      required:
+      - ips
+      properties:
+        ips:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipAddress'
+          example:
+          - 127.2.2.2
+          - 12.22.22.21
+          maxItems: 255
   securitySchemes:
     apiKey:
       type: apiKey
