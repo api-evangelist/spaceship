@@ -786,122 +786,6 @@ paths:
         source: "curl --request PUT \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '{\"isLocked\":true}'"
 components:
   schemas:
-    isoDate:
-      type: string
-      example: '2100-01-01T00:00:00.000Z'
-      maxLength: 27
-      format: date-time
-      description: ISO-8601 DateTime
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    Domains.DomainAuthCodeResponse:
-      type: object
-      required:
-      - authCode
-      - expires
-      properties:
-        authCode:
-          $ref: '#/components/schemas/authCode'
-        expires:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: The expiration date for the auth code
-          readOnly: true
-      description: Represents wrapper object for auth code response
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    DomainPrivacyOptions:
-      type: object
-      required:
-      - level
-      - userConsent
-      properties:
-        level:
-          allOf:
-          - $ref: '#/components/schemas/DomainPrivacyLevel'
-          example: high
-          description: 'Indicates the level of privacy protection. Set this property to "high" to enable privacy protection and hide your personal details, or to "public" to display your real contact information.
-
-            When choosing the "public" level, the "userConsent" property must be set to true to confirm your explicit consent for making your contact information publicly available.
-
-
-            Note: not all TLDs support "high" privacy protection level'
-        userConsent:
-          type: boolean
-          example: true
-          description: Indicates whether the user consents to the Public privacy settings
-      description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
-    contactId:
-      type: string
-      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-      minLength: 27
-      maxLength: 32
-      pattern: '[a-zA-Z0-9]+'
-      description: Contact ID
-    DomainContacts:
-      type: object
-      required:
-      - registrant
-      properties:
-        registrant:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the registrant contact person
-        admin:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the admin contact person
-        tech:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the technical contact person
-        billing:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the billing contact person
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/contactId'
-          example:
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
-          maxItems: 5
-          description: List of extended attribute contact point IDs
-      description: Domain Contacts presented as ID references
-    authCode:
-      type: string
-      example: abc@#$123%^&def
-      minLength: 1
-      maxLength: 50
-      pattern: ^.+$
-      description: Authorization code for the domain
-    DomainPrivacyLevel:
-      type: string
-      enum:
-      - public
-      - high
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     DomainTransferStatus:
       type: string
       enum:
@@ -915,6 +799,61 @@ components:
         * `completed` - transfer was completed
 
         * `cancelled` - transfer request was cancelled by loosing party'
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    DomainPrivacyLevel:
+      type: string
+      enum:
+      - public
+      - high
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     ValidationError:
       type: object
       required:
@@ -948,16 +887,20 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    ObjectNotFoundError:
+    Domains.DomainAuthCodeResponse:
       type: object
       required:
-      - detail
+      - authCode
+      - expires
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
+        authCode:
+          $ref: '#/components/schemas/authCode'
+        expires:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: The expiration date for the auth code
           readOnly: true
+      description: Represents wrapper object for auth code response
     ErrorDetail:
       type: object
       required:
@@ -968,16 +911,78 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    UnauthorizedError:
+    isoDate:
+      type: string
+      example: '2100-01-01T00:00:00.000Z'
+      maxLength: 27
+      format: date-time
+      description: ISO-8601 DateTime
+    DomainPrivacyOptions:
       type: object
       required:
-      - detail
+      - level
+      - userConsent
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+        level:
+          allOf:
+          - $ref: '#/components/schemas/DomainPrivacyLevel'
+          example: high
+          description: 'Indicates the level of privacy protection. Set this property to "high" to enable privacy protection and hide your personal details, or to "public" to display your real contact information.
+
+            When choosing the "public" level, the "userConsent" property must be set to true to confirm your explicit consent for making your contact information publicly available.
+
+
+            Note: not all TLDs support "high" privacy protection level'
+        userConsent:
+          type: boolean
+          example: true
+          description: Indicates whether the user consents to the Public privacy settings
+      description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
+    authCode:
+      type: string
+      example: abc@#$123%^&def
+      minLength: 1
+      maxLength: 50
+      pattern: ^.+$
+      description: Authorization code for the domain
+    DomainContacts:
+      type: object
+      required:
+      - registrant
+      properties:
+        registrant:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the registrant contact person
+        admin:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the admin contact person
+        tech:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the technical contact person
+        billing:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the billing contact person
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactId'
+          example:
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
+          maxItems: 5
+          description: List of extended attribute contact point IDs
+      description: Domain Contacts presented as ID references
+    contactId:
+      type: string
+      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+      minLength: 27
+      maxLength: 32
+      pattern: '[a-zA-Z0-9]+'
+      description: Contact ID
     DomainTransferRequest:
       type: object
       required:
@@ -1006,16 +1011,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/authCode'
           description: Authorization code (EPP code) required for domain transfers. This code is mandatory for most TLDs but may be optional for certain ccTLDs, for example, the .uk.
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     Domains.DomainTransferLock:
       type: object
       required:
@@ -1026,11 +1021,16 @@ components:
           example: true
           description: Describes transfer lock for the domain
       description: Represents wrapper object for transfer lock
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     Domains.DomainTransferDetailsResponse:
       type: object
       required:

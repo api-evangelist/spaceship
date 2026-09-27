@@ -211,7 +211,12 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/async-operations/%7BoperationId%7D \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    ForbiddenError:
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    UnexpectedError:
       type: object
       required:
       - detail
@@ -220,41 +225,24 @@ components:
           type: string
           pattern: ^[\s|\S]*$
           description: A general message about the exception
-          readOnly: true
-    ValidationError:
-      type: object
-      required:
-      - detail
-      - data
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                example: name
-                pattern: ^[\s|\S]*$
-                description: The path to the field that caused the validation error
-                readOnly: true
-              details:
-                type: string
-                example: The domain name contains invalid characters
-                pattern: ^[\s|\S]*$
-                description: A specific message about what is wrong with the field
-                readOnly: true
-            required:
-            - field
-            - details
-          description: A detailed list of validation errors
           readOnly: true
     RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    AsyncOperationStatus:
+      type: string
+      enum:
+      - pending
+      - failed
+      - success
+    ForbiddenError:
       type: object
       required:
       - detail
@@ -267,7 +255,7 @@ components:
     AsyncOperationDetails:
       type: object
       description: Async operation details
-    ObjectNotFoundError:
+    ErrorDetail:
       type: object
       required:
       - detail
@@ -277,7 +265,7 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    ErrorDetail:
+    ObjectNotFoundError:
       type: object
       required:
       - detail
@@ -317,11 +305,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/isoDate'
           description: The time the async operation was last modified.
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
     UnauthorizedError:
       type: object
       required:
@@ -338,27 +321,44 @@ components:
       maxLength: 27
       format: date-time
       description: ISO-8601 DateTime
-    errorCode:
+    operationId:
       type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    UnexpectedError:
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    ValidationError:
       type: object
       required:
       - detail
+      - data
       properties:
         detail:
           type: string
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    AsyncOperationStatus:
-      type: string
-      enum:
-      - pending
-      - failed
-      - success
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
   securitySchemes:
     apiKey:
       type: apiKey

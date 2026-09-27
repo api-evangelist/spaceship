@@ -985,33 +985,16 @@ paths:
         source: "curl --request PUT \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/privacy/preference \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '\n{\n  \"privacyLevel\": \"high\",\n  \"userConsent\": true\n}\n'"
 components:
   schemas:
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    DomainNameServersConfigurationRequest:
+    UnexpectedError:
       type: object
       required:
-      - provider
+      - detail
       properties:
-        provider:
-          allOf:
-          - $ref: '#/components/schemas/Provider'
-          example: custom
-          description: Nameservers provider
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/fqdn'
-          example:
-          - ns1.exampledomain.com
-          - ns2.exampledomain.com
-          minItems: 2
-          maxItems: 12
-          description: 'A list of nameservers to be assigned to the domain. Each nameserver must be provided in a fully qualified domain format.
-
-            This field must be specified only for the "custom" provider; for the "basic" provider it should be omitted.'
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     fqdn:
       type: string
       example: ns1.spaceship.dev
@@ -1039,32 +1022,41 @@ components:
         * `verification` - Verification process is in progress and requires user interaction.
 
         * `success` - Verification success.'
-    Domains.DomainEmailProtectionPreference:
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    UnauthorizedError:
       type: object
       required:
-      - contactForm
+      - detail
       properties:
-        contactForm:
-          type: boolean
-          example: true
-          description: Indicates whether WHOIS should display the contact form link
-      description: Represents a wrapper object for domain's email protection preference
-    Domains.DomainPrivacyPreference:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ForbiddenError:
       type: object
       required:
-      - privacyLevel
-      - userConsent
+      - detail
       properties:
-        privacyLevel:
-          allOf:
-          - $ref: '#/components/schemas/DomainPrivacyLevel'
-          example: high
-          description: Describes privacy preference for the domain
-        userConsent:
-          type: boolean
-          example: true
-          description: Expresses the user's consent for privacy changes. The operation will be performed ONLY if the flag is 'true'.
-      description: Represents a wrapper object for domain's privacy level preference
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     Domains.DomainAutoRenewal:
       type: object
       required:
@@ -1075,76 +1067,16 @@ components:
           example: true
           description: Describes autorenewal state for the domain
       description: Represents wrapper object for autorenewal state
-    contactId:
-      type: string
-      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-      minLength: 27
-      maxLength: 32
-      pattern: '[a-zA-Z0-9]+'
-      description: Contact ID
-    DomainContacts:
-      type: object
-      required:
-      - registrant
-      properties:
-        registrant:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the registrant contact person
-        admin:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the admin contact person
-        tech:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the technical contact person
-        billing:
-          allOf:
-          - $ref: '#/components/schemas/contactId'
-          description: ID of the billing contact person
-        attributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/contactId'
-          example:
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
-          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
-          maxItems: 5
-          description: List of extended attribute contact point IDs
-      description: Domain Contacts presented as ID references
-    DomainNameServersConfigurationResponse:
-      type: object
-      required:
-      - hosts
-      properties:
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/fqdn'
-          example:
-          - ns1.exampledomain.com
-          - ns2.exampledomain.com
-          minItems: 2
-          maxItems: 12
-          description: A list of nameservers assigned to the domain. Each nameserver is provided in a fully qualified domain format.
-      allOf:
-      - $ref: '#/components/schemas/DomainNameServersConfigurationRequest'
     DomainPrivacyLevel:
       type: string
       enum:
       - public
       - high
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     ValidationError:
       type: object
       required:
@@ -1178,16 +1110,16 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    ObjectNotFoundError:
+    Domains.DomainEmailProtectionPreference:
       type: object
       required:
-      - detail
+      - contactForm
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+        contactForm:
+          type: boolean
+          example: true
+          description: Indicates whether WHOIS should display the contact form link
+      description: Represents a wrapper object for domain's email protection preference
     ErrorDetail:
       type: object
       required:
@@ -1198,16 +1130,88 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    UnauthorizedError:
+    DomainNameServersConfigurationRequest:
       type: object
       required:
-      - detail
+      - provider
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/Provider'
+          example: custom
+          description: Nameservers provider
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/fqdn'
+          example:
+          - ns1.exampledomain.com
+          - ns2.exampledomain.com
+          minItems: 2
+          maxItems: 12
+          description: 'A list of nameservers to be assigned to the domain. Each nameserver must be provided in a fully qualified domain format.
+
+            This field must be specified only for the "custom" provider; for the "basic" provider it should be omitted.'
+    DomainNameServersConfigurationResponse:
+      type: object
+      required:
+      - hosts
+      properties:
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/fqdn'
+          example:
+          - ns1.exampledomain.com
+          - ns2.exampledomain.com
+          minItems: 2
+          maxItems: 12
+          description: A list of nameservers assigned to the domain. Each nameserver is provided in a fully qualified domain format.
+      allOf:
+      - $ref: '#/components/schemas/DomainNameServersConfigurationRequest'
+    DomainContacts:
+      type: object
+      required:
+      - registrant
+      properties:
+        registrant:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the registrant contact person
+        admin:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the admin contact person
+        tech:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the technical contact person
+        billing:
+          allOf:
+          - $ref: '#/components/schemas/contactId'
+          description: ID of the billing contact person
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactId'
+          example:
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf3
+          - 1ZdMXpapqp9sle5dl8BlppTJXAzf2
+          maxItems: 5
+          description: List of extended attribute contact point IDs
+      description: Domain Contacts presented as ID references
+    contactId:
+      type: string
+      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+      minLength: 27
+      maxLength: 32
+      pattern: '[a-zA-Z0-9]+'
+      description: Contact ID
+    Provider:
+      type: string
+      enum:
+      - basic
+      - custom
     Domains.PutContactsResponse:
       type: object
       required:
@@ -1219,26 +1223,22 @@ components:
           example: success
           description: Status of the RAA verification process. `null` if RAA procedure is not applied for the domain.
       description: Contacts updated successfully. Optionally contacts verification may be required.
-    ForbiddenError:
+    Domains.DomainPrivacyPreference:
       type: object
       required:
-      - detail
+      - privacyLevel
+      - userConsent
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    Provider:
-      type: string
-      enum:
-      - basic
-      - custom
+        privacyLevel:
+          allOf:
+          - $ref: '#/components/schemas/DomainPrivacyLevel'
+          example: high
+          description: Describes privacy preference for the domain
+        userConsent:
+          type: boolean
+          example: true
+          description: Expresses the user's consent for privacy changes. The operation will be performed ONLY if the flag is 'true'.
+      description: Represents a wrapper object for domain's privacy level preference
   securitySchemes:
     apiKey:
       type: apiKey
