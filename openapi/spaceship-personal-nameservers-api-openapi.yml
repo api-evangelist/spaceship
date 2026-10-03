@@ -815,18 +815,7 @@ paths:
         source: "curl --request DELETE \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/personal-nameservers/api.www \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    host:
-      type: string
-      example: api.www
-      minLength: 1
-      maxLength: 255
-      format: hostname
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    UnauthorizedError:
+    ErrorDetail:
       type: object
       required:
       - detail
@@ -836,7 +825,32 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    UnexpectedError:
+    ipAddress:
+      type: string
+      maxLength: 39
+      format: ip
+      description: An IP address represented as a string, which can be either IPv4 or IPv6 format.
+    PersonalNameservers:
+      type: object
+      required:
+      - records
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonalNameserverRecord'
+          example:
+          - host: ns1
+            ips:
+            - 127.0.0.1
+            - 127.0.0.2
+          - host: ns2
+            ips:
+            - 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+          minItems: 1
+          maxItems: 255
+          description: List of hosts and IP addresses associated with the personal nameservers
+    ObjectNotFoundError:
       type: object
       required:
       - detail
@@ -859,16 +873,12 @@ components:
           - 127.2.2.2
           - 12.22.22.21
           maxItems: 255
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+    host:
+      type: string
+      example: api.www
+      minLength: 1
+      maxLength: 255
+      format: hostname
     ForbiddenError:
       type: object
       required:
@@ -879,31 +889,11 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ipAddress:
+    errorCode:
       type: string
-      maxLength: 39
-      format: ip
-      description: An IP address represented as a string, which can be either IPv4 or IPv6 format.
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     PersonalNameserverRecord:
       type: object
       required:
@@ -925,31 +915,6 @@ components:
           minItems: 1
           maxItems: 16
           description: List of IP addresses associated with the personal nameserver host
-    PersonalNameservers:
-      type: object
-      required:
-      - records
-      properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonalNameserverRecord'
-          example:
-          - host: ns1
-            ips:
-            - 127.0.0.1
-            - 127.0.0.2
-          - host: ns2
-            ips:
-            - 2001:0db8:85a3:0000:0000:8a2e:0370:7334
-          minItems: 1
-          maxItems: 255
-          description: List of hosts and IP addresses associated with the personal nameservers
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
     ValidationError:
       type: object
       required:
@@ -982,6 +947,41 @@ components:
             - field
             - details
           description: A detailed list of validation errors
+          readOnly: true
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
           readOnly: true
   securitySchemes:
     apiKey:

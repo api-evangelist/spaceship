@@ -393,6 +393,16 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/contacts/attributes/1ZdMXpapqp9sle5dl8BlppTJXAzf5 \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     AttributeDetails:
       type: object
       required:
@@ -409,19 +419,7 @@ components:
           ca: '#/components/schemas/CaAttributeDetails'
           us: '#/components/schemas/UsAttributeDetails'
       description: Attribute details
-    Attributes.ContactsAttributesResponse:
-      type: object
-      required:
-      - contactId
-      properties:
-        contactId:
-          $ref: '#/components/schemas/contactId'
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    UnexpectedError:
+    ObjectNotFoundError:
       type: object
       required:
       - detail
@@ -431,7 +429,14 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    RateLimitError:
+    Attributes.ContactsAttributesResponse:
+      type: object
+      required:
+      - contactId
+      properties:
+        contactId:
+          $ref: '#/components/schemas/contactId'
+    ForbiddenError:
       type: object
       required:
       - detail
@@ -448,51 +453,11 @@ components:
       maxLength: 32
       pattern: '[a-zA-Z0-9]+'
       description: Contact ID
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    operationId:
+    errorCode:
       type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     ValidationError:
       type: object
       required:
@@ -525,6 +490,41 @@ components:
             - field
             - details
           description: A detailed list of validation errors
+          readOnly: true
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
           readOnly: true
   securitySchemes:
     apiKey:

@@ -396,12 +396,19 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/contacts/1ZdMXpapqp9sle5dl8BlppTJXAzf5 \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    UnauthorizedError:
+    Contacts.SaveResponse:
+      type: object
+      required:
+      - contactId
+      properties:
+        contactId:
+          type: string
+          example: 1ZdMXpapqp9sle5dl8BlppTJXAzf3
+          minLength: 27
+          maxLength: 32
+          pattern: '[a-zA-Z0-9]+'
+          description: Response with contactId generated, if contact was created, or existing contact's one.
+    ErrorDetail:
       type: object
       required:
       - detail
@@ -411,42 +418,6 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    phoneExt:
-      type: string
-      example: '256'
-      maxLength: 7
-      pattern: ^\d{0,7}$
-      description: Phone number extension
     ContactDetails:
       type: object
       required:
@@ -538,6 +509,13 @@ components:
           format: taxNumber
           description: Tax number
       description: Contact details
+    phone:
+      type: string
+      example: '+1.123456789'
+      minLength: 7
+      maxLength: 17
+      pattern: ^\+\d{1,3}\.\d{4,}$
+      description: Phone number
     ObjectNotFoundError:
       type: object
       required:
@@ -548,33 +526,7 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    phone:
-      type: string
-      example: '+1.123456789'
-      minLength: 7
-      maxLength: 17
-      pattern: ^\+\d{1,3}\.\d{4,}$
-      description: Phone number
-    countryCode:
-      type: string
-      example: US
-      minLength: 2
-      maxLength: 2
-      pattern: ^[A-Z]{2}$
-      description: Country code (ISO 3166-1 alpha-2)
-    Contacts.SaveResponse:
-      type: object
-      required:
-      - contactId
-      properties:
-        contactId:
-          type: string
-          example: 1ZdMXpapqp9sle5dl8BlppTJXAzf3
-          minLength: 27
-          maxLength: 32
-          pattern: '[a-zA-Z0-9]+'
-          description: Response with contactId generated, if contact was created, or existing contact's one.
-    ErrorDetail:
+    ForbiddenError:
       type: object
       required:
       - detail
@@ -584,11 +536,11 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    operationId:
+    errorCode:
       type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     ValidationError:
       type: object
       required:
@@ -621,6 +573,54 @@ components:
             - field
             - details
           description: A detailed list of validation errors
+          readOnly: true
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    phoneExt:
+      type: string
+      example: '256'
+      maxLength: 7
+      pattern: ^\d{0,7}$
+      description: Phone number extension
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    countryCode:
+      type: string
+      example: US
+      minLength: 2
+      maxLength: 2
+      pattern: ^[A-Z]{2}$
+      description: Country code (ISO 3166-1 alpha-2)
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
           readOnly: true
   securitySchemes:
     apiKey:
