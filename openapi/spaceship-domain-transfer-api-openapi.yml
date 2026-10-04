@@ -786,41 +786,18 @@ paths:
         source: "curl --request PUT \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/transfer/lock \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE' \\\n     --header 'content-type: application/json' \\\n     --data '{\"isLocked\":true}'"
 components:
   schemas:
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    Domains.DomainTransferDetailsResponse:
-      type: object
-      required:
-      - startedAt
-      - direction
-      - status
-      properties:
-        startedAt:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: Date when transfer was initiated
-        finishedAt:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: Date when transfer was finished
-        direction:
-          type: string
-          enum:
-          - in
-          description: 'Transfer direction: incoming'
-        status:
-          allOf:
-          - $ref: '#/components/schemas/DomainTransferStatus'
-          readOnly: true
-      description: Details of the domain name transfer
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    authCode:
+      type: string
+      example: abc@#$123%^&def
+      minLength: 1
+      maxLength: 50
+      pattern: ^.+$
+      description: Authorization code for the domain
     Domains.DomainTransferLock:
       type: object
       required:
@@ -831,63 +808,11 @@ components:
           example: true
           description: Describes transfer lock for the domain
       description: Represents wrapper object for transfer lock
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    authCode:
+    errorCode:
       type: string
-      example: abc@#$123%^&def
-      minLength: 1
-      maxLength: 50
-      pattern: ^.+$
-      description: Authorization code for the domain
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    DomainPrivacyLevel:
-      type: string
-      enum:
-      - public
-      - high
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
     DomainPrivacyOptions:
       type: object
       required:
@@ -909,26 +834,26 @@ components:
           example: true
           description: Indicates whether the user consents to the Public privacy settings
       description: Privacy protection options. This parameter controls the visibility of your domain registrant contact information in the public WHOIS database.
-    contactId:
-      type: string
-      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-      minLength: 27
-      maxLength: 32
-      pattern: '[a-zA-Z0-9]+'
-      description: Contact ID
-    DomainTransferStatus:
-      type: string
-      enum:
-      - pending
-      - completed
-      - cancelled
-      description: 'Status of the domain name transfer. Possible values are:
-
-        * `pending` - transfer is ongoing
-
-        * `completed` - transfer was completed
-
-        * `cancelled` - transfer request was cancelled by loosing party'
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     DomainContacts:
       type: object
       required:
@@ -966,11 +891,95 @@ components:
       maxLength: 27
       format: date-time
       description: ISO-8601 DateTime
-    errorCode:
+    Domains.DomainTransferDetailsResponse:
+      type: object
+      required:
+      - startedAt
+      - direction
+      - status
+      properties:
+        startedAt:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Date when transfer was initiated
+        finishedAt:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: Date when transfer was finished
+        direction:
+          type: string
+          enum:
+          - in
+          description: 'Transfer direction: incoming'
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DomainTransferStatus'
+          readOnly: true
+      description: Details of the domain name transfer
+    DomainTransferRequest:
+      type: object
+      required:
+      - autoRenew
+      - privacyProtection
+      - contacts
+      properties:
+        autoRenew:
+          type: boolean
+          example: false
+          description: Specifies whether automatic renewal will be enabled for the domain after the transfer is completed. After that, if autoRenew is set to true, the domain will be automatically renewed using the account’s default payment method upon each expiration
+        privacyProtection:
+          $ref: '#/components/schemas/DomainPrivacyOptions'
+        contacts:
+          allOf:
+          - $ref: '#/components/schemas/DomainContacts'
+          example:
+            registrant: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            admin: 1ZdMXpapqp9sle5dl8BlppTJXAzf6
+            tech: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+            attributes:
+            - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
+          description: Domain contacts are specified using contact IDs. These contact IDs can be obtained from the “Get domain info” endpoint (/domains) for an existing domain, or by creating new contacts through the “Save contact details” endpoint (/contacts). Each contact ID corresponds to a specific contact person and includes their details (such as name, address, and email). These contacts will be associated with the domain after transfer.
+        authCode:
+          allOf:
+          - $ref: '#/components/schemas/authCode'
+          description: Authorization code (EPP code) required for domain transfers. This code is mandatory for most TLDs but may be optional for certain ccTLDs, for example, the .uk.
+    contactId:
       type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
+      example: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
+      minLength: 27
+      maxLength: 32
+      pattern: '[a-zA-Z0-9]+'
+      description: Contact ID
+    DomainPrivacyLevel:
+      type: string
+      enum:
+      - public
+      - high
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    Domains.DomainAuthCodeResponse:
+      type: object
+      required:
+      - authCode
+      - expires
+      properties:
+        authCode:
+          $ref: '#/components/schemas/authCode'
+        expires:
+          allOf:
+          - $ref: '#/components/schemas/isoDate'
+          description: The expiration date for the auth code
+          readOnly: true
+      description: Represents wrapper object for auth code response
     ValidationError:
       type: object
       required:
@@ -1004,20 +1013,29 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    Domains.DomainAuthCodeResponse:
+    ObjectNotFoundError:
       type: object
       required:
-      - authCode
-      - expires
+      - detail
       properties:
-        authCode:
-          $ref: '#/components/schemas/authCode'
-        expires:
-          allOf:
-          - $ref: '#/components/schemas/isoDate'
-          description: The expiration date for the auth code
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
           readOnly: true
-      description: Represents wrapper object for auth code response
+    DomainTransferStatus:
+      type: string
+      enum:
+      - pending
+      - completed
+      - cancelled
+      description: 'Status of the domain name transfer. Possible values are:
+
+        * `pending` - transfer is ongoing
+
+        * `completed` - transfer was completed
+
+        * `cancelled` - transfer request was cancelled by loosing party'
     RateLimitError:
       type: object
       required:
@@ -1028,34 +1046,16 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    DomainTransferRequest:
+    ForbiddenError:
       type: object
       required:
-      - autoRenew
-      - privacyProtection
-      - contacts
+      - detail
       properties:
-        autoRenew:
-          type: boolean
-          example: false
-          description: Specifies whether automatic renewal will be enabled for the domain after the transfer is completed. After that, if autoRenew is set to true, the domain will be automatically renewed using the account’s default payment method upon each expiration
-        privacyProtection:
-          $ref: '#/components/schemas/DomainPrivacyOptions'
-        contacts:
-          allOf:
-          - $ref: '#/components/schemas/DomainContacts'
-          example:
-            registrant: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            admin: 1ZdMXpapqp9sle5dl8BlppTJXAzf6
-            tech: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            billing: 1ZdMXpapqp9sle5dl8BlppTJXAzf5
-            attributes:
-            - 1ZdMXpapqp9sle5dl8BlppTJXAzf8
-          description: Domain contacts are specified using contact IDs. These contact IDs can be obtained from the “Get domain info” endpoint (/domains) for an existing domain, or by creating new contacts through the “Save contact details” endpoint (/contacts). Each contact ID corresponds to a specific contact person and includes their details (such as name, address, and email). These contacts will be associated with the domain after transfer.
-        authCode:
-          allOf:
-          - $ref: '#/components/schemas/authCode'
-          description: Authorization code (EPP code) required for domain transfers. This code is mandatory for most TLDs but may be optional for certain ccTLDs, for example, the .uk.
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
   securitySchemes:
     apiKey:
       type: apiKey

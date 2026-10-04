@@ -815,21 +815,16 @@ paths:
         source: "curl --request DELETE \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/personal-nameservers/api.www \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     ipAddress:
       type: string
       maxLength: 39
       format: ip
       description: An IP address represented as a string, which can be either IPv4 or IPv6 format.
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     PersonalNameservers:
       type: object
       required:
@@ -850,50 +845,41 @@ components:
           minItems: 1
           maxItems: 255
           description: List of hosts and IP addresses associated with the personal nameservers
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    HostNameServers:
-      type: object
-      required:
-      - ips
-      properties:
-        ips:
-          type: array
-          items:
-            $ref: '#/components/schemas/ipAddress'
-          example:
-          - 127.2.2.2
-          - 12.22.22.21
-          maxItems: 255
-    host:
-      type: string
-      example: api.www
-      minLength: 1
-      maxLength: 255
-      format: hostname
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     errorCode:
       type: string
       maxLength: 255
       pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
       description: The dot-separated error code indicating the type of the problem occurred
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     PersonalNameserverRecord:
       type: object
       required:
@@ -915,6 +901,49 @@ components:
           minItems: 1
           maxItems: 16
           description: List of IP addresses associated with the personal nameserver host
+    HostNameServers:
+      type: object
+      required:
+      - ips
+      properties:
+        ips:
+          type: array
+          items:
+            $ref: '#/components/schemas/ipAddress'
+          example:
+          - 127.2.2.2
+          - 12.22.22.21
+          maxItems: 255
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ValidationError:
       type: object
       required:
@@ -948,41 +977,12 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    operationId:
+    host:
       type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+      example: api.www
+      minLength: 1
+      maxLength: 255
+      format: hostname
   securitySchemes:
     apiKey:
       type: apiKey

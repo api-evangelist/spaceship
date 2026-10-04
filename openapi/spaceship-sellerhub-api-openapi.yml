@@ -2242,25 +2242,72 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/sellerhub/verification-records \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    SellerHub.VerificationOption:
+    FeePercentage:
+      type: integer
+      enum:
+      - 0
+      - 25
+      - 50
+      - 75
+      - 100
+      example: 25
+      description: 'Allowed values for commission percentage split: 0, 25, 50, 75, or 100.'
+      format: int32
+      minimum: 0
+      maximum: 100
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    SellerHub.VerificationRecord:
       type: object
       required:
-      - records
+      - type
+      - name
+      - value
       properties:
-        records:
-          type: array
-          items:
-            $ref: '#/components/schemas/SellerHub.VerificationRecord'
-          minItems: 1
-          maxItems: 10
-          description: 'Array of DNS records that must all be created for this verification option.
+        type:
+          type: string
+          example: TXT
+          minLength: 1
+          maxLength: 5
+          pattern: \w+
+          description: Type of DNS resource record to create for domain verification
+        name:
+          allOf:
+          - $ref: '#/components/schemas/hostNameValue'
+          example: '@'
+          description: 'Name of resource record excluding domain name part. ''@'' can be used as an apex domain.
 
-            All records in this array are required (AND logic).'
-      description: 'Represents one verification method option.
+            Use this value as the ''Name'' or ''Host'' field when creating the DNS record.
 
-        Each option contains one or more DNS records that must all be created together.
 
-        Users can choose any ONE option from the available options to verify domain ownership.'
+            Common values:
+
+            - ''@'' - Applies the record at the apex/root of your domain'
+        value:
+          type: string
+          example: 7e018923-c48d-4579-1111-1b9bb6952c96
+          maxLength: 256
+          pattern: ^[a-zA-Z0-9._:/-]+$
+          description: Verification value to be set as the DNS record value. Format depends on record type (token for TXT, IP for A/AAAA, etc.).
+      description: Verification record response
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ErrorDetail:
       type: object
       required:
@@ -2271,36 +2318,66 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    domainDescription:
-      type: string
-      example: Premium domain for sale
-      maxLength: 5000
-      pattern: ^[\s\S]*$
-      description: Domain description text
-    CheckoutLinkType:
-      type: string
-      enum:
-      - buyNow
-      description: 'Specifies the type of checkout link to be created. Each type determines a different purchase flow that buyers will experience when accessing the link.
-
-
-        Available types:
-
-        - **buyNow**: Direct purchase at a fixed price without negotiation
-
-        - **leaseToOwn**: Installment-based purchase plan (coming soon)
-
-        - **makeOffer**: Negotiation-based purchase where buyers submit offers (coming soon)'
-    ForbiddenError:
+    Price:
       type: object
       required:
-      - detail
+      - amount
+      - currency
       properties:
-        detail:
+        amount:
           type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+          example: '10.99'
+          maxLength: 20
+          pattern: ^[0-9]+(\.[0-9]{1,2})?$
+          description: Amount as string to preserve precision
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+          description: Currency code (ISO 4217)
+      description: Money amount with currency
+    hostNameValue:
+      type: string
+      example: '@'
+      minLength: 1
+      maxLength: 253
+      pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
+    isoDate:
+      type: string
+      example: '2100-01-01T00:00:00.000Z'
+      maxLength: 27
+      format: date-time
+      description: ISO-8601 DateTime
+    displayName:
+      type: string
+      example: SpaceShip.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Display name for a domain with original capitalization
+    PriceUpdate:
+      type: object
+      properties:
+        amount:
+          type: string
+          example: '10.99'
+          maxLength: 20
+          pattern: ^[0-9]+(\.[0-9]{1,2})?$
+          description: Amount as string to preserve precision
+        currency:
+          allOf:
+          - $ref: '#/components/schemas/Currency'
+          description: Currency code (ISO 4217)
+      description: Money amount with currency
+    SafePayPaymentMethod:
+      type: string
+      enum:
+      - btcPay
+      - wireTransfer
+      - creditCard
+      - payPal
+      - alipay
+      example: creditCard
+      description: Payment method the buyer commits to for a SafePay transaction.
     UpdateSellerHubDomainRequest:
       type: object
       properties:
@@ -2327,12 +2404,39 @@ components:
           - $ref: '#/components/schemas/PriceUpdate'
           description: Minimum offer price for the domain
       description: Update SellerHub domain request
-    hostNameValue:
+    Currency:
       type: string
-      example: '@'
-      minLength: 1
-      maxLength: 253
-      pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
+      example: USD
+      minLength: 3
+      maxLength: 3
+      pattern: ^USD$
+      description: Currency code following ISO 4217 standard. Currently only USD is supported.
+    domainDescription:
+      type: string
+      example: Premium domain for sale
+      maxLength: 5000
+      pattern: ^[\s\S]*$
+      description: Domain description text
+    FeePercentageShare:
+      type: object
+      required:
+      - seller
+      - buyer
+      properties:
+        seller:
+          allOf:
+          - $ref: '#/components/schemas/FeePercentage'
+          example: 75
+          description: 'Percentage of the platform commission paid by the seller. Allowed values: 0, 25, 50, 75, 100.'
+        buyer:
+          allOf:
+          - $ref: '#/components/schemas/FeePercentage'
+          example: 25
+          description: 'Percentage of the platform commission paid by the buyer. Allowed values: 0, 25, 50, 75, 100.'
+      example:
+        seller: 0
+        buyer: 100
+      description: Commission split between seller and buyer. Determines how the platform commission is distributed. The seller and buyer percentages must sum to 100.
     SellerHub.VerificationResponse:
       type: object
       required:
@@ -2373,142 +2477,59 @@ components:
         Users can choose to implement ANY ONE of the provided options (OR logic).
 
         Within each option, ALL records must be created (AND logic).'
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    domainNameULabel:
-      type: string
-      example: spaceship.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: Domain name in UTF-8 format (U-label)
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SafePayTransactionStatus:
+    SafePayTransactionType:
       type: string
       enum:
-      - active
-      - pendingSellerConfirm
-      - pendingBuyerConfirm
-      - processing
-      - verification
-      - deactivated
-      - purchased
-      - expired
-      example: active
-      description: 'Lifecycle status of a SafePay transaction.
+      - buyNow
+      - leaseToOwn
+      example: buyNow
+      description: 'Sale type for the SafePay transaction.
 
 
-        Pre-confirmation states (`pendingSellerConfirm`, `pendingBuyerConfirm`) require counterparty action. `processing` and `verification` are intermediate states after the buyer pays (payment settlement and domain-ownership verification) that resolve to `purchased` or a terminal error state. Terminal states are `purchased`, `deactivated`, and `expired`.'
-    Currency:
+        - **buyNow**: single-payment purchase at the agreed `basePrice`.
+
+        - **leaseToOwn**: installment-based purchase; `ltoSettings` carries the plan and `basePrice` is the total lease price.'
+    SafePayInitiatedBy:
       type: string
-      example: USD
-      minLength: 3
-      maxLength: 3
-      pattern: ^USD$
-      description: Currency code following ISO 4217 standard. Currently only USD is supported.
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    SellerHubDomainResponse:
+      enum:
+      - seller
+      - buyer
+      - broker
+      example: seller
+      description: Which party opened the SafePay transaction. The other party (or parties) must confirm before the deal becomes active.
+    CreateSellerHubDomainRequest:
       type: object
       required:
       - name
-      - unicodeName
-      - status
       properties:
-        name:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: xn--spceship-9ya.com
-        unicodeName:
-          allOf:
-          - $ref: '#/components/schemas/domainNameULabel'
-          example: spaceship.com
-        displayName:
-          allOf:
-          - $ref: '#/components/schemas/displayName'
-          description: Full domain name with original capitalization setup
         description:
           allOf:
           - $ref: '#/components/schemas/domainDescription'
           description: Domain description
-        status:
+        displayName:
           allOf:
-          - $ref: '#/components/schemas/SellerHubDomainStatus'
-          description: Current status of the domain in SellerHub
-        minPrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: Minimum offer price for the domain
+          - $ref: '#/components/schemas/displayName'
+          description: Display name for the domain
+        binPriceEnabled:
+          type: boolean
+          description: Enable or disable the Buy It Now (BIN) option
         binPrice:
           allOf:
           - $ref: '#/components/schemas/Price'
           description: Buy It Now (BIN) price for the domain
-        binPriceEnabled:
-          type: boolean
-          description: Indicates whether the Buy It Now (BIN) option is enabled
         minPriceEnabled:
           type: boolean
-          description: Indicates whether offer negotiation with minimum price is enabled
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    SafePayPaymentMethod:
-      type: string
-      enum:
-      - btcPay
-      - wireTransfer
-      - creditCard
-      - payPal
-      - alipay
-      example: creditCard
-      description: Payment method the buyer commits to for a SafePay transaction.
-    FeePercentageShare:
-      type: object
-      required:
-      - seller
-      - buyer
-      properties:
-        seller:
+          description: Enable or disable offer negotiation with minimum price
+        minPrice:
           allOf:
-          - $ref: '#/components/schemas/FeePercentage'
-          example: 75
-          description: 'Percentage of the platform commission paid by the seller. Allowed values: 0, 25, 50, 75, 100.'
-        buyer:
+          - $ref: '#/components/schemas/Price'
+          description: Minimum offer price for the domain
+        name:
           allOf:
-          - $ref: '#/components/schemas/FeePercentage'
-          example: 25
-          description: 'Percentage of the platform commission paid by the buyer. Allowed values: 0, 25, 50, 75, 100.'
-      example:
-        seller: 0
-        buyer: 100
-      description: Commission split between seller and buyer. Determines how the platform commission is distributed. The seller and buyer percentages must sum to 100.
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: spaceship.com
+          description: Domain name in Unicode format
+      description: Create SellerHub domain request
     SafePayTransaction:
       type: object
       required:
@@ -2577,228 +2598,6 @@ components:
 
 
         Party emails are present only when supplied at creation.'
-    SafePayLtoSettings:
-      type: object
-      required:
-      - downPaymentPercentage
-      - installmentPeriods
-      properties:
-        downPaymentPercentage:
-          type: integer
-          format: int32
-          example: 10
-          minimum: 0
-          maximum: 99
-          description: 'Down payment as a whole-number percentage of the total lease price (integer only — fractional percentages are rejected). Capped at 99: a Lease-to-Own plan must leave a balance for the installments. A value near the cap leaves little per installment, and since each installment must be at least the platform minimum, an excessive percentage is still rejected on create. On read this is the nearest whole percent derived from the stored down-payment amount.'
-        installmentPeriods:
-          type: integer
-          format: int32
-          example: 5
-          minimum: 1
-          maximum: 120
-          description: Number of monthly installment periods over which the balance is paid.
-      description: 'Lease-to-Own terms for a `leaseToOwn` transaction: the down payment percentage and the number of installment periods. The total lease price is carried by `basePrice`.
-
-
-        On **create** these two values, together with `basePrice`, define the plan — the down payment amount, per-installment amount, and any remainder are derived server-side. On **read** the same two values are recomputed from the stored plan: both remain whole numbers (never fractional), and `downPaymentPercentage` is rounded to the nearest whole percent of the down-payment amount. A plan created through this API round-trips to the submitted values; a plan created elsewhere with an explicit down-payment amount may report the closest whole percent.'
-    SellerHubDomainStatus:
-      type: string
-      enum:
-      - failed
-      - verifying
-      - onSale
-      - onSaleStopped
-      - saleProcessing
-      - leaseActive
-      - sold
-      description: SellerHub domain status
-    sellerhubDomainName:
-      type: string
-      example: onsale.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: SellerHub Domain Name
-    SafePayTransactionUrls:
-      type: object
-      required:
-      - seller
-      - buyer
-      properties:
-        seller:
-          type: string
-          example: https://www.spaceship.com/sellerhub/safepay/seller/550e8400-e29b-41d4-a716-446655440000
-          maxLength: 2048
-          format: uri
-          description: Seller-side SafePay review URL.
-        buyer:
-          type: string
-          example: https://www.spaceship.com/sellerhub/safepay/buyer/550e8400-e29b-41d4-a716-446655440000
-          maxLength: 2048
-          format: uri
-          description: Buyer-side SafePay review URL.
-      description: Role-specific SafePay review URLs for the transaction.
-    SafePayTransactionType:
-      type: string
-      enum:
-      - buyNow
-      - leaseToOwn
-      example: buyNow
-      description: 'Sale type for the SafePay transaction.
-
-
-        - **buyNow**: single-payment purchase at the agreed `basePrice`.
-
-        - **leaseToOwn**: installment-based purchase; `ltoSettings` carries the plan and `basePrice` is the total lease price.'
-    PriceUpdate:
-      type: object
-      properties:
-        amount:
-          type: string
-          example: '10.99'
-          maxLength: 20
-          pattern: ^[0-9]+(\.[0-9]{1,2})?$
-          description: Amount as string to preserve precision
-        currency:
-          allOf:
-          - $ref: '#/components/schemas/Currency'
-          description: Currency code (ISO 4217)
-      description: Money amount with currency
-    CreateCheckoutLinkRequest:
-      type: object
-      required:
-      - type
-      - domainName
-      properties:
-        type:
-          allOf:
-          - $ref: '#/components/schemas/CheckoutLinkType'
-          description: Specifies the checkout flow type. Currently supports 'BuyNow' for immediate purchase at the specified price.
-        basePrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: The price at which the domain will be offered in the checkout link. This is the amount the buyer will pay to purchase the domain. If not provided, the domain's Buy It Now price will be used.
-        domainName:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: example.com
-          description: The domain name to create a checkout link for. Must be a domain currently listed in SellerHub.
-        feePercentageShare:
-          allOf:
-          - $ref: '#/components/schemas/FeePercentageShare'
-          description: Commission split configuration. Determines how the platform commission is divided between seller and buyer. If omitted, defaults to 100% seller / 0% buyer.
-      description: Request payload for creating a checkout link. A checkout link allows potential buyers to purchase a domain listed in SellerHub through a direct URL.
-    SellerHub.VerificationRecord:
-      type: object
-      required:
-      - type
-      - name
-      - value
-      properties:
-        type:
-          type: string
-          example: TXT
-          minLength: 1
-          maxLength: 5
-          pattern: \w+
-          description: Type of DNS resource record to create for domain verification
-        name:
-          allOf:
-          - $ref: '#/components/schemas/hostNameValue'
-          example: '@'
-          description: 'Name of resource record excluding domain name part. ''@'' can be used as an apex domain.
-
-            Use this value as the ''Name'' or ''Host'' field when creating the DNS record.
-
-
-            Common values:
-
-            - ''@'' - Applies the record at the apex/root of your domain'
-        value:
-          type: string
-          example: 7e018923-c48d-4579-1111-1b9bb6952c96
-          maxLength: 256
-          pattern: ^[a-zA-Z0-9._:/-]+$
-          description: Verification value to be set as the DNS record value. Format depends on record type (token for TXT, IP for A/AAAA, etc.).
-      description: Verification record response
-    Price:
-      type: object
-      required:
-      - amount
-      - currency
-      properties:
-        amount:
-          type: string
-          example: '10.99'
-          maxLength: 20
-          pattern: ^[0-9]+(\.[0-9]{1,2})?$
-          description: Amount as string to preserve precision
-        currency:
-          allOf:
-          - $ref: '#/components/schemas/Currency'
-          description: Currency code (ISO 4217)
-      description: Money amount with currency
-    isoDate:
-      type: string
-      example: '2100-01-01T00:00:00.000Z'
-      maxLength: 27
-      format: date-time
-      description: ISO-8601 DateTime
-    CreateSellerHubDomainRequest:
-      type: object
-      required:
-      - name
-      properties:
-        description:
-          allOf:
-          - $ref: '#/components/schemas/domainDescription'
-          description: Domain description
-        displayName:
-          allOf:
-          - $ref: '#/components/schemas/displayName'
-          description: Display name for the domain
-        binPriceEnabled:
-          type: boolean
-          description: Enable or disable the Buy It Now (BIN) option
-        binPrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: Buy It Now (BIN) price for the domain
-        minPriceEnabled:
-          type: boolean
-          description: Enable or disable offer negotiation with minimum price
-        minPrice:
-          allOf:
-          - $ref: '#/components/schemas/Price'
-          description: Minimum offer price for the domain
-        name:
-          allOf:
-          - $ref: '#/components/schemas/sellerhubDomainName'
-          example: spaceship.com
-          description: Domain name in Unicode format
-      description: Create SellerHub domain request
-    displayName:
-      type: string
-      example: SpaceShip.com
-      minLength: 4
-      maxLength: 255
-      format: domain
-      description: Display name for a domain with original capitalization
-    email:
-      type: string
-      example: user@example.com
-      minLength: 6
-      maxLength: 255
-      format: email
-      description: An email address.
-    SafePayInitiatedBy:
-      type: string
-      enum:
-      - seller
-      - buyer
-      - broker
-      example: seller
-      description: Which party opened the SafePay transaction. The other party (or parties) must confirm before the deal becomes active.
     SoldDomainResponse:
       type: object
       required:
@@ -2845,6 +2644,218 @@ components:
           pattern: ^([A-Za-z][A-Za-z0-9]*|N/A)$
           description: The channel through which the domain was sold (e.g., spaceshipSearch, forSalePage, checkoutLink). Returned as the literal `N/A` when the channel is unknown. New camelCase values may be added in the future.
       description: Represents a sold domain in SellerHub
+    username:
+      type: string
+      example: domainseller
+      minLength: 1
+      maxLength: 255
+      pattern: ^[A-Za-z0-9._-]+$
+      description: A platform account username.
+    SellerHubDomainResponse:
+      type: object
+      required:
+      - name
+      - unicodeName
+      - status
+      properties:
+        name:
+          allOf:
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: xn--spceship-9ya.com
+        unicodeName:
+          allOf:
+          - $ref: '#/components/schemas/domainNameULabel'
+          example: spaceship.com
+        displayName:
+          allOf:
+          - $ref: '#/components/schemas/displayName'
+          description: Full domain name with original capitalization setup
+        description:
+          allOf:
+          - $ref: '#/components/schemas/domainDescription'
+          description: Domain description
+        status:
+          allOf:
+          - $ref: '#/components/schemas/SellerHubDomainStatus'
+          description: Current status of the domain in SellerHub
+        minPrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: Minimum offer price for the domain
+        binPrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: Buy It Now (BIN) price for the domain
+        binPriceEnabled:
+          type: boolean
+          description: Indicates whether the Buy It Now (BIN) option is enabled
+        minPriceEnabled:
+          type: boolean
+          description: Indicates whether offer negotiation with minimum price is enabled
+    domainNameULabel:
+      type: string
+      example: spaceship.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: Domain name in UTF-8 format (U-label)
+    SafePayTransactionUrls:
+      type: object
+      required:
+      - seller
+      - buyer
+      properties:
+        seller:
+          type: string
+          example: https://www.spaceship.com/sellerhub/safepay/seller/550e8400-e29b-41d4-a716-446655440000
+          maxLength: 2048
+          format: uri
+          description: Seller-side SafePay review URL.
+        buyer:
+          type: string
+          example: https://www.spaceship.com/sellerhub/safepay/buyer/550e8400-e29b-41d4-a716-446655440000
+          maxLength: 2048
+          format: uri
+          description: Buyer-side SafePay review URL.
+      description: Role-specific SafePay review URLs for the transaction.
+    SellerHub.VerificationOption:
+      type: object
+      required:
+      - records
+      properties:
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/SellerHub.VerificationRecord'
+          minItems: 1
+          maxItems: 10
+          description: 'Array of DNS records that must all be created for this verification option.
+
+            All records in this array are required (AND logic).'
+      description: 'Represents one verification method option.
+
+        Each option contains one or more DNS records that must all be created together.
+
+        Users can choose any ONE option from the available options to verify domain ownership.'
+    email:
+      type: string
+      example: user@example.com
+      minLength: 6
+      maxLength: 255
+      format: email
+      description: An email address.
+    sellerhubDomainName:
+      type: string
+      example: onsale.com
+      minLength: 4
+      maxLength: 255
+      format: domain
+      description: SellerHub Domain Name
+    CheckoutLinkType:
+      type: string
+      enum:
+      - buyNow
+      description: 'Specifies the type of checkout link to be created. Each type determines a different purchase flow that buyers will experience when accessing the link.
+
+
+        Available types:
+
+        - **buyNow**: Direct purchase at a fixed price without negotiation
+
+        - **leaseToOwn**: Installment-based purchase plan (coming soon)
+
+        - **makeOffer**: Negotiation-based purchase where buyers submit offers (coming soon)'
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    SafePayLtoSettings:
+      type: object
+      required:
+      - downPaymentPercentage
+      - installmentPeriods
+      properties:
+        downPaymentPercentage:
+          type: integer
+          format: int32
+          example: 10
+          minimum: 0
+          maximum: 99
+          description: 'Down payment as a whole-number percentage of the total lease price (integer only — fractional percentages are rejected). Capped at 99: a Lease-to-Own plan must leave a balance for the installments. A value near the cap leaves little per installment, and since each installment must be at least the platform minimum, an excessive percentage is still rejected on create. On read this is the nearest whole percent derived from the stored down-payment amount.'
+        installmentPeriods:
+          type: integer
+          format: int32
+          example: 5
+          minimum: 1
+          maximum: 120
+          description: Number of monthly installment periods over which the balance is paid.
+      description: 'Lease-to-Own terms for a `leaseToOwn` transaction: the down payment percentage and the number of installment periods. The total lease price is carried by `basePrice`.
+
+
+        On **create** these two values, together with `basePrice`, define the plan — the down payment amount, per-installment amount, and any remainder are derived server-side. On **read** the same two values are recomputed from the stored plan: both remain whole numbers (never fractional), and `downPaymentPercentage` is rounded to the nearest whole percent of the down-payment amount. A plan created through this API round-trips to the submitted values; a plan created elsewhere with an explicit down-payment amount may report the closest whole percent.'
+    ValidationError:
+      type: object
+      required:
+      - detail
+      - data
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
+    CreateCheckoutLinkRequest:
+      type: object
+      required:
+      - type
+      - domainName
+      properties:
+        type:
+          allOf:
+          - $ref: '#/components/schemas/CheckoutLinkType'
+          description: Specifies the checkout flow type. Currently supports 'BuyNow' for immediate purchase at the specified price.
+        basePrice:
+          allOf:
+          - $ref: '#/components/schemas/Price'
+          description: The price at which the domain will be offered in the checkout link. This is the amount the buyer will pay to purchase the domain. If not provided, the domain's Buy It Now price will be used.
+        domainName:
+          allOf:
+          - $ref: '#/components/schemas/sellerhubDomainName'
+          example: example.com
+          description: The domain name to create a checkout link for. Must be a domain currently listed in SellerHub.
+        feePercentageShare:
+          allOf:
+          - $ref: '#/components/schemas/FeePercentageShare'
+          description: Commission split configuration. Determines how the platform commission is divided between seller and buyer. If omitted, defaults to 100% seller / 0% buyer.
+      description: Request payload for creating a checkout link. A checkout link allows potential buyers to purchase a domain listed in SellerHub through a direct URL.
     CreateSafePayTransactionRequest:
       type: object
       required:
@@ -2925,6 +2936,32 @@ components:
 
 
         `basePrice` is always required: for `buyNow` it is the single payment; for `leaseToOwn` it is the total lease price the plan is derived from. When `type=leaseToOwn`, also provide `ltoSettings` (`downPaymentPercentage` + `installmentPeriods`) — the down payment, installment amount, and final split are computed from `basePrice` and these two values.'
+    SafePayTransactionStatus:
+      type: string
+      enum:
+      - active
+      - pendingSellerConfirm
+      - pendingBuyerConfirm
+      - processing
+      - verification
+      - deactivated
+      - purchased
+      - expired
+      example: active
+      description: 'Lifecycle status of a SafePay transaction.
+
+
+        Pre-confirmation states (`pendingSellerConfirm`, `pendingBuyerConfirm`) require counterparty action. `processing` and `verification` are intermediate states after the buyer pays (payment settlement and domain-ownership verification) that resolve to `purchased` or a terminal error state. Terminal states are `purchased`, `deactivated`, and `expired`.'
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     CreateCheckoutLinkResponse:
       type: object
       required:
@@ -2947,58 +2984,28 @@ components:
       minLength: 32
       maxLength: 36
       format: uuid
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    ValidationError:
+    RateLimitError:
       type: object
       required:
       - detail
-      - data
       properties:
         detail:
           type: string
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                example: name
-                pattern: ^[\s|\S]*$
-                description: The path to the field that caused the validation error
-                readOnly: true
-              details:
-                type: string
-                example: The domain name contains invalid characters
-                pattern: ^[\s|\S]*$
-                description: A specific message about what is wrong with the field
-                readOnly: true
-            required:
-            - field
-            - details
-          description: A detailed list of validation errors
-          readOnly: true
-    FeePercentage:
-      type: integer
+    SellerHubDomainStatus:
+      type: string
       enum:
-      - 0
-      - 25
-      - 50
-      - 75
-      - 100
-      example: 25
-      description: 'Allowed values for commission percentage split: 0, 25, 50, 75, or 100.'
-      format: int32
-      minimum: 0
-      maximum: 100
-    RateLimitError:
+      - failed
+      - verifying
+      - onSale
+      - onSaleStopped
+      - saleProcessing
+      - leaseActive
+      - sold
+      description: SellerHub domain status
+    ForbiddenError:
       type: object
       required:
       - detail
@@ -3029,13 +3036,6 @@ components:
 
 
         On **read**: reflects which parties have confirmed so far.'
-    username:
-      type: string
-      example: domainseller
-      minLength: 1
-      maxLength: 255
-      pattern: ^[A-Za-z0-9._-]+$
-      description: A platform account username.
   parameters:
     GetSoldDomainsQueryParams.saleDateTimeFrom:
       name: saleDateTimeFrom

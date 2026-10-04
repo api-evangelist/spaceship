@@ -393,6 +393,36 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/contacts/attributes/1ZdMXpapqp9sle5dl8BlppTJXAzf5 \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ErrorDetail:
       type: object
       required:
@@ -403,22 +433,6 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    AttributeDetails:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          minLength: 2
-          maxLength: 32
-          pattern: \w+
-      discriminator:
-        propertyName: type
-        mapping:
-          ca: '#/components/schemas/CaAttributeDetails'
-          us: '#/components/schemas/UsAttributeDetails'
-      description: Attribute details
     ObjectNotFoundError:
       type: object
       required:
@@ -429,13 +443,16 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    Attributes.ContactsAttributesResponse:
+    RateLimitError:
       type: object
       required:
-      - contactId
+      - detail
       properties:
-        contactId:
-          $ref: '#/components/schemas/contactId'
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ForbiddenError:
       type: object
       required:
@@ -453,11 +470,22 @@ components:
       maxLength: 32
       pattern: '[a-zA-Z0-9]+'
       description: Contact ID
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
+    AttributeDetails:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          minLength: 2
+          maxLength: 32
+          pattern: \w+
+      discriminator:
+        propertyName: type
+        mapping:
+          ca: '#/components/schemas/CaAttributeDetails'
+          us: '#/components/schemas/UsAttributeDetails'
+      description: Attribute details
     ValidationError:
       type: object
       required:
@@ -491,41 +519,13 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    RateLimitError:
+    Attributes.ContactsAttributesResponse:
       type: object
       required:
-      - detail
+      - contactId
       properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
+        contactId:
+          $ref: '#/components/schemas/contactId'
   securitySchemes:
     apiKey:
       type: apiKey
