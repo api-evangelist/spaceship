@@ -856,46 +856,6 @@ paths:
         source: "curl --request GET \\\n     --url 'https://spaceship.dev/api/v1/dns/records/spaceship.com?take=SOME_INTEGER_VALUE&skip=SOME_INTEGER_VALUE&orderBy=SOME_ARRAY_VALUE' \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    operationId:
-      type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
-    ResourceRecordsListDeleteItem:
-      type: array
-      items:
-        $ref: '#/components/schemas/ResourceRecordDeleteItem'
-      minItems: 1
-      maxItems: 500
-    errorCode:
-      type: string
-      maxLength: 255
-      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
-      description: The dot-separated error code indicating the type of the problem occurred
-    ResourceRecordsListCreateOrUpdateItem:
-      type: array
-      items:
-        $ref: '#/components/schemas/ResourceRecordCreateOrUpdateItem'
-      minItems: 1
-      maxItems: 500
-    ResourceRecordsGroup:
-      type: object
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          enum:
-          - custom
-          - product
-          - personalNs
-          example: custom
-          description: '* custom: record belongs to custom resource records group
-
-            * product: record was added as a part of products connection
-
-            * personalNs: record is associated with the corresponding personal nameserver'
-      description: Details of the group record belongs to
     UnexpectedError:
       type: object
       required:
@@ -906,106 +866,11 @@ components:
           pattern: ^[\s|\S]*$
           description: A general message about the exception
           readOnly: true
-    Records.RecordsUpdateModel:
-      type: object
-      required:
-      - items
-      properties:
-        force:
-          type: boolean
-          description: Turn-off conflicts resolution checker and force zone update
-        items:
-          $ref: '#/components/schemas/ResourceRecordsListCreateOrUpdateItem'
-          description: Records
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    hostNameValue:
+    operationId:
       type: string
-      example: '@'
-      minLength: 1
-      maxLength: 253
-      pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ValidationError:
-      type: object
-      required:
-      - detail
-      - data
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                example: name
-                pattern: ^[\s|\S]*$
-                description: The path to the field that caused the validation error
-                readOnly: true
-              details:
-                type: string
-                example: The domain name contains invalid characters
-                pattern: ^[\s|\S]*$
-                description: A specific message about what is wrong with the field
-                readOnly: true
-            required:
-            - field
-            - details
-          description: A detailed list of validation errors
-          readOnly: true
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
     ResourceRecord:
       type: object
       required:
@@ -1052,6 +917,39 @@ components:
           TLSA: '#/components/schemas/TlsaResourceRecord'
           TXT: '#/components/schemas/TxtResourceRecord'
       description: DNS resource record details
+    ResourceRecordsListCreateOrUpdateItem:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceRecordCreateOrUpdateItem'
+      minItems: 1
+      maxItems: 500
+    ResourceRecordsListDeleteItem:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResourceRecordDeleteItem'
+      minItems: 1
+      maxItems: 500
+    Records.RecordsUpdateModel:
+      type: object
+      required:
+      - items
+      properties:
+        force:
+          type: boolean
+          description: Turn-off conflicts resolution checker and force zone update
+        items:
+          $ref: '#/components/schemas/ResourceRecordsListCreateOrUpdateItem'
+          description: Records
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     ResourceRecordCreateOrUpdateItem:
       type: object
       required:
@@ -1095,6 +993,32 @@ components:
           TLSA: '#/components/schemas/TlsaResourceRecordCreateOrUpdateItem'
           TXT: '#/components/schemas/TxtResourceRecordCreateOrUpdateItem'
       description: DNS resource record details
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    hostNameValue:
+      type: string
+      example: '@'
+      minLength: 1
+      maxLength: 253
+      pattern: ^(?!\.)(@|\*|([_*]\.)?(?:(?!-)(?=[^\.]*[^\W_])[\w-]{1,63}(?<!-)($|\.)){1,127}(?<!\.))$
     ResourceRecordDeleteItem:
       type: object
       required:
@@ -1129,6 +1053,82 @@ components:
           TLSA: '#/components/schemas/TlsaResourceRecordDeleteItem'
           TXT: '#/components/schemas/TxtResourceRecordDeleteItem'
       description: DNS resource record details
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    errorCode:
+      type: string
+      maxLength: 255
+      pattern: ^(business|application|infrastructure)(\.[a-zA-Z]+)+$
+      description: The dot-separated error code indicating the type of the problem occurred
+    ResourceRecordsGroup:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - custom
+          - product
+          - personalNs
+          example: custom
+          description: '* custom: record belongs to custom resource records group
+
+            * product: record was added as a part of products connection
+
+            * personalNs: record is associated with the corresponding personal nameserver'
+      description: Details of the group record belongs to
+    ValidationError:
+      type: object
+      required:
+      - detail
+      - data
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: name
+                pattern: ^[\s|\S]*$
+                description: The path to the field that caused the validation error
+                readOnly: true
+              details:
+                type: string
+                example: The domain name contains invalid characters
+                pattern: ^[\s|\S]*$
+                description: A specific message about what is wrong with the field
+                readOnly: true
+            required:
+            - field
+            - details
+          description: A detailed list of validation errors
+          readOnly: true
   securitySchemes:
     apiKey:
       type: apiKey

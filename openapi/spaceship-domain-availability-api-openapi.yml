@@ -395,11 +395,48 @@ paths:
         source: "curl --request GET \\\n     --url https://spaceship.dev/api/v1/domains/spaceship.com/available \\\n     --header 'X-API-Key: REPLACE_KEY_VALUE' \\\n     --header 'X-API-Secret: REPLACE_KEY_VALUE'"
 components:
   schemas:
-    operationId:
+    DomainAvailabilityResult:
+      type: object
+      required:
+      - domain
+      - result
+      - premiumPricing
+      properties:
+        domain:
+          allOf:
+          - $ref: '#/components/schemas/domainName'
+          example: spaceship.dev
+          readOnly: true
+        result:
+          allOf:
+          - $ref: '#/components/schemas/DomainAvailabilityStatus'
+          readOnly: true
+        premiumPricing:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPriceDetails'
+          readOnly: true
+      description: Domain availability check result
+    DomainAvailabilityStatus:
       type: string
-      maxLength: 16
-      pattern: ^[a-z0-9]{16}$
-      description: 16-characters unique identifier of the operation
+      enum:
+      - available
+      - taken
+      - invalidDomainName
+      - tldNotSupported
+      - unexpectedError
+      example: available
+      description: 'Domain availability status. Possible values include:
+
+        * `available` - The domain is available for registration.
+
+        * `taken` - Domain is already taken and available for transfer.
+
+        * `invalidDomainName` - Domain name is invalid.
+
+        * `tldNotSupported` - Specified TLD is not supported.
+
+        * `unexpectedError` - An error occurred while checking domain availability. The system was unable to determine the domain''s status due to a technical issue.'
     DomainPriceDetails:
       type: object
       required:
@@ -426,6 +463,62 @@ components:
           - $ref: '#/components/schemas/Currency'
           description: Premium price currency
       description: Domain premium prices
+    UnexpectedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    Domains.GetDomainsAvailabilityResult:
+      type: object
+      required:
+      - domains
+      properties:
+        domains:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainAvailabilityResult'
+          readOnly: true
+      description: Domains availability check result
+    operationId:
+      type: string
+      maxLength: 16
+      pattern: ^[a-z0-9]{16}$
+      description: 16-characters unique identifier of the operation
+    ForbiddenError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ObjectNotFoundError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    UnauthorizedError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     Currency:
       type: string
       example: USD
@@ -448,6 +541,26 @@ components:
           maxItems: 20
           description: List of domain names in ASCII format (A-label) whose details are to be fetched. The domain name must be provided in a fully qualified domain format.
       description: Domains availability check request
+    RateLimitError:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
+    ErrorDetail:
+      type: object
+      required:
+      - detail
+      properties:
+        detail:
+          type: string
+          pattern: ^[\s|\S]*$
+          description: A general message about the exception
+          readOnly: true
     errorCode:
       type: string
       maxLength: 255
@@ -460,108 +573,6 @@ components:
       maxLength: 255
       format: domain
       description: Domain name in UTF-8 or ASCII format (U-label or A-label)
-    UnexpectedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    DomainAvailabilityStatus:
-      type: string
-      enum:
-      - available
-      - taken
-      - invalidDomainName
-      - tldNotSupported
-      - unexpectedError
-      example: available
-      description: 'Domain availability status. Possible values include:
-
-        * `available` - The domain is available for registration.
-
-        * `taken` - Domain is already taken and available for transfer.
-
-        * `invalidDomainName` - Domain name is invalid.
-
-        * `tldNotSupported` - Specified TLD is not supported.
-
-        * `unexpectedError` - An error occurred while checking domain availability. The system was unable to determine the domain''s status due to a technical issue.'
-    ErrorDetail:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    UnauthorizedError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    DomainAvailabilityResult:
-      type: object
-      required:
-      - domain
-      - result
-      - premiumPricing
-      properties:
-        domain:
-          allOf:
-          - $ref: '#/components/schemas/domainName'
-          example: spaceship.dev
-          readOnly: true
-        result:
-          allOf:
-          - $ref: '#/components/schemas/DomainAvailabilityStatus'
-          readOnly: true
-        premiumPricing:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPriceDetails'
-          readOnly: true
-      description: Domain availability check result
-    ObjectNotFoundError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    RateLimitError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
-    ForbiddenError:
-      type: object
-      required:
-      - detail
-      properties:
-        detail:
-          type: string
-          pattern: ^[\s|\S]*$
-          description: A general message about the exception
-          readOnly: true
     ValidationError:
       type: object
       required:
@@ -595,17 +606,6 @@ components:
             - details
           description: A detailed list of validation errors
           readOnly: true
-    Domains.GetDomainsAvailabilityResult:
-      type: object
-      required:
-      - domains
-      properties:
-        domains:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainAvailabilityResult'
-          readOnly: true
-      description: Domains availability check result
   securitySchemes:
     apiKey:
       type: apiKey
