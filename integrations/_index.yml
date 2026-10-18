@@ -16,3 +16,55 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: spaceship-icann-accredited-registrar
+  label: ICANN (accredited registrar)
+  partner_name: ICANN (accredited registrar)
+  category: ICANN-accredited domain registrar
+  type: contract
+  channel: regulator-register
+  evidence: https://www.icann.org/en/contracted-parties/accredited-registrars/list-of-accredited-registrars
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: ICANN Accredited Registrars (icann.org list-of-accredited-registrars)
+    standard: ICANN Registrar Accreditation Agreement
+    spec_file: null
+    role: icann-accredited-registrar
+    registered_name: Spaceship, Inc.
+    register_id: IANA 3862
+    matched_domain: spaceship.com
+    matched_by: domain
+    domain_source: url
+    country: United States of America
+    accreditations_in_family: 1
+    other_iana_ids: []
+    signal_note: 'participation only: an ICANN accreditation is a licence to sell names, not a conformance result
+      (no certified_products); the number of accreditations a family holds (drop-catch shells) is breadth, context
+      only, never counted'
+    detected_by: sweep-domains-dns.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: spaceship-rdap-iana-bootstrap-registrar-ids
+  label: RDAP (IANA bootstrap / registrar ids)
+  partner_name: RDAP (IANA bootstrap / registrar ids)
+  type: register
+  channel: standard-directory
+  evidence: https://www.iana.org/assignments/registrar-ids/registrar-ids.xml
+  source: edge
+  relationship: compatible
+  contract_reference:
+    register: IANA RDAP bootstrap (data.iana.org/rdap/dns.json) + IANA Registrar IDs
+    spec_file: null
+    role: rdap-registrar
+    registered_name: Spaceship, Inc.
+    register_id: '3862'
+    matched_domain: spaceship.com
+    matched_by: domain
+    rdap_base_url: https://rdap.spaceship.com/
+    tlds: []
+    signal_note: report only; TLD and accreditation counts are context, never counted
+    detected_by: sweep-domains-dns.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
